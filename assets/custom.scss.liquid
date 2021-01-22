@@ -1,0 +1,95 @@
+{% if settings.nav_font_extra_status %}
+  {% assign nav__font = settings.nav_font_extra %}
+{% else %}
+  {% assign nav__font = settings.nav__font.family %}
+{% endif %}
+
+{% if settings.regular_extra_status %}
+  {% assign regular__font = settings.regular_font_extra %}
+{% else %}
+  {% assign regular__font = settings.regular__font.family %}
+{% endif %}
+
+{% if settings.logo_font_extra_status %}
+  {% assign logo__font = settings.logo_font_extra %}
+{% else %}
+  {% assign logo__font = settings.logo__font.family %}
+{% endif %}
+
+{% if settings.headline_font_extra_status %}
+  {% assign headline__font = settings.headline_font_extra %}
+{% else %}
+  {% assign headline__font = settings.headline__font.family %}
+{% endif %}
+
+{% if settings.slideshow_font_extra_status %}
+  {% assign slideshow_headline__font = settings.slideshow_font_extra %}
+{% else %}
+  {% assign slideshow_headline__font = settings.slideshow_headline__font.family %}
+{% endif %}
+
+{% if settings.slideshow_subtitle_font_extra_status %}
+  {% assign slideshow_subtitle__font = settings.slideshow_subtitle_font_extra %}
+{% else %}
+  {% assign slideshow_subtitle__font = settings.slideshow_subtitle__font.family %}
+{% endif %}
+$color-white: #F9F9F9;
+.header{
+    .top-bar{
+        .menu{
+            li{
+                align-items: center;
+                font-family: {{ nav__font }}, {{ settings.nav__font.fallback_families }};
+                font-weight: {{ settings.nav__font.weight }};
+                font-style: {{ settings.nav__font.style }};
+                font-size: {{ settings.nav_font_size | append: 'px' }};
+                color: {{ settings.top_bar_color }};
+                a{
+                    padding-left: 10px;
+                    display: inline-block;
+                    text-transform: unset;
+                }
+            }
+        }
+        .cart-container{
+          .mini_cart {
+            span{
+              text-transform: unset;
+            }
+          }
+        }
+    }
+    .main-nav__wrapper{
+      .main-nav{
+        padding: 0;
+        .search-container{
+          background: linear-gradient(180deg, #FFFFFF 0%,{{ settings.header_bg_color }} 135%);
+          max-width: initial;
+          padding: 0;
+          .search__form{
+            margin: 30px auto;
+            max-width: 500px;
+          }
+        }
+        .nav {
+          padding: 0;
+          background: $color-white;
+          box-shadow: 0px 19px 36px 2px rgba(0,0,0,0.07);
+          .menu {
+            .vertical-menu{
+              display: flex;
+              width: 80%;
+              justify-content: space-evenly;
+              margin: auto;
+            }
+          }
+        }
+        .side-icon{
+          position: absolute;
+          top: 50%;
+          transform: translateY(-68%);
+          left: 45px;
+        }
+      }
+    }
+}

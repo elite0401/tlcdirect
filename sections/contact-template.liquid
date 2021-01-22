@@ -1,0 +1,188 @@
+{% comment %}
+** Contact page - custom view **
+- Page template
+{% endcomment %}
+
+{% if section.settings.image != blank %}
+  <section class="section {% if section.settings.wide_display == false %}is-width-standard{% else %}is-width-wide has-no-side-gutter{% endif %}">
+    <div class="container">
+      <div class="one-whole column">
+        <div class="banner center page-banner dark-overlay-{{ section.settings.image_darken }} full-width--{{ section.settings.wide_display }}">
+          {% render 'image-element',
+                  image: section.settings.image,
+                  alt: section.settings.image.alt,
+                  stretch_width: true,
+                  progressive: true
+          %}
+
+          <div class="caption captionOverlay--true">
+            <h1 class="headline">{{ section.settings.contact_heading }}</h1>
+            <p class="subtitle">{{ section.settings.contact_subheading }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+<a name="pagecontent" id="pagecontent"></a>
+
+<section class="section">
+  <div class="container content is-justify-center">
+    {% if section.settings.image == blank %}
+      <div class="one-half column medium-down--one-whole page">
+        <h1>{{ page.title }}</h1>
+        <div class="feature_divider"></div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+
+{% include 'include-contact-form', context: 'contact-template' %}
+
+{% if section.settings.show_map %}
+  {% include 'include-map' %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Contact",
+    "class": "shopify-section--contact-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "wide_display",
+        "label": "Wide display",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "image_darken",
+        "label": "Darken banner image",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "1800 x 800px recommended"
+      },
+      {
+        "type": "text",
+        "id": "contact_heading",
+        "label": "Heading",
+        "default": "Get in touch"
+      },
+      {
+        "type": "text",
+        "id": "contact_subheading",
+        "label": "Subheading",
+        "default": "Subheading"
+      },
+      {
+        "type": "header",
+        "content": "Form"
+      },
+      {
+        "type": "richtext",
+        "id": "contact_text",
+        "label": "Text"
+      },
+      {
+          "type": "header",
+          "content": "Map"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_map",
+        "label": "Show map",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "map_wide_display",
+        "label": "Wide display",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "map_address",
+        "label": "Address",
+        "info": "Google Maps will find the exact location"
+      },
+      {
+        "type": "range",
+        "id": "map_height",
+        "min": 300,
+        "max": 600,
+        "step": 10,
+        "unit": "px",
+        "label": "Map height",
+        "default": 400
+      },
+      {
+        "type": "range",
+        "id": "zoom_level",
+        "min": 1,
+        "max": 20,
+        "step": 1,
+        "unit": "x",
+        "label": "Map zoom level",
+        "default": 16
+      },
+      {
+        "type": "image_picker",
+        "id": "map_image",
+        "label": "Image",
+        "info": "Displayed when map isn't loaded"
+      },
+      {
+        "type": "header",
+        "content": "API key"
+      },
+      {
+        "type": "text",
+        "id": "api_key",
+        "label": "Google Maps API key",
+        "info": "You’ll need to [register a Google Maps API Key](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) to display the map"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_pin",
+        "label": "Show pin",
+        "info": "Requires use of API key",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "map_style",
+        "label": "Map color scheme",
+        "info": "Requires use of API key",
+        "default": "default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "aubergine",
+            "label": "Aubergine"
+          },
+          {
+            "value": "night",
+            "label": "Night"
+          },
+          {
+            "value": "retro",
+            "label": "Retro"
+          },
+          {
+            "value": "silver",
+            "label": "Silver"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
