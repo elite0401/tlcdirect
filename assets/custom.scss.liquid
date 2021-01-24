@@ -68,7 +68,7 @@ $color-white: #F9F9F9;
           padding: 0;
           .search__form{
             margin: 30px auto;
-            max-width: 500px;
+            max-width: 438px;
           }
         }
         .nav {
@@ -92,4 +92,120 @@ $color-white: #F9F9F9;
         }
       }
     }
+}
+.cart_content {
+  display: none;
+}
+.top-bar--right-menu{
+  svg{
+    use, g,path{
+      stroke: white;
+    }
+  }
+  .menu{
+    padding: 0!important;
+    li{
+      padding-right: 30px;
+      a{
+        display: flex!important;
+        align-items: center;
+        svg{
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+.sticky_nav {
+  background: white;
+  svg{
+    use, g,path{
+      stroke: #3158A7!important;
+    }
+  }
+  .main-nav {
+    flex-wrap: wrap;
+    padding: 0;
+    justify-content: space-between;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, {{ settings.header_bg_color }} 100%);
+    .side-icon{
+      margin-left: 30px;
+      max-width: 90px;
+      svg{
+        width: 100%;
+      }
+    }
+    .header__logo{
+      width: auto;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      padding: 24px 0px;
+    }
+    .search-container{
+      max-width: 378px;
+      padding-right: 30px;
+    }
+    .nav{
+      width: 100%;
+      background: white;
+      .menu{
+        display: flex;
+        justify-content: space-between;
+        padding: 0 30px;
+        li{
+          
+        }
+      }
+      .cart-container{
+        .mini_cart{
+          padding-left: 30px;
+          width: auto;
+          display: table;
+          padding-right: 0;
+          span{
+            padding: 0;
+            color: black;
+          }
+        }
+      }
+    }
+  }
+}
+
+.shopify-section--featured-promotions{
+  .feature-section{
+    .carousel-cell{
+      width: 100%;
+      figcaption{
+        .feature-wrap{
+          .title{
+            margin-bottom: 0;
+            line-height: 1;
+          }
+          .feature-details{
+            display: block;
+            opacity: 1;
+            .description{
+              p{
+                font-family: {{headline__font}};
+                font-weight: 700;
+              }
+            }
+          }
+        }
+      }
+    }
+    .flickity-page-dots{
+      top: 30px;
+      height: 22px;
+      .dot{
+        width: 6px;
+        height: 6px;
+        margin: 0;
+        background: {{ settings.link_color }};
+      }
+    }
+  }
 }

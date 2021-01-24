@@ -75,15 +75,58 @@ Description: Shopify Theme (https://www.shopify.com/&ref=out-of-the-sandbox)
 */
 
 @font-face {
-  font-family: "News Gothic";
-  src: url({{'NewsGothic.eot' | asset_url}});
-  src: url({{'NewsGothic.woff2' | asset_url}}) format('woff2'),
-      url({{'NewsGothic.woff' | asset_url}}) format('woff'),
-      url({{'NewsGothic.ttf' | asset_url}}) format('truetype'),
-      url({{'NewsGothic.svg' | asset_url}}) format('svg');
+  font-family: 'News Gothic';
+  src: url('NewsGothicBT-Italic.eot');
+  src: url('NewsGothicBT-Italic.eot?#iefix') format('embedded-opentype'),
+      url('NewsGothicBT-Italic.woff2') format('woff2'),
+      url('NewsGothicBT-Italic.woff') format('woff'),
+      url('NewsGothicBT-Italic.ttf') format('truetype'),
+      url('NewsGothicBT-Italic.svg#NewsGothicBT-Italic') format('svg');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'News Gothic';
+  src: url('MNewsGothic-Bold.eot');
+  src: url('MNewsGothic-Bold.eot?#iefix') format('embedded-opentype'),
+      url('MNewsGothic-Bold.woff2') format('woff2'),
+      url('MNewsGothic-Bold.woff') format('woff'),
+      url('MNewsGothic-Bold.ttf') format('truetype'),
+      url('MNewsGothic-Bold.svg#MNewsGothic-Bold') format('svg');
+  font-weight: bold;
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'Berkeley';
+  src: url('Berkeley-Book.eot');
+  src: url('Berkeley-Book.eot?#iefix') format('embedded-opentype'),
+      url('Berkeley-Book.woff2') format('woff2'),
+      url('Berkeley-Book.woff') format('woff'),
+      url('Berkeley-Book.ttf') format('truetype'),
+      url('Berkeley-Book.svg#Berkeley-Book') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'News Gothic';
+  src: url('NewsGothicBT-Roman.eot');
+  src: url('NewsGothicBT-Roman.eot?#iefix') format('embedded-opentype'),
+      url('NewsGothicBT-Roman.woff2') format('woff2'),
+      url('NewsGothicBT-Roman.woff') format('woff'),
+      url('NewsGothicBT-Roman.ttf') format('truetype'),
+      url('NewsGothicBT-Roman.svg#NewsGothicBT-Roman') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 
 {% if settings.nav_font_extra_status %}
   {% assign nav__font = settings.nav_font_extra %}
@@ -14415,9 +14458,11 @@ form.search__form,
   font-size: 12px;
   letter-spacing: {{ settings.nav_letter_spacing | append: 'px' }};
   color: {{ settings.nav_color }};
-  background-color: transparent;
+  background-color: white;
   padding-right: 35px;
   border-color: {{ settings.nav_color }};
+  border-width: 2px;
+
 }
 {%- if settings.button_style == 'rounded' -%}
 .search__form input,

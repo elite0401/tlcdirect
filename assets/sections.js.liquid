@@ -1858,18 +1858,19 @@ var header = {
               $('.sticky_nav .icon-search').css('display', 'block');
               $('.sticky_nav .search__form').css('display', 'none');
               $('.sticky_nav .search-link').css('display', 'block');
-              $('.sticky_nav .main-nav').append($(".header .cart-container").clone());
+              $('.sticky_nav .main-nav .nav .menu').append($(".header .top-bar--right-menu").clone());
             },
             onStick: function() {
               var maxHeight = 0;
               var $targetHeightElement = $('.sticky_nav .main-nav');
+              $('.sticky_nav .secondary_logo').css('display', 'block');
+              $('.sticky_nav .primary_logo').css('display', 'none');
 
+              $('.sticky_nav .search__form').css('display', 'block');
+              $('.sticky_nav .search-link').css('display', 'none');
               $targetHeightElement.each(function() {
                 maxHeight = maxHeight > $(this).outerHeight() ? maxHeight : $(this).outerHeight();
               });
-
-              $('.sticky_nav .mini_cart').css('height', maxHeight);
-              $('.sticky_nav .cart_content').css('top', maxHeight);
             },
             onUnstick: function() {
               $('.cart-container').removeClass('active_link');

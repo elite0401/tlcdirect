@@ -23,13 +23,77 @@
 {% endstyle %}
 
 {% if blocks.size > 0 %}
+{% capture carousel_block %}
+  <figure class="feature-section carousel promotion-slider section-{{ forloop.index }} promo-{{ forloop.index }} {% render 'column-width', value: section.settings.featured_promos_per_row %} column medium-down--one-whole title-overlay-{{ section.settings.promo_text_on_image_enabled }} {% if section.settings.featured_links_animation != blank %}promo-animation--true{% endif %}" {{ block.shopify_attributes }}>
+    {% for block in section.blocks %}
+      {% if block.settings.carousel %}
+      {%- assign image = block.settings.image -%}
+        <div class="carousel-cell">
+          <div class="feature-inner feature-style--{{ section.settings.feature_style }}">
+            {% if image != blank %}
+              {% render 'image-element',
+                      image: image,
+                      alt: image.alt,
+                      stretch_width: true
+              %}
+            {% else %}
+              {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+              {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+            {% endif %}
+
+            {% if block.settings.text != blank or block.settings.button_label != blank or block.settings.title != blank and section.settings.promo_text_on_image_enabled != blank %}
+              <figcaption>
+                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}class="link-promo"></a>
+                  <div class="feature-wrap">
+                    {% if block.settings.title != blank %}
+                      <h2 class="title">{{ block.settings.title }}</h2>
+                    {% endif %}
+
+                    <div class="feature-details">
+                      {% if block.settings.text != blank %}
+                        <div class="description">
+                          {{ block.settings.text }}
+                        </div>
+                      {% endif %}
+
+                      {% if block.settings.button_label != blank %}
+                        <div class="button">
+                          {{ block.settings.button_label }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+              </figcaption>
+            {% elsif block.settings.link != blank %}
+              <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}class="link-promo"></a>
+            {% endif %}
+          </div>
+
+          {% if section.settings.promo_text_on_image_enabled == blank %}
+            {% if block.settings.title != blank %}
+              <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %}>
+                <h2 class="title title-below">{{ block.settings.title }}</h2>
+              </a>
+            {% endif %}
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </figure>
+{% endcapture %}
   <section class="section {{ css_class }} {% if section.settings.wide_display == true %}is-width-wide has-no-side-gutter{% endif %}">
     <div class="container js-featured-promotions featured-promotions full-width--{{ section.settings.wide_display }}" data-promo-animation="{{ section.settings.featured_links_animation }}">
+      {% assign status = true %}
       {% for block in blocks %}
         {% comment %} Content settings {% endcomment %}
         {%- assign image = block.settings.image -%}
         {% comment %} End content settings {% endcomment %}
-
+        {% if block.settings.carousel %}
+          {% if status %}
+            {{ carousel_block }}
+            {% assign status = false %}
+          {% endif %}
+        {% else %}
         <figure class="feature-section section-{{ forloop.index }} promo-{{ forloop.index }} {% render 'column-width', value: section.settings.featured_promos_per_row %} column medium-down--one-whole title-overlay-{{ section.settings.promo_text_on_image_enabled }} {% if section.settings.featured_links_animation != blank %}promo-animation--true{% endif %}" {{ block.shopify_attributes }}>
           <div class="feature-inner feature-style--{{ section.settings.feature_style }}">
             {% if image != blank %}
@@ -79,6 +143,8 @@
             {% endif %}
           {% endif %}
         </figure>
+        {% endif %}
+        
       {% endfor %}
     </div>
   </section>
@@ -206,6 +272,11 @@
             "type": "text",
             "id": "button_label",
             "label": "Button label"
+          },
+          {
+            "type": "checkbox",
+            "id": "carousel",
+            "label": "Carousel block"
           }
         ]
       }
