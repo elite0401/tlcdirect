@@ -1,56 +1,78 @@
-<section class="section">
+<section class="section is-width-wide has-no-side-gutter">
   <a name="pagecontent" id="pagecontent"></a>
-  <div class="container has-padding-top has-padding-bottom">
-    <div class="one-whole column collection_nav">
-      <h1>{{ 'customer.register.title' | t }}</h1>
-      <div class="feature_divider"></div>
+  <div class="container has-no-side-gutter">
+    <div class="featured-link--half one-half column image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole">
+      <div class="featured-link--wrap">
+        <a>
+          {% if section.settings.image != blank %}
+            {% render 'image-element',
+                    image: section.settings.image,
+                    alt: section.settings.image.alt
+            %}
+          {% else %}
+            {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+            {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+          {% endif %}
+        </a>
+      </div>
     </div>
-
-    <div class="three-eighths columns medium-down--one-whole offset-by-five is-hidden-offset-mobile-only">
-      <br />
-
-      <div id="customer">
-        <div id="create-customer">
-          {% form 'create_customer' %}
-            {{ form.errors | default_errors }}
-
-            <div id="first_name">
-              <label for="first_name" class="login">{{ 'customer.register.first_name' | t }}</label>
-              <input type="text" value="" name="customer[first_name]" id="first_name" size="30" />
+    <div class="featured-link--half one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
+      <div class="info text-align--{{ section.settings.frontpage_text_align }}">
+        <div class="one-whole column">
+          <div id="customer">
+            <div class="heading">
+              <h3 class="text-center uppercase">{{section.settings.title}}</h3>
+              <div class="feature_divider"></div>
             </div>
+            <div id="create-customer">
+              {% form 'create_customer' %}
+                {{ form.errors | default_errors }}
+    
+                <div id="first_name">
+                  <label for="first_name" class="login">{{ 'customer.register.first_name' | t }}</label>
+                  <input type="text" value="" name="customer[first_name]" id="first_name" size="30" />
+                </div>
+    
+                <div id="last_name">
+                  <label for="last_name" class="login">{{ 'customer.register.last_name' | t }}</label>
+                  <input type="text" value="" name="customer[last_name]" id="last_name" size="30" />
+                </div>
+    
+                <div id="email">
+                  <label for="email" class="login">{{ 'customer.register.email' | t }}</label>
+                  <input type="email" value="" name="customer[email]" id="email" size="30" />
+                </div>
+    
+                <div id="password">
+                  <label for="password" class="login">{{ 'customer.register.password' | t }}</label>
+                  <input type="password" value="" name="customer[password]" id="password" class="password" size="30" />
+                </div>
+                <a class="capitalize underline">{{'customer.register.learn_more' | t}}</a>
+                <div id="confirm-password">
+                  <label for="confirm" class="login">{{ 'customer.register.confirm' | t }}</label>
+                  <input type="password" value="" id="confirm" class="confirm" size="30" />
+                </div>
+    
+                <div class="checkbox acceptsMarketing">
+                  <input type="checkbox" id="customer[accepts_marketing]" name="customer[accepts_marketing]">
+                  <label for="customer[accepts_marketing]">{{ 'customer.register.accepts_marketing' | t }}</label>
+                </div>
 
-            <div id="last_name">
-              <label for="last_name" class="login">{{ 'customer.register.last_name' | t }}</label>
-              <input type="text" value="" name="customer[last_name]" id="last_name" size="30" />
+                {% if section.settings.text %}
+                  {{ section.settings.text }}
+                {% endif %}
+    
+                <div class="action_bottom">
+                  <input class="button blue action_button full" type="submit" value="{{ 'customer.register.sign_up' | t }}" />
+                  <p class="flex is-align-center is-justify-space-between" style="padding-top: 8px;">{{ 'customer.register.returning_customer_label' | t }} <a href="{{ routes.account_login_url }}" id="customer_login_link" class="capitalize underline">{{ 'customer.register.sign_in_html' | t }}</a></p>
+                </div>
+              {% endform %}
             </div>
-
-            <div id="email">
-              <label for="email" class="login">{{ 'customer.register.email' | t }}</label>
-              <input type="email" value="" name="customer[email]" id="email" size="30" />
-            </div>
-
-            <div id="password">
-              <label for="password" class="login">{{ 'customer.register.password' | t }}</label>
-              <input type="password" value="" name="customer[password]" id="password" class="password" size="30" />
-            </div>
-
-            {% if section.settings.text %}
-              {{ section.settings.text }}
-            {% endif %}
-
-            <div class="acceptsMarketing">
-              <input type="checkbox" id="customer[accepts_marketing]" name="customer[accepts_marketing]">
-              <label for="customer[accepts_marketing]">{{ 'customer.register.accepts_marketing' | t }}</label>
-            </div>
-
-            <div class="action_bottom">
-              <input class="btn action_button" type="submit" value="{{ 'customer.register.sign_up' | t }}" />
-              <p class="right" style="padding-top: 8px;">{{ 'customer.register.returning_customer_label' | t }} <a href="{{ routes.account_login_url }}" id="customer_login_link">{{ 'customer.register.sign_in_html' | t }}</a></p>
-            </div>
-          {% endform %}
+          </div>
         </div>
       </div>
     </div>
+    
   </div>
 </section>
 
@@ -59,6 +81,36 @@
     "name": "Register",
     "class": "shopify-section--registration-form",
     "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "1024 x 1024px recommended"
+      },
+      {
+        "type": "select",
+        "id": "frontpage_text_align",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
       {
         "type": "richtext",
         "id": "text",

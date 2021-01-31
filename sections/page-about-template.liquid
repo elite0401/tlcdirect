@@ -1,0 +1,392 @@
+{% comment %}
+** Details page - custom view **
+- Page template
+- Uses blocks
+{% endcomment %}
+
+<a name="pagecontent" id="pagecontent"></a>
+
+<div class="detail-sections">
+  {% if section.blocks.size > 0 %}
+    {% for block in section.blocks %}
+      <div {{ block.shopify_attributes }} class="block__{{ block.type }} block__{{ block.id }} {% if block.type == "image_with_text_overlay" and block.settings.wide_display %}under-menu{% elsif block.type == "featured_video" and block.settings.wide_display %}under-menu{% elsif block.type == "featured_collection" %}shopify-section--featured-collection{% endif %}">
+        {% if block.type == "image_with_text" %}
+          <!-- Image with text -->
+          <section class="section
+                    {% if block.settings.wide_display == false %}
+                    is-width-standard
+                    {% else %}
+                    is-width-wide has-no-side-gutter
+                    {% endif %}
+                    ">
+            <div class="container
+                        image-with-text-container
+                        featured_collections
+                        is-flex-{{ block.settings.frontpage_image_position }}
+                        ">
+              <div class="featured-link--half one-half column image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
+                <div class="featured-link--wrap">
+                  <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
+                    {% if block.settings.image != blank %}
+                      {% render 'image-element',
+                              image: block.settings.image,
+                              alt: block.settings.image.alt
+                      %}
+                    {% else %}
+                      {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                      {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+                    {% endif %}
+                  </a>
+                </div>
+              </div>
+              <div class="featured-link--half one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
+                <div class="info text-align--{{ block.settings.frontpage_text_align }}">
+                  <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
+                    {{ block.settings.title | escape }}
+                  </a>
+                  {% if block.settings.text != blank %}
+                    <div class="description">{{ block.settings.text }}</div>
+                  {% endif %}
+                  {% if block.settings.button_label != blank %}
+                    <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="button">
+                      {{ block.settings.button_label }}
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {% if block.settings.wide_display == false %}
+            <style>
+              #shopify-section-{{ section.id }} .featured-link--section {
+                margin-bottom: 20px;
+              }
+              @media only screen and (max-width: 480px) {
+                #shopify-section-{{ section.id }} .featured-link--section {
+                  margin-bottom: 10%;
+                }
+              }
+            </style>
+          {% endif %}
+        {% elsif block.type == 'text_column' %}
+            <!-- Image with text -->
+            <section class="section
+              {% if block.settings.wide_display == false %}
+              is-width-standard has-no-side-gutter
+              {% else %}
+              is-width-wide has-no-side-gutter
+              {% endif %}
+              ">
+              <div class="container
+                          image-with-text-container
+                          featured_collections
+                          is-flex-{{ block.settings.frontpage_image_position }}
+                          ">
+                <div class="featured-link--half has-padding one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole" style="background: {{block.settings.color_1}};">
+                  
+                  <div class="info text-align--{{ block.settings.frontpage_text_align }}">
+                    <div class="icon">
+                      {{ block.settings.icon_1 }}
+                    </div>
+                    <div class="detail">
+                      <a {% if block.settings.link != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="collection_title">
+                        {{ block.settings.title_1 | escape }}
+                      </a>
+                      {% if block.settings.text_1 != blank %}
+                        <div class="description">{{ block.settings.text_1 }}</div>
+                      {% endif %}
+                      {% if block.settings.button_label_1 != blank %}
+                        <a {% if block.settings.link != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="button blue">
+                          {{ block.settings.button_label_1 }}
+                        </a>
+                      {% endif %}
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="featured-link--half has-padding one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole" style="background: {{block.settings.color_2}}; ">
+                  
+                  <div class="info text-align--{{ block.settings.frontpage_text_align }}">
+                    <div class="icon">
+                      {{ block.settings.icon_2 }}
+                    </div>
+                    <div class="detail">
+                      <a {% if block.settings.link != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="collection_title">
+                        {{ block.settings.title_2 | escape }}
+                      </a>
+                      {% if block.settings.text_2 != blank %}
+                        <div class="description">{{ block.settings.text_2 }}</div>
+                      {% endif %}
+                      {% if block.settings.button_label_2 != blank %}
+                        <a {% if block.settings.link != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="button pink">
+                          {{ block.settings.button_label_2 }}
+                        </a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {% if block.settings.wide_display == false %}
+              <style>
+                #shopify-section-{{ section.id }} .featured-link--section {
+                  margin-bottom: 20px;
+                }
+                @media only screen and (max-width: 480px) {
+                  #shopify-section-{{ section.id }} .featured-link--section {
+                    margin-bottom: 10%;
+                  }
+                }
+              </style>
+            {% endif %}
+        {% elsif block.type == 'divider' %}
+          <!-- Divider -->
+          {% include 'include-divider', type: 'block' %}
+
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "Page | details",
+    "class": "shopify-section--page-details-template",
+    "max_blocks": 20,
+    "blocks": [
+      {
+        "type": "divider",
+        "name": "Divider",
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "Add spacing in between your sections by using a divider."
+          },
+          {
+            "type": "range",
+            "id": "divider_spacing",
+            "min": 0,
+            "max": 30,
+            "step": 5,
+            "unit": "px",
+            "label": "Space",
+            "default": 20
+          },
+          {
+            "type": "checkbox",
+            "id": "divider_border",
+            "label": "Show border",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "image_with_text",
+        "name": "Image with text",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "wide_display",
+            "label": "Wide display"
+          },
+          {
+            "type": "select",
+            "id": "frontpage_text_align",
+            "label": "Text alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "frontpage_image_position",
+            "label": "Image position",
+            "default": "row",
+            "options": [
+              {
+                "value": "row",
+                "label": "Left"
+              },
+              {
+                "value": "row-reverse",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "1024 x 1024px recommended"
+          },
+          {
+            "type": "select",
+            "id": "image_crop",
+            "label": "Image cropping",
+            "default": "none",
+            "info": "Only applied when text area is taller than image.",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "none",
+                "label": "None"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Your headline"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Promotion description appears here.</p>"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label",
+            "default": "View all"
+          }
+        ]
+      },
+      {
+        "type": "text_column",
+        "name": "Text column",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "wide_display",
+            "label": "Wide display"
+          },
+          {
+            "type": "select",
+            "id": "frontpage_text_align",
+            "label": "Text alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "content"
+          },
+          {
+            "type": "html",
+            "id": "icon_1",
+            "label": "Icon"
+          },
+          {
+            "type": "text",
+            "id": "title_1",
+            "label": "Heading",
+            "default": "Your headline"
+          },
+          {
+            "type": "richtext",
+            "id": "text_1",
+            "label": "Text",
+            "default": "<p>Promotion description appears here.</p>"
+          },
+          {
+            "type": "url",
+            "id": "link_1",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "button_label_1",
+            "label": "Button label",
+            "default": "View all"
+          },
+          {
+            "type": "color",
+            "id": "color_1",
+            "label": "Background color"
+          },
+          {
+            "type": "header",
+            "content": "content"
+          },
+          {
+            "type": "html",
+            "id": "icon_2",
+            "label": "Icon"
+          },
+          {
+            "type": "text",
+            "id": "title_2",
+            "label": "Heading",
+            "default": "Your headline"
+          },
+          {
+            "type": "richtext",
+            "id": "text_2",
+            "label": "Text",
+            "default": "<p>Promotion description appears here.</p>"
+          },
+          {
+            "type": "url",
+            "id": "link_2",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "button_label_2",
+            "label": "Button label",
+            "default": "View all"
+          },
+          {
+            "type": "color",
+            "id": "color_2",
+            "label": "Background color"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

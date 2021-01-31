@@ -205,7 +205,13 @@
       "title": "My Account",
       "details": "Account Details",
       "view_addresses": "View Addresses",
-      "return": "Return to Account Details"
+      "return": "Return to Account Details",
+      "dashboard": "Dashboard",
+      "order_history": "Order History",
+      "address": "Account details",
+      "wish_list": "Wishlist",
+      "reward": "Rewards",
+      "logout": "Log out"
     },
     "orders": {
       "title": "Order History",
@@ -255,7 +261,7 @@
       "returning_customers": "Returning Customers",
       "new_customers": "New Customers",
       "forgot_password": "Forgot your password?",
-      "sign_up_html": "Sign up &rarr;",
+      "sign_up_html": "Sign up",
       "new_customer_label": "New Customer?",
       "sign_in": "Login",
       "cancel": "Return to Store",
@@ -307,16 +313,18 @@
     },
     "register": {
       "title": "Create Account",
-      "sign_up": "Sign Up",
+      "sign_up": "Create an account",
       "cancel": "Return to Store",
+      "confirm": "Confirm Password",
       "returning_customer_label": "Returning Customer?",
-      "sign_in_html": "Login &rarr;",
+      "sign_in_html": "Sign In",
       "first_name": "First Name",
       "last_name": "Last Name",
       "email": "Email",
       "password": "Password",
+      "learn_more": "Learn More About Secure Passwords",
       "or": "or",
-      "accepts_marketing": "Subscribe to our newsletter?"
+      "accepts_marketing": "Keep me signed in"
     }
   },
   "homepage": {

@@ -247,14 +247,20 @@
       },
       {
         "type": "color",
+        "id": "btn_hover_color",
+        "label": "Buttons hover",
+        "default": "#AE3333"
+      },
+      {
+        "type": "color",
         "id": "banner_button_color",
         "label": "Banner buttons",
         "default": "#ffffff"
       },
       {
         "type": "color",
-        "id": "btn_hover_color",
-        "label": "Buttons hover",
+        "id": "banner_btn_hover_color",
+        "label": "Banner Buttons hover",
         "default": "#AE3333"
       },
       {
@@ -1096,6 +1102,54 @@
         "id": "slideshow_shadow",
         "label": "Text shadow",
         "default": true
+      },
+      {
+        "type": "header",
+        "content": "Page Banner headings"
+      },
+      {
+        "type": "font_picker",
+        "id": "page_headline__font",
+        "label": "Font",
+        "default": "open_sans_n4"
+      },
+      {
+        "type": "checkbox",
+        "id": "page_font_extra_status",
+        "label": "Use extra font",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "page_font_extra"
+      },
+      {
+        "type": "select",
+        "id": "page_headline_font_style",
+        "label": "Capitalization",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "page_headline_size",
+        "label": "Base size",
+        "min": 20,
+        "max": 60,
+        "default": 56,
+        "unit": "px"
       },
       {
         "type": "header",

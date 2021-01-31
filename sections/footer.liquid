@@ -16,7 +16,7 @@
 {%- endif -%}
 
 <footer class="footer">
-  <section class="section">
+  <section>
     <div class="container footer-menu-wrap">
       {% for block in section.blocks %}
         <div class="{% if forloop.length >= 5 %}one-fifth column{% elsif forloop.length == 4 %}one-fourth column{% elsif forloop.length == 3 %}one-third column{% elsif forloop.length == 2 %}one-half column{% endif %} medium-down--one-whole" {{ block.shopify_attributes }}>

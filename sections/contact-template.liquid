@@ -3,47 +3,150 @@
 - Page template
 {% endcomment %}
 
-{% if section.settings.image != blank %}
-  <section class="section {% if section.settings.wide_display == false %}is-width-standard{% else %}is-width-wide has-no-side-gutter{% endif %}">
-    <div class="container">
-      <div class="one-whole column">
-        <div class="banner center page-banner dark-overlay-{{ section.settings.image_darken }} full-width--{{ section.settings.wide_display }}">
-          {% render 'image-element',
-                  image: section.settings.image,
-                  alt: section.settings.image.alt,
-                  stretch_width: true,
-                  progressive: true
-          %}
+{%- assign id = section.id -%}
 
-          <div class="caption captionOverlay--true">
-            <h1 class="headline">{{ section.settings.contact_heading }}</h1>
-            <p class="subtitle">{{ section.settings.contact_subheading }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-{% endif %}
+{% comment %} Content settings {% endcomment %}
+{%- assign blocks = section.blocks -%}
 
 <a name="pagecontent" id="pagecontent"></a>
 
 <section class="section">
   <div class="container content is-justify-center">
-    {% if section.settings.image == blank %}
       <div class="one-half column medium-down--one-whole page">
-        <h1>{{ page.title }}</h1>
+        <h1 class="hero text-center">{{ page.title }}</h1>
         <div class="feature_divider"></div>
       </div>
-    {% endif %}
+      <div class="one-whole column">
+        <div id="testimonial-{{ section.id }}" class="testimonial-slideshow js-testimonial {% if section.settings.testimonial_text_animation != '' %}text-animation--true{% endif %} transparentBackground--{{ settings.slideshow_button_style }} full-width--{{ section.settings.wide_display }}" data-slider-id="testimonial-{{ section.id }}" data-slideshow-speed="{{ section.settings.testimonial_speed }}" data-slideshow-text-animation="{{ section.settings.testimonial_text_animation }}">
+          {% for block in blocks %}
+            {% comment %} Content settings {% endcomment %}
+            {%- assign testimonial = block.settings.testimonial -%}
+            {% comment %} End content settings {% endcomment %}
+
+            <div class="testimonial-block gallery-cell one-whole column slide-{{ forloop.index }} {% if block.settings.image == blank %}set-static use-mobile-color{% endif %}" {{ block.shopify_attributes }} data-block-id="{{ block.id }}">
+
+              <div class="caption position-{{ block.settings.text_position }} js-caption">
+                <div class="caption-content testimonial-text align-{{ block.settings.text_align }}">
+                  <div class="subtitle">
+                    {{ testimonial }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="one-whole column">
+        <ul class="flex is-justify-space-around none is-align-center">
+          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'email' %} <a class="bold" href="mailto:{{section.settings.email}}">Email : {{section.settings.email}}</a></li>
+          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'fax' %} <a class="bold" href="fax:{{section.settings.fax}}">Fax : {{section.settings.fax}}</a></li>
+          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'phone_1' %} <a class="bold" href="phone:{{section.settings.phone}}">Phone: {{section.settings.phone}}</a></li>
+        </ul>
+      </div>
+  </div>
+</section>
+{% include 'include-divider', type: 'section' %}
+<section class="section
+  {% if section.settings.wide_display == false %}
+  is-width-standard
+  {% else %}
+  is-width-wide has-no-side-gutter
+  {% endif %}
+  ">
+  <div class="container
+              image-with-text-container
+              featured_collections
+              is-flex-{{ section.settings.frontpage_image_position }}
+              ">
+    <div class="featured-link--half one-half column image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
+      <div class="featured-link--wrap">
+        <a {% if section.settings.link != blank %}href="{{ section.settings.link }}"{% endif %} title="{{ section.settings.title }}">
+          {% if section.settings.image != blank %}
+            {% render 'image-element',
+                    image: section.settings.image,
+                    alt: section.settings.image.alt
+            %}
+          {% else %}
+            {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+            {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+          {% endif %}
+        </a>
+      </div>
+    </div>
+    <div class="featured-link--half one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
+      <div class="info text-align--{{ section.settings.frontpage_text_align }}">
+        {% include 'include-contact-form', context: 'contact-template' %}
+      </div>
+    </div>
   </div>
 </section>
 
-
-{% include 'include-contact-form', context: 'contact-template' %}
-
-{% if section.settings.show_map %}
-  {% include 'include-map' %}
+ <!-- Image with text -->
+ <section class="section block__text_column s-width-standard has-no-side-gutter">
+ <div class="container
+             image-with-text-container
+             featured_collections
+             is-flex-left
+             ">
+   <div class="featured-link--half has-padding one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole" style="background: {{section.settings.color_1}};">
+     
+     <div class="info text-align--left">
+       <div class="icon">
+         {{ section.settings.icon_1 }}
+       </div>
+       <div class="detail">
+         <a {% if section.settings.link != blank %}href="{{ section.settings.link_1 }}"{% endif %} class="collection_title">
+           {{ section.settings.title_1 | escape }}
+         </a>
+         {% if section.settings.text_1 != blank %}
+           <div class="description">{{ section.settings.text_1 }}</div>
+         {% endif %}
+         {% if section.settings.button_label_1 != blank %}
+           <a {% if section.settings.link != blank %}href="{{ section.settings.link_1 }}"{% endif %} class="button blue">
+             {{ section.settings.button_label_1 }}
+           </a>
+         {% endif %}
+       </div>
+       
+     </div>
+   </div>
+   <div class="featured-link--half has-padding one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole" style="background: {{section.settings.color_2}}; ">
+     
+     <div class="info text-align--left">
+       <div class="icon">
+         {{ section.settings.icon_2 }}
+       </div>
+       <div class="detail">
+         <a {% if section.settings.link != blank %}href="{{ section.settings.link_2 }}"{% endif %} class="collection_title">
+           {{ section.settings.title_2 | escape }}
+         </a>
+         {% if section.settings.text_2 != blank %}
+           <div class="description">{{ section.settings.text_2 }}</div>
+         {% endif %}
+         {% if section.settings.button_label_2 != blank %}
+           <a {% if section.settings.link != blank %}href="{{ section.settings.link_2 }}"{% endif %} class="button pink">
+             {{ section.settings.button_label_2 }}
+           </a>
+         {% endif %}
+       </div>
+     </div>
+   </div>
+ </div>
+</section>
+{% include 'include-divider', type: 'section' %}
+{% if block.settings.wide_display == false %}
+ <style>
+   #shopify-section-{{ section.id }} .featured-link--section {
+     margin-bottom: 20px;
+   }
+   @media only screen and (max-width: 480px) {
+     #shopify-section-{{ section.id }} .featured-link--section {
+       margin-bottom: 10%;
+     }
+   }
+ </style>
 {% endif %}
+
 
 {% schema %}
   {
@@ -51,38 +154,145 @@
     "class": "shopify-section--contact-section",
     "settings": [
       {
-        "type": "checkbox",
-        "id": "wide_display",
-        "label": "Wide display",
-        "default": true
+        "type": "header",
+        "content": "Description"
+      },
+      {
+        "type": "select",
+        "id": "testimonial_text_animation",
+        "label": "Text animation",
+        "default": "fadeInDown",
+        "options": [
+          {
+            "value": "",
+            "label": "None"
+          },
+          {
+            "value": "fadeIn",
+            "label": "Fade In"
+          },
+          {
+            "value": "fadeInUp",
+            "label": "Fade Up"
+          },
+          {
+            "value": "fadeInDown",
+            "label": "Fade Down"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "testimonial_speed",
+        "label": "Change testimonials every",
+        "min": 0,
+        "max": 12,
+        "step": 1,
+        "default": 6,
+        "unit": "sec"
+      },
+      {
+        "type": "header",
+        "content": "content"
+      },
+      {
+        "type": "text",
+        "id": "email",
+        "label": "Email",
+        "default": "Customerservice@tlcdirect.org"
+      },
+      {
+        "type": "text",
+        "id": "fax",
+        "label": "Fax",
+        "default": "1-800-279-2018"
+      },
+      {
+        "type": "text",
+        "id": "phone",
+        "label": "Phone",
+        "default": "1-800-850-9445"
+      },
+      {
+        "type": "header",
+        "content": "Form"
       },
       {
         "type": "checkbox",
-        "id": "image_darken",
-        "label": "Darken banner image",
-        "default": false
+        "id": "wide_display",
+        "label": "Wide display"
+      },
+      {
+        "type": "select",
+        "id": "frontpage_text_align",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "frontpage_image_position",
+        "label": "Image position",
+        "default": "row",
+        "options": [
+          {
+            "value": "row",
+            "label": "Left"
+          },
+          {
+            "value": "row-reverse",
+            "label": "Right"
+          }
+        ]
       },
       {
         "type": "image_picker",
         "id": "image",
         "label": "Image",
-        "info": "1800 x 800px recommended"
+        "info": "1024 x 1024px recommended"
+      },
+      {
+        "type": "select",
+        "id": "image_crop",
+        "label": "Image cropping",
+        "default": "none",
+        "info": "Only applied when text area is taller than image.",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
       },
       {
         "type": "text",
         "id": "contact_heading",
         "label": "Heading",
-        "default": "Get in touch"
-      },
-      {
-        "type": "text",
-        "id": "contact_subheading",
-        "label": "Subheading",
-        "default": "Subheading"
-      },
-      {
-        "type": "header",
-        "content": "Form"
+        "default": "How can we help you?"
       },
       {
         "type": "richtext",
@@ -90,96 +300,158 @@
         "label": "Text"
       },
       {
-          "type": "header",
-          "content": "Map"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_map",
-        "label": "Show map",
-        "default": false
-      },
-      {
-        "type": "checkbox",
-        "id": "map_wide_display",
-        "label": "Wide display",
-        "default": true
-      },
-      {
-        "type": "text",
-        "id": "map_address",
-        "label": "Address",
-        "info": "Google Maps will find the exact location"
-      },
-      {
-        "type": "range",
-        "id": "map_height",
-        "min": 300,
-        "max": 600,
-        "step": 10,
-        "unit": "px",
-        "label": "Map height",
-        "default": 400
-      },
-      {
-        "type": "range",
-        "id": "zoom_level",
-        "min": 1,
-        "max": 20,
-        "step": 1,
-        "unit": "x",
-        "label": "Map zoom level",
-        "default": 16
-      },
-      {
-        "type": "image_picker",
-        "id": "map_image",
-        "label": "Image",
-        "info": "Displayed when map isn't loaded"
+        "type": "header",
+        "content": "Text column content"
       },
       {
         "type": "header",
-        "content": "API key"
+        "content": "content"
+      },
+      {
+        "type": "html",
+        "id": "icon_1",
+        "label": "Icon"
       },
       {
         "type": "text",
-        "id": "api_key",
-        "label": "Google Maps API key",
-        "info": "You’ll need to [register a Google Maps API Key](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) to display the map"
+        "id": "title_1",
+        "label": "Heading",
+        "default": "Your headline"
+      },
+      {
+        "type": "richtext",
+        "id": "text_1",
+        "label": "Text",
+        "default": "<p>Promotion description appears here.</p>"
+      },
+      {
+        "type": "url",
+        "id": "link_1",
+        "label": "Link"
+      },
+      {
+        "type": "text",
+        "id": "button_label_1",
+        "label": "Button label",
+        "default": "View all"
+      },
+      {
+        "type": "color",
+        "id": "color_1",
+        "label": "Background color"
+      },
+      {
+        "type": "header",
+        "content": "content"
+      },
+      {
+        "type": "html",
+        "id": "icon_2",
+        "label": "Icon"
+      },
+      {
+        "type": "text",
+        "id": "title_2",
+        "label": "Heading",
+        "default": "Your headline"
+      },
+      {
+        "type": "richtext",
+        "id": "text_2",
+        "label": "Text",
+        "default": "<p>Promotion description appears here.</p>"
+      },
+      {
+        "type": "url",
+        "id": "link_2",
+        "label": "Link"
+      },
+      {
+        "type": "text",
+        "id": "button_label_2",
+        "label": "Button label",
+        "default": "View all"
+      },
+      {
+        "type": "color",
+        "id": "color_2",
+        "label": "Background color"
+      },
+      {
+        "type": "header",
+        "content": "divider"
+      },
+      {
+        "type": "paragraph",
+        "content": "Add spacing in between your sections by using a divider."
+      },
+      {
+        "type": "range",
+        "id": "divider_spacing",
+        "min": 0,
+        "max": 30,
+        "step": 5,
+        "unit": "px",
+        "label": "Space",
+        "default": 20
       },
       {
         "type": "checkbox",
-        "id": "show_pin",
-        "label": "Show pin",
-        "info": "Requires use of API key",
-        "default": true
-      },
+        "id": "divider_border",
+        "label": "Show border",
+        "default": false
+      }
+    ],
+    "blocks": [
       {
-        "type": "select",
-        "id": "map_style",
-        "label": "Map color scheme",
-        "info": "Requires use of API key",
-        "default": "default",
-        "options": [
+        "type": "image",
+        "name": "Image",
+        "settings": [
           {
-            "value": "default",
-            "label": "Default"
+            "type": "richtext",
+            "id": "testimonial",
+            "label": "Testimonial",
+            "default": "<p>Include some of your favorite customer quotes and feedback here as social proof, to build credibility and trust for your services and products.</p>"
           },
           {
-            "value": "aubergine",
-            "label": "Aubergine"
+            "type": "select",
+            "id": "text_position",
+            "label": "Text position",
+            "default": "center",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
           },
           {
-            "value": "night",
-            "label": "Night"
-          },
-          {
-            "value": "retro",
-            "label": "Retro"
-          },
-          {
-            "value": "silver",
-            "label": "Silver"
+            "type": "select",
+            "id": "text_align",
+            "label": "Text alignment",
+            "default": "center",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
           }
         ]
       }

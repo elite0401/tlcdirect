@@ -1,0 +1,215 @@
+<header>
+    {% include 'page-banner' %}
+</header>
+{% paginate customer.orders by 20 %}
+  <section class="section">
+    <a name="pagecontent" id="pagecontent"></a>
+    
+    <div class="container has-padding-top has-padding-bottom">
+      <div class="one-whole column">
+        <div class="feature_divider"></div>
+      </div>
+
+      <aside class="one-third column medium-down--one-whole account-sidebar">
+        <h4 class="name">
+          <a href="{{ routes.account_url }}" title="{{ 'layout.customer.my_account' | t }}">{{ customer.name }}</a>
+        </h4>
+
+        <h4>{{ 'customer.account.dashboard' | t }}</h4>
+        <h4>{{ 'customer.account.order_history' | t }}</h4>
+        <h4>{{ 'customer.account.address' | t }}</h4>
+        <h4>{{ 'customer.account.wish_list' | t }}</h4>
+        <h4>{{ 'customer.account.reward' | t }}</h4>
+        <h4>{{ 'customer.account.logout' | t }}</h4>
+      </aside>
+
+      <main class="two-thirds columns medium-down--one-whole account-main">
+        <h4>{{ 'customer.orders.title' | t }}</h4>
+
+        {% if customer.orders.size != 0 %}
+          <table id="customer-orders" class="collapsible-table">
+            <thead>
+              <tr>
+                <th>{{ 'customer.orders.order_number' | t }}</th>
+                <th>{{ 'customer.orders.date' | t }}</th>
+                <th>{{ 'customer.orders.payment_status' | t }}</th>
+                <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                <th>{{ 'customer.orders.total' | t }}</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for order in customer.orders %}
+                <tr class="{% cycle 'odd', 'even' %} {% if order.cancelled %}cancelled_order{% endif %}">
+                  <td data-label="{{ 'customer.orders.order_number' | t }}">{{ order.name | link_to: order.customer_url }}</td>
+                  <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: "month_day_year" }}</td>
+                  <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                  <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+                  <td data-label="{{ 'customer.orders.total' | t }}">
+                    <span class="money">{% render 'price-element', price: order.total_price %}</span>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>{{ 'customer.orders.none' | t }}</p>
+        {% endif %}
+
+        {% render 'pagination', paginate: paginate %}
+      </main>
+    </div>
+  </section>
+{% endpaginate %}
+
+{% schema %}
+{
+    "name": "Account section",
+    "class": "shopify-section--account-template",
+    "settings": [
+        {
+            "type": "header",
+            "content": "banner"
+        },
+        {
+            "type": "checkbox",
+            "id": "wide_display",
+            "label": "Wide display",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Banner image"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Shipping Information"
+        },
+        {
+            "type": "checkbox",
+            "id": "uppercase",
+            "label": "Uppercase"
+        },
+        {
+            "type": "checkbox",
+            "id": "caption_background",
+            "label": "Display solid text background",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "caption_background_transparency",
+            "label": "Enable background transparency"
+        },
+        {
+            "type": "text",
+            "id": "button1",
+            "label": "First button label"
+        },
+        {
+            "type": "url",
+            "id": "button1_link",
+            "label": "First button link"
+        },
+        {
+            "type": "checkbox",
+            "id": "button1_highlight",
+            "label": "Highlight first button"
+        },
+        {
+            "type": "text",
+            "id": "button2",
+            "label": "Second button label"
+        },
+        {
+            "type": "url",
+            "id": "button2_link",
+            "label": "Second button link"
+        },
+        {
+            "type": "checkbox",
+            "id": "button2_highlight",
+            "label": "Highlight second button"
+        },
+        {
+            "type": "select",
+            "id": "text_position",
+            "label": "Text position",
+            "options": [
+                {
+                "value": "left",
+                "label": "Left"
+                },
+                {
+                "value": "center",
+                "label": "Center"
+                },
+                {
+                "value": "right",
+                "label": "Right"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text alignment",
+            "options": [
+                {
+                "value": "left",
+                "label": "Left"
+                },
+                {
+                "value": "center",
+                "label": "Center"
+                },
+                {
+                "value": "right",
+                "label": "Right"
+                }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "Mobile"
+            },
+            {
+            "type": "select",
+            "id": "mobile_image_crop",
+            "label": "Image cropping",
+            "options": [
+                {
+                "value": "none",
+                "label": "None"
+                },
+                {
+                "value": "left",
+                "label": "Left"
+                },
+                {
+                "value": "center",
+                "label": "Center"
+                },
+                {
+                "value": "right",
+                "label": "Right"
+                }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "id": "mobile_text_below_image",
+            "label": "Show text below image",
+            "default": true
+        },
+        {
+            "type": "color",
+            "id": "mobile_text_color",
+            "label": "Text"
+        }
+    ]
+}
+{% endschema %}

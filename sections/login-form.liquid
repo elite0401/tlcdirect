@@ -1,0 +1,168 @@
+<section class="section is-width-wide has-no-side-gutter">
+    <a name="pagecontent" id="pagecontent"></a>
+    <div class="container has-no-side-gutter">
+      <div class="featured-link--half one-half column image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole">
+        <div class="featured-link--wrap">
+          <a>
+            {% if section.settings.image != blank %}
+              {% render 'image-element',
+                      image: section.settings.image,
+                      alt: section.settings.image.alt
+              %}
+            {% else %}
+              {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+              {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+            {% endif %}
+          </a>
+        </div>
+      </div>
+      <div class="featured-link--half one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
+        <div class="info text-align--{{ section.settings.frontpage_text_align }}">
+          <div class="one-whole column">
+            <div id="customer">
+              <div class="heading">
+                <h3 class="text-center uppercase">{{section.settings.title}}</h3>
+                <div class="feature_divider"></div>
+              </div>
+              <div id="login_form">
+                {% form 'customer_login' %}
+                  {{ form.errors | default_errors }}
+          
+                  <label for="customer_email" class="login">{{ 'customer.login.email' | t }}</label>
+                  <input type="email" value="" name="customer[email]" id="customer_email" size="30"  autocorrect="off" autocapitalize="off" tabindex="1" />
+          
+                  {% if form.password_needed %}
+                    {% comment %}
+                    Customer Account Login
+                    {% endcomment %}
+          
+                    <small class="right"><a href="#" class="captalize underline" onclick="showRecoverPasswordForm()">{{ 'customer.login.forgot_password' | t }}</a></small>
+                    <label for="customer_password" class="login">{{ 'customer.login.password' | t }}</label>
+                    <input type="password" value="" name="customer[password]" id="customer_password" class="large password" size="16" tabindex="2" />
+                  {% endif %}
+          
+                  <input class="button full blue action_button" type="submit" value="{{ 'customer.login.sign_in' | t }}" style="margin-bottom: 5px !important" tabindex="3" />
+          
+                  {% unless shop.checkout.guest_login %}
+                    <p class="flex is-align-center is-justify-space-between" style="padding-top: 10px;">{{ 'customer.login.new_customer_label' | t }} <a class="captalize underline" href="{{ routes.account_register_url }}" id="customer_register_link">{{ 'customer.login.sign_up_html' | t }}</a></p>
+                  {% endunless %}
+                {% endform %}
+          
+                <div class="large--right">
+                  {% if shop.checkout.guest_login %}
+                    <span class="or"> {{ 'customer.login.or' | t }} </span>
+          
+                    {% form 'guest_login' %}
+                      <input class="guest_button" type="submit" value="{{ 'customer.login.guest_title_html' | t }}" />
+                    {% endform %}
+                  {% endif %}
+                </div>
+              </div>
+          
+              <div id="recover-password" style="display: none;">
+                <h4>{{ 'customer.recover_password.title' | t }}</h4>
+          
+                {% form 'recover_customer_password' %}
+                  {{ form.errors | default_errors }}
+          
+                  {% if form.posted_successfully? %}
+                    {%- assign reset_success = true -%}
+                  {% endif %}
+          
+                  {% if reset_success %}
+                    <p>
+                      <em class="note">{{ 'customer.recover_password.success' | t }}</em>
+                    </p>
+                  {% else %}
+                    <div id="recover_email">
+                      <label for="email">{{ 'customer.recover_password.email' | t }}</label>
+                      <input type="email" value="" size="30" name="email" id="recover-email" autocorrect="off" autocapitalize="off" />
+                    </div>
+          
+                    <p>
+                      {{ 'customer.recover_password.subtext' | t }}
+                    </p>
+          
+                    <div class="action_bottom">
+                      <input class="button full blue action_button" type="submit" value="{{ 'customer.recover_password.submit' | t }}" />
+                      <span class="note">{{ 'customer.recover_password.or' | t }} <a href="#" class="captalize underline" onclick="hideRecoverPasswordForm()">{{ 'customer.recover_password.cancel' | t }}</a></span>
+                    </div>
+                  {% endif %}
+                {% endform %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+  
+  <script type="text/javascript">
+    function showRecoverPasswordForm() {
+      document.getElementById('recover-password').style.display = 'block';
+      document.getElementById('login_form').style.display='none';
+      return false;
+    }
+  
+    function hideRecoverPasswordForm() {
+      document.getElementById('recover-password').style.display = 'none';
+      document.getElementById('login_form').style.display = 'block';
+      return false;
+    }
+  
+    if (window.location.hash == '#recover') {
+      showRecoverPasswordForm()
+    }
+  
+    // reset_success is only true when the reset form is
+    {% if reset_success %}
+      hideRecoverPasswordForm();
+    {% endif %}
+  </script>
+  
+  
+  {% schema %}
+    {
+      "name": "Login",
+      "class": "shopify-section--registration-form",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "select",
+          "id": "frontpage_text_align",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  {% endschema %}
+  

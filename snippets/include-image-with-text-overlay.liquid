@@ -82,31 +82,91 @@
     {% unless pretext == blank and title == blank and subtitle == blank and button1 == blank and button2 == blank %}
       <div class="position-{{ object.settings.text_position }} caption js-caption caption--below-{{ object.settings.mobile_text_below_image }}">
         <div class="caption-content caption-background-{{ object.settings.caption_background }} caption-transparency-{{ object.settings.caption_background_transparency }} align-{{ object.settings.text_align }}">
-          {% if pretext != blank %}
-            <div class="pretext">
-              {{ pretext }}
+          {% assign uppercase = '' %}
+          {% if object.settings.uppercase %}
+            {% assign uppercase = 'uppercase' %}
+          {% endif %}
+          {% if object.settings.style %}
+            <div class="heading flex wrapper">
+              <div class="titles">
+                {% if pretext != blank %}
+                  <div class="pretext {{uppercase}}">
+                    {{ pretext }}
+                  </div>
+                {% endif %}
+                {% if title != blank %}
+                  <h1 class="headline {{uppercase}}">
+                    {{ title }}
+                  </h1>
+                {% endif %}
+                {% if subtitle != blank %}
+                  <div class="subtitle">
+                    {{ subtitle }}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="buttons">
+                {% if button1 != blank %}
+                  <a {% if button1_link != blank %}href="{{ button1_link }}"{% endif %} class="action_button first_button highlight-{{ button1_highlight }}">
+                    {{ button1 }}
+                  </a>
+                {% endif %}
+                {% if button2 != blank %}
+                  <a {% if button2_link != blank %}href="{{ button2_link }}"{% endif %} class="action_button second_button highlight-{{ button2_highlight }}">
+                    {{ button2 }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+            {% if section.blocks.size > 0 %}
+            <div class="thumbnails">
+              {% for block in section.blocks %}
+                <div class="thumbnail">
+                  {% include 'image-element' with 
+                    image: block.settings.image,
+                    alt: block.settings.title
+                  %}
+                  <p class="detail center">{{block.settings.title}}</p>
+                </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            
+          {% else %}
+            <div class="heading">
+              {% if pretext != blank %}
+                <div class="pretext {{uppercase}}">
+                  {{ pretext }}
+                </div>
+              {% endif %}
+              {% if title != blank %}
+                <h1 class="headline {{uppercase}}">
+                  {{ title }}
+                </h1>
+              {% endif %}
+              {% if subtitle != blank %}
+                <div class="subtitle">
+                  {{ subtitle }}
+                </div>
+              {% endif %}
+              {% if button1 != blank %}
+                <a {% if button1_link != blank %}href="{{ button1_link }}"{% endif %} class="action_button first_button highlight-{{ button1_highlight }}">
+                  {{ button1 }}
+                </a>
+              {% endif %}
+              {% if button2 != blank %}
+                <a {% if button2_link != blank %}href="{{ button2_link }}"{% endif %} class="action_button second_button highlight-{{ button2_highlight }}">
+                  {{ button2 }}
+                </a>
+              {% endif %}
+            </div>
+            <div class="thumbnails">
+              {% for item in collection %}
+                
+              {% endfor %}
             </div>
           {% endif %}
-          {% if title != blank %}
-            <h1 class="headline">
-              {{ title }}
-            </h1>
-          {% endif %}
-          {% if subtitle != blank %}
-            <div class="subtitle">
-              {{ subtitle }}
-            </div>
-          {% endif %}
-          {% if button1 != blank %}
-            <a {% if button1_link != blank %}href="{{ button1_link }}"{% endif %} class="action_button first_button highlight-{{ button1_highlight }}">
-              {{ button1 }}
-            </a>
-          {% endif %}
-          {% if button2 != blank %}
-            <a {% if button2_link != blank %}href="{{ button2_link }}"{% endif %} class="action_button second_button highlight-{{ button2_highlight }}">
-              {{ button2 }}
-            </a>
-          {% endif %}
+          
         </div>
       </div>
     {% endunless %}

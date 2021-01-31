@@ -1,6 +1,49 @@
-$('.promotion-slider').flickity({
+$(document).ready(function() {
+  $('.promotion-slider').flickity({
     pageDots: true,
     imagesLoaded: true,
     arrowShape: arrowSize,
-    lazyLoad: 2
+    lazyLoad: 2,
+    wrapAround: true
   });
+
+  $('.image-text-slider').flickity({
+      pageDots: false,
+      imagesLoaded: true,
+      arrowShape: arrowSize,
+      lazyLoad: 2,
+      cellAlign: 'left',
+      wrapAround: true,
+      adaptiveHeight: true
+  });
+
+  if ($(window).width() < 768) {
+    $('.featured-collection-slider').flickity({
+      pageDots: true,
+      imagesLoaded: true,
+      arrowShape: arrowSize,
+      lazyLoad: 2,
+      cellAlign: 'left',
+      wrapAround: true
+    });
+  }
+
+  $('.checkbox').click(function () {
+    var checkBoxes = $(this).find('input');
+    checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+  });
+
+  $('#create_customer .action_bottom .button').on('click', function (e) {
+    e.preventDefault();
+    var password = $('input.password').val();
+    var confirm = $('input.confirm').val();
+    if (password == confirm) {
+      $('#create_customer').submit();
+    } else {
+      var error = `<div class="errors"><ul><li>Please confirm your password.</li></ul></div>`;
+      $('div#first_name').before(error);
+    }
+  })
+
+});
+

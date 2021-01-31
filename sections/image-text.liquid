@@ -23,20 +23,25 @@
 
 {% comment %} Section specific CSS {% endcomment %}
 {% style %}
-  {% render 'css-loop',
-          css: custom_css,
-          id: id
-  %}
+  {{custom_css}}
 {% endstyle %}
-
+{% assign status = false %}
+{% for block in section.blocks %}
+    {% if block.type == 'collection' %}
+        {% assign status = true %}
+    {% endif %}
+{% endfor %}
 <section class="section {{ css_class }}
           {% if object.settings.wide_display == false %}
           is-width-standard
           {% else %}
           is-width-wide has-no-side-gutter
           {% endif %}
-          {% if object.settings.featured_links_per_row == '2' %}
+          {% if object.settings.featured_links_per_row == '2'%}
           is-flex is-flex-wrap
+          {% endif %}
+          {% if object.settings.carousel == true %}
+            image-text-slider
           {% endif %}
           ">
       {% if blocks.size > 0 %}
@@ -45,8 +50,12 @@
           <div class="container
           image-with-text-container
           section-{{ forloop.index }}
-          featured_collections
-          {% if object.settings.featured_links_per_row == '1' %}
+          featured_collections 
+          {% if object.settings.carousel == true %}
+            carousel-cell ten-twelfths medium-down--one-whole 
+          {% endif %}
+          container--{{ block.id }}
+          {% if object.settings.featured_links_per_row == '1' and object.settings.carousel == false %}
             {% if object.settings.frontpage_image_position == 'row' %}
             is-flex-{% cycle 'row', 'row-reverse' %}
             {% else %}
@@ -54,13 +63,17 @@
             {% endif %}
           {% elsif object.settings.featured_links_per_row == '2' %}
             one-half column medium-down--one-whole is-flex-{{ object.settings.frontpage_image_position }} has-no-side-gutter
-          {% endif %}" {{ block.shopify_attributes }}>
+          {% endif %}" {{ block.shopify_attributes }} >
 
             {% comment %} Content settings {% endcomment %}
             {%- assign image = block.settings.image -%}
             {% comment %} End content settings {% endcomment %}
-
-            <div class="featured-link--half one-half column image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
+            {% if object.settings.carousel == true %}
+              {% assign cls = 'three-fifths' %}
+            {% else %}
+              {% assign cls = 'one-half' %}
+            {% endif %}
+            <div class="featured-link--half {{cls}} column image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
               <div class="featured-link--wrap">
                 <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
                   {% if image != blank %}
@@ -76,17 +89,33 @@
                 </a>
               </div>
             </div>
-            <div class="featured-link--half one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole block--{{ block.id }}">
+            {% if object.settings.carousel == true %}
+              {% assign cls = 'two-fifths' %}
+            {% else %}
+              {% assign cls = 'one-half' %}
+            {% endif %}
+            <div class="featured-link--half {{cls}} {% if status %}medium-down--hide{% endif %} column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole block--{{ block.id }}">
               <div class="info text-align--{{ object.settings.frontpage_text_align }}">
+                {% if block.settings.icon != blank and block.settings.icon_position == 'top' %}
+                  {{ block.settings.icon }}
+                {% endif %}
                 <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
                   {{ block.settings.title | escape }}
                 </a>
                 {% if block.settings.text != blank %}
                   <div class="description">{{ block.settings.text }}</div>
                 {% endif %}
-                {% if block.settings.button_label != blank %}
-                  <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="button">
-                    {{ block.settings.button_label }}
+                {% if block.settings.icon != blank and block.settings.icon_position == 'bottom' %}
+                  {{ block.settings.icon }}
+                {% endif %}
+                {% if block.settings.button_primary_label != blank %}
+                  <a {% if block.settings.link_primary != blank %}href="{{ block.settings.link_primary }}"{% endif %} class="button blue">
+                    {{ block.settings.button_primary_label }}
+                  </a>
+                {% endif %}
+                {% if block.settings.button_second_label != blank %}
+                  <a {% if block.settings.link_second != blank %}href="{{ block.settings.link_second }}"{% endif %} class="button pink">
+                    {{ block.settings.button_second_label }}
                   </a>
                 {% endif %}
               </div>
@@ -94,26 +123,85 @@
           </div>
           {% endif %}
         {% endfor %}
-        <div class="container collection-blocks">
-          {% for block in section.blocks %}
-            {% if block.type == 'collection' %}
-              <div class="one-fifth column is-align-center medium-down--one-whole">
-                {% assign collection = collections[block.settings.collection] %}
-                <div class="collection-content">
-                  <a href="{{collection.url}}">
-                    <div class="image">
-                      <img src="{{block.settings.image | img_url: '768x'}}">
-                    </div>
-                    <div class="detail">
-                      <p>{{collection.title}}</p>
-                    </div>
-                  </a>
-                </div>
-              </div>
+        {% if status %}
+          <div class="section featured-collection-slider container collection-blocks">
+            {% for block in section.blocks %}
+              {% if block.type == 'collection' %}
+                <div class="one-fifth column carousel-cell is-align-center">
+                  {% assign collection = collections[block.settings.collection] %}
+                  <div class="collection-content">
+                    <a href="{{collection.url}}">
+                      <div class="image">
+                        {% include 'image-element' with
+                          image: block.settings.image,
+                          alt: collection.title
+                        %}
+                      </div>
+                      <div class="detail center">
+                        <p>{{collection.title}}</p>
+                      </div>
+                    </a>
+                  </div>
+                </div> 
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% if status %}
+        {% for block in blocks %}
+          {% if block.type == 'image' %}
+          <div class="container
+          image-with-text-container
+          section-{{ forloop.index }}
+          featured_collections 
+          {% if object.settings.carousel == true %}
+            carousel-cell ten-twelfths
+          {% endif %}
+          container--{{ block.id }}
+          {% if object.settings.featured_links_per_row == '1' and object.settings.carousel == false %}
+            {% if object.settings.frontpage_image_position == 'row' %}
+            is-flex-{% cycle 'row', 'row-reverse' %}
+            {% else %}
+            is-flex-{% cycle 'row-reverse', 'row' %}
             {% endif %}
-          {% endfor %}
-          
-        </div>
+          {% elsif object.settings.featured_links_per_row == '2' %}
+            one-half column medium-down--one-whole is-flex-{{ object.settings.frontpage_image_position }} has-no-side-gutter
+          {% endif %}" {{ block.shopify_attributes }} >
+
+            <div class="featured-link--half hide medium-down--visible column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
+              <div class="info text-align--{{ object.settings.frontpage_text_align }}">
+                {% if block.settings.icon != blank and block.settings.icon_position == 'top' %}
+                  {{ block.settings.icon }}
+                {% endif %}
+                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
+                  {{ block.settings.title | escape }}
+                </a>
+                {% if block.settings.text != blank %}
+                  <div class="description">{{ block.settings.text }}</div>
+                {% endif %}
+                {% if block.settings.icon != blank and block.settings.icon_position == 'bottom' %}
+                  {{ block.settings.icon }}
+                {% endif %}
+                {% if block.settings.button_primary_label != blank %}
+                  <a {% if block.settings.link_primary != blank %}href="{{ block.settings.link_primary }}"{% endif %} class="button blue">
+                    {{ block.settings.button_primary_label }}
+                  </a>
+                {% endif %}
+                {% if block.settings.button_second_label != blank %}
+                  <a {% if block.settings.link_second != blank %}href="{{ block.settings.link_second }}"{% endif %} class="button pink">
+                    {{ block.settings.button_second_label }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% if section.settings.url != blank%}
+          <a href="{{section.settings.url}}" class="button blue center caputalize light">view all</a>
+        {% endif %}
+        
       {% endif %}
 </section>
 
@@ -131,17 +219,6 @@
     .block--{{ block.id }} .collection_title,
     .block--{{ block.id }} p {
       color: {% if text_alpha != 0 %}{{ block.settings.text_color }}{% else %}{{ settings.headline_color }}{% endif %};
-    }
-
-    .block--{{ block.id }} a.button {
-      color: {% if text_alpha != 0 %}{{ block.settings.text_color }}{% else %}{{ settings.headline_color }}{% endif %};
-      border-color: {% if text_alpha != 0 %}{{ block.settings.text_color }}{% else %}{{ settings.headline_color }}{% endif %};
-    }
-
-    .block--{{ block.id }} a.button:hover {
-      color: {% if bg_alpha != 0 %}{{ block.settings.bg_color }}{% else %}{{ settings.shop_bg_color }}{% endif %};
-      border-color: {% if text_alpha != 0 %}{{ block.settings.text_color }}{% else %}{{ settings.headline_color }}{% endif %};
-      background-color: {% if text_alpha != 0 %}{{ block.settings.text_color }}{% else %}{{ settings.headline_color }}{% endif %};
     }
   {% endfor %}
 
@@ -178,6 +255,11 @@
       "id": "wide_display",
       "label": "Wide display",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel",
+      "label": "Carousel status"
     },
     {
       "type": "select",
@@ -231,6 +313,11 @@
           "label": "Right"
         }
       ]
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Link"
     },
     {
       "type": "header",
@@ -300,15 +387,47 @@
           "default": "<p>Promotion description appears here.</p>"
         },
         {
+          "type": "html",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "select",
+          "id": "icon_position",
+          "label": "Icon position",
+          "default": "top",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ]
+        },
+        {
           "type": "text",
-          "id": "button_label",
-          "label": "Button label",
+          "id": "button_primary_label",
+          "label": "First Button label",
           "default": "View all"
         },
         {
           "type": "url",
-          "id": "link",
-          "label": "Button link"
+          "id": "link_primary",
+          "label": "First Button link"
+        },
+        {
+          "type": "text",
+          "id": "button_second_label",
+          "label": "Second Button label",
+          "default": "View all"
+        },
+        {
+          "type": "url",
+          "id": "link_second",
+          "label": "Second Button link"
         },
         {
           "type": "header",

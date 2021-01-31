@@ -1,0 +1,56 @@
+
+{% if section.settings.title != blank %}
+    {% assign title = section.settings.title %}
+{% else %}
+    {% assign title = page.title %}
+{% endif %}
+{% if section.settings.uppercase %}
+    {% assign uppercase = 'uppercase' %}
+{% endif %}
+
+{%- assign button1 = section.settings.button1 -%}
+{%- assign button1_link = section.settings.button1_link -%}
+{%- assign button1_highlight = section.settings.button1_highlight -%}
+{%- assign button2 = section.settings.button2 -%}
+{%- assign button2_link = section.settings.button2_link -%}
+{%- assign button2_highlight = section.settings.button2_highlight -%}
+{% comment %} End content settings {% endcomment %}
+
+{% comment %} Mobile crop {% endcomment %}
+{%- assign mobile_crop = 'mobile-banner--crop-' | append: section.settings.mobile_image_crop -%}
+
+{% comment %} Is the color set to transparent? {% endcomment %}
+{%- assign mobile_text_alpha = section.settings.mobile_text_color | color_extract: 'alpha' -%}
+
+<div class="section banner {% if section.settings.wide_display == false %}is-width-standard{% else %}is-width-wide has-no-side-gutter{% endif %} full-width--{{ section.settings.wide_display }}">
+    {% if section.settings.image != blank %}
+        {% render 'image-element',
+            image: section.settings.image,
+            alt: image.alt,
+            stretch_width: true,
+            additional_classes: mobile_crop
+        %}
+    {% else %}
+
+    {% endif %}
+    
+    <div class="position-{{ section.settings.text_position }} caption js-caption caption--below-{{ section.settings.mobile_text_below_image }}">
+        <div class="caption-content caption-background-{{ section.settings.caption_background }} caption-transparency-{{ section.settings.caption_background_transparency }} align-{{ section.settings.text_align }}">
+            {% if title != blank %}
+                  <h1 class="headline {{uppercase}}" style="color: {{section.settings.mobile_text_color}};">
+                    {{ title }}
+                  </h1>
+            {% endif %}
+            {% if button1 != blank %}
+                <a {% if button1_link != blank %}href="{{ button1_link }}"{% endif %} class="action_button first_button highlight-{{ button1_highlight }}">
+                {{ button1 }}
+                </a>
+            {% endif %}
+            {% if button2 != blank %}
+                <a {% if button2_link != blank %}href="{{ button2_link }}"{% endif %} class="action_button second_button highlight-{{ button2_highlight }}">
+                {{ button2 }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>

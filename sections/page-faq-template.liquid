@@ -41,16 +41,7 @@
             {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
           {% endif %}
 
-          {% unless section.settings.button1_link != blank and section.settings.button2_link != blank %}
-            {% if section.settings.button1_link != blank %}
-              <a href="{{ section.settings.button1_link }}" class="banner-full-link">{{ section.settings.button1 }}</a>
-            {% endif %}
-
-            {% if section.settings.button2_link != blank %}
-              <a href="{{ section.settings.button2_link }}" class="banner-full-link">{{ section.settings.button2 }}</a>
-            {% endif %}
-          {% endunless %}
-
+          
           {% unless section.settings.pretext == blank and section.settings.title == blank and section.settings.subtitle == blank and section.settings.button1 == blank and section.settings.button2 == blank %}
             <div class="position-{{ section.settings.text_position }} caption js-caption">
               <div class="caption-content caption-background-{{ section.settings.caption_background }} caption-transparency-{{ section.settings.caption_background_transparency }} align-{{ section.settings.text_align }}">
@@ -62,20 +53,6 @@
 
                 {% if section.settings.title != blank %}
                   <h1 class="headline">{{ section.settings.title }}</h1>
-                {% endif %}
-
-                {% if section.settings.subtitle != blank %}
-                  <div class="subtitle">
-                    {{ section.settings.subtitle }}
-                  </div>
-                {% endif %}
-
-                {% if section.settings.button1 != blank %}
-                  <a {% if section.settings.button1_link != blank %}href="{{ section.settings.button1_link }}"{% endif %} class="action_button first_button highlight-{{ section.settings.button1_highlight }}">{{ section.settings.button1 }}</a>
-                {% endif %}
-
-                {% if section.settings.button2 != blank %}
-                  <a {% if section.settings.button2_link != blank %}href="{{ section.settings.button2_link }}"{% endif %} class="action_button second_button highlight-{{ section.settings.button2_highlight }}">{{ section.settings.button2 }}</a>
                 {% endif %}
               </div>
             </div>
@@ -90,7 +67,7 @@
   {% if section.settings.show_banner == blank %}
     <a name="pagecontent" id="pagecontent"></a>
   {% endif %}
-  <div class="container main content">
+  <div class="container main content is-justify-center">
     <div class="one-whole column page">
       {% unless section.settings.image != blank or section.settings.show_banner %}
         <h1>{{ page.title }}</h1>
@@ -99,7 +76,12 @@
 
       {% render 'page-multi-column', content: page.content %}
     </div>
-
+    {% if section.settings.subtitle != blank %}
+    <div class="alert one-whole column flex is-justify-center is-align-center gap has-padding">
+      {% include 'icon-pack' with icon:"exclamation" %}
+      {{ section.settings.subtitle }}
+    </div>
+    {% endif %}
     {% if section.blocks.size > 0 %}
       {% for block in section.blocks %}
         {% if block.type == 'image' %}
@@ -108,7 +90,7 @@
       {% endfor %}
     {% endif %}
 
-    <div class="{% if image == true %}one-half{% else %}one-whole{% endif %} column medium-down--one-whole faq faq__column-1">
+    <div class="two-thirds column medium-down--one-whole faq faq__column-1">
       {% if section.blocks.size > 0 %}
         <dl class="faqAccordion">
           {% for block in section.blocks %}
@@ -151,7 +133,7 @@
     {% endfor %}
   {% endif %}
 </section>
-
+{% include 'include-divider'%}
 {% schema %}
 {
   "name": "Page | faq",
@@ -194,18 +176,7 @@
     {
       "type": "richtext",
       "id": "subtitle",
-      "label": "Subheading"
-    },
-    {
-      "type": "checkbox",
-      "id": "caption_background",
-      "label": "Display solid text background",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "caption_background_transparency",
-      "label": "Enable background transparency"
+      "label": "page info"
     },
     {
       "type": "select",
@@ -246,34 +217,28 @@
       ]
     },
     {
-      "type": "text",
-      "id": "button1",
-      "label": "First button label"
+      "type": "header",
+      "content": "divider"
     },
     {
-      "type": "url",
-      "id": "button1_link",
-      "label": "First button link"
+      "type": "paragraph",
+      "content": "Add spacing in between your sections by using a divider."
     },
     {
-      "type": "checkbox",
-      "id": "button1_highlight",
-      "label": "Highlight first button"
-    },
-    {
-      "type": "text",
-      "id": "button2",
-      "label": "Second button label"
-    },
-    {
-      "type": "url",
-      "id": "button2_link",
-      "label": "Second button link"
+      "type": "range",
+      "id": "divider_spacing",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "label": "Space",
+      "default": 20
     },
     {
       "type": "checkbox",
-      "id": "button2_highlight",
-      "label": "Highlight second button"
+      "id": "divider_border",
+      "label": "Show border",
+      "default": false
     }
   ],
   "blocks": [

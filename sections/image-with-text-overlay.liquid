@@ -34,6 +34,16 @@
       },
       {
         "type": "checkbox",
+        "id": "uppercase",
+        "label": "Uppercase Title"
+      },
+      {
+        "type": "checkbox",
+        "id": "style",
+        "label": "Inline contents"
+      },
+      {
+        "type": "checkbox",
         "id": "caption_background",
         "label": "Display solid text background",
         "default": false
@@ -166,6 +176,24 @@
         "type": "textarea",
         "id": "custom_css",
         "label": "Custom CSS"
+      }
+    ],
+    "blocks":[
+      {
+        "type": "thumbnail",
+        "name": "Thumbnail",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "TItle"
+          }
+        ]
       }
     ],
     "presets": [

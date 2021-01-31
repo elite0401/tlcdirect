@@ -15,6 +15,7 @@
 {% comment %} Content settings {% endcomment %}
 {%- assign blog = blogs[object.settings.blog_widget_select] -%}
 {%- assign title = object.settings.title | escape -%}
+{% assign description = object.settings.description %}
 {% comment %} End content settings {% endcomment %}
 
 {% comment %} Advanced {% endcomment %}
@@ -31,12 +32,21 @@
 
 <section class="section {{ css_class }}">
   <div class="container">
-    {% if title != blank %}
-      <div class="one-whole column">
-        <h2 class="title center blog">{{ title }}</h2>
-        <div class="feature_divider"></div>
-      </div>
-    {% endif %}
+    <div class="heading one-whole column">
+      {% if title != blank %}
+        <div class="one-whole column">
+          <h1 class="title center blog">{{ title }}</h1>
+          <div class="feature_divider"></div>
+        </div>
+      {% endif %}
+
+      {% if description %}
+        <div class="one-whole column center">
+          {{description}}
+        </div>
+      {% endif %}
+    </div>
+    
 
     {% if blog != blank %}
       {% for article in blog.articles limit: object.settings.home_page_articles %}
@@ -53,6 +63,7 @@
           <h3 class="sub_title">
             <a href="{{ article.url }}">{{ article.title }}</a>
           </h3>
+          <p>{{article.content | truncate: 250}}</p>
           <p class="blog_meta">
             {% if object.settings.blog_author %}
               <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
@@ -104,7 +115,7 @@
           {% endif %}
 
           {% if object.settings.read_more_link %}
-            <a href="{{ article.url }}" {% if settings.read_more_style == 'button' %}class="action_button continue-button"{% endif %}>{{ 'blogs.general.continue_reading_html' | t }}</a>
+            <a href="{{ article.url }}" {% if settings.read_more_style == 'button' %}class="action_button continue-button"{% else %}class="continue-link"{% endif %}>{{ 'blogs.general.continue_reading_html' | t }}</a>
           {% endif %}
         </div>
       {% endfor %}

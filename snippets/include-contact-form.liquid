@@ -26,37 +26,17 @@
 {% endif %}
 
 <section class="section">
-  {% unless context == 'contact-template' %}
-    {% if contact_heading != blank %}
-      <div class="contact-form__heading">
-        <h2 class="title center">
-          {{ contact_heading }}
-        </h2>
-        <div class="feature_divider"></div>
-      </div>
-    {% endif %}
-  {% endunless %}
+  {% if contact_heading != blank %}
+    <div class="contact-form__heading">
+      <h3 class="title">
+        {{ contact_heading }}
+      </h3>
+      <div class="feature_divider"></div>
+    </div>
+  {% endif %}
 
   <div class="container contact-form contact-form-container contact-form__position--{{ contact_text_position }}">
-    <div class="one-half column medium-down--one-whole">
-      <div class="{% if contact_text_alignment == "center" %}center{% elsif contact_text_alignment == "right" %}align_right{% endif %}">
-        {% unless context == 'contact-template' %}
-          {% if contact_subheading != blank %}
-            <div class="contact-form__subheading">
-              <h3>{{ contact_subheading }}</h3>
-            </div>
-          {% endif %}
-        {% endunless %}
-
-        {% if contact_content != blank %}
-          <div class="contact-form__content">
-            {{ contact_content }}
-          </div>
-        {% endif %}
-      </div>
-    </div>
-
-    <div class="one-half column medium-down--one-whole">
+    <div class="one-whole column medium-down--one-whole">
       {% form 'contact', id: "form-contact", class: 'is-flex is-flex-wrap' %}
         {% if form.posted_successfully? %}
           <div class="contact__form-success">
@@ -127,12 +107,11 @@
                 {{ form.body }}
               {% endif %}
             </textarea>
-
-            <div class="contact-form__bottom-content">
+            <input type="submit" class="submit full action_button" value="{{ 'contact.form.send' | t }}" />
+            <div class="contact-form__bottom-content flex gap is-align-start">
+              {% include 'icon-pack' with icon: 'exclamation' %}
               {{ bottom_form_content }}
             </div>
-
-            <input type="submit" class="submit action_button" value="{{ 'contact.form.send' | t }}" />
           </div>
       {% endform %}
     </div>

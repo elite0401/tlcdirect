@@ -41,9 +41,10 @@
           {% for block in blocks %}
             {% comment %} Content settings {% endcomment %}
             {%- assign image = block.settings.image -%}
+            {%- assign mobile_image = block.settings.mobile_image -%}
             {% comment %} End content settings {% endcomment %}
 
-            {%- assign mobile_crop = 'mobile-banner--crop-' | append: block.settings.mobile_image_crop -%}
+
 
             <div class="gallery-cell slide-{{ forloop.index }}" {{ block.shopify_attributes }} data-block-id="{{ block.id }}">
               {% if image != blank %}
@@ -51,7 +52,13 @@
                         image: image,
                         alt: image.alt,
                         stretch_width: true,
-                        additional_classes: mobile_crop
+                        additional_classes: 'medium-down--hidden'
+                %}
+                {% render 'image-element',
+                        image: mobile_image,
+                        alt: mobile_image.alt,
+                        stretch_width: true,
+                        additional_classes: 'hide medium-down--visible'
                 %}
               {% else %}
                 {% capture i %}{% cycle "1", "2" %}{% endcapture %}
@@ -221,6 +228,11 @@
             "id": "image",
             "label": "Image",
             "info": "1600 x 1000px recommended"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile image"
           },
           {
             "type": "richtext",
