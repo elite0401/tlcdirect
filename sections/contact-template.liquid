@@ -14,7 +14,6 @@
   <div class="container content is-justify-center">
       <div class="one-half column medium-down--one-whole page">
         <h1 class="hero text-center">{{ page.title }}</h1>
-        <div class="feature_divider"></div>
       </div>
       <div class="one-whole column">
         <div id="testimonial-{{ section.id }}" class="testimonial-slideshow js-testimonial {% if section.settings.testimonial_text_animation != '' %}text-animation--true{% endif %} transparentBackground--{{ settings.slideshow_button_style }} full-width--{{ section.settings.wide_display }}" data-slider-id="testimonial-{{ section.id }}" data-slideshow-speed="{{ section.settings.testimonial_speed }}" data-slideshow-text-animation="{{ section.settings.testimonial_text_animation }}">
@@ -40,7 +39,7 @@
         <ul class="flex is-justify-space-around none is-align-center">
           <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'email' %} <a class="bold" href="mailto:{{section.settings.email}}">Email : {{section.settings.email}}</a></li>
           <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'fax' %} <a class="bold" href="fax:{{section.settings.fax}}">Fax : {{section.settings.fax}}</a></li>
-          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'phone_1' %} <a class="bold" href="phone:{{section.settings.phone}}">Phone: {{section.settings.phone}}</a></li>
+          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'phone' %} <a class="bold" href="phone:{{section.settings.phone}}">Phone: {{section.settings.phone}}</a></li>
         </ul>
       </div>
   </div>

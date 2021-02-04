@@ -22,13 +22,19 @@
 {% comment %} Is the color set to transparent? {% endcomment %}
 {%- assign mobile_text_alpha = section.settings.mobile_text_color | color_extract: 'alpha' -%}
 
-<div class="section banner {% if section.settings.wide_display == false %}is-width-standard{% else %}is-width-wide has-no-side-gutter{% endif %} full-width--{{ section.settings.wide_display }}">
+<div style="background: {{section.settings.bg_color}};" class="section banner {% if section.settings.wide_display == false %}is-width-standard{% else %}is-width-wide has-no-side-gutter{% endif %} full-width--{{ section.settings.wide_display }}">
     {% if section.settings.image != blank %}
         {% render 'image-element',
             image: section.settings.image,
             alt: image.alt,
             stretch_width: true,
-            additional_classes: mobile_crop
+            additional_classes: "medium-down--hide"
+        %}
+        {% render 'image-element',
+            image: section.settings.mobile_image,
+            alt: image.alt,
+            stretch_width: true,
+            additional_classes: "medium-down--show hide"
         %}
     {% else %}
 

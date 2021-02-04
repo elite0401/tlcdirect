@@ -68,16 +68,9 @@
   {% endif %}
 
   <div class="top-bar">
-    <a class="mobile_nav dropdown_link" data-dropdown-rel="mobile_menu" data-no-instant="true">
-      <div>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
-      <span class="menu_title">{{ 'layout.general.menu' | t }}</span>
-    </a>
+    <div class="side-icon">
+      {% include 'icon-pack' with icon: 'side-logo' %}
+    </div>
 
     <a href="{{ routes.root_url }}" title="{{ shop.name | escape }}" class="mobile_logo logo">
       {% if section.settings.logo_mobile != blank %}
@@ -85,18 +78,22 @@
       {% elsif section.settings.logo != blank %}
         <img src="{{ section.settings.logo | img_url: '410x' }}" alt="{{ shop.name | escape }}" />
       {% else %}
-        {{ shop.name }}
+        {{section.settings.mobile_logo_text}}
       {% endif %}
     </a>
 
     <div class="top-bar--right">
-      {% if section.settings.search_enabled %}
-        <a href="{{ routes.search_url }}" class="icon-search dropdown_link" title="{{ 'general.search.title' | t | escape }}" data-dropdown-rel="search"></a>
-      {% endif %}
-
+      <a class="mobile_nav dropdown_link" data-dropdown-rel="mobile_menu" data-no-instant="true">
+        <div>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </a>
       {% if section.settings.show_cart %}
         <div class="cart-container">
-          <a href="{{ routes.cart_url }}" class="{% if section.settings.cart_icon == "cart" %}icon-cart{% else %}icon-bag{% endif %} mini_cart dropdown_link" title="{{ 'layout.general.cart' | t | escape }}" data-no-instant> <span class="cart_count">{{ cart.item_count }}</span></a>
+          <a href="{{ routes.cart_url }}" title="{{ 'layout.general.cart' | t | escape }}" data-no-instant>{% include 'icon-pack' with icon: 'cart' %}</a>
         </div>
       {% endif %}
     </div>
@@ -205,7 +202,9 @@
       <ul class="menu">
         {% if section.settings.phone_number != blank %}
           <li>
-            We are here to help <a href="tel:{{ section.settings.phone_number | replace: ' ', '' | replace: '+', '' | replace: '-', '' }}">{{ section.settings.phone_number }}</a>
+            <div class="flex gap">
+              {% include 'icon-pack' with icon: 'phone' %} We are here to help <a href="tel:{{ section.settings.phone_number | replace: ' ', '' | replace: '+', '' | replace: '-', '' }}">{{ section.settings.phone_number }}</a>
+            </div>
           </li>
         {% endif %}
 
@@ -215,10 +214,10 @@
       <div class="top-bar--right-menu">
         <ul class="menu">
           <li>
-            <a href="#">{% include 'icon-pack' with icon: 'request-icon' %}Request a Catalog</a>
+            <a href="#" class="flex gap capitalize">{% include 'icon-pack' with icon: 'request-icon' %}Request a Catalog</a>
           </li>
           <li>
-            <a href="#">{% include 'icon-pack' with icon: 'account-icon' %}Account</a>
+            <a class="flex gap capitalize" href="{{ routes.account_url }}">{% include 'icon-pack' with icon: 'account-icon' %}Account</a>
           </li>
           {% if locale_selector or currency_selector %}
             <li class="localization-wrap">
@@ -231,18 +230,12 @@
               %}
             </li>
           {% endif %}
-
-          {% if shop.customer_accounts_enabled %}
-            <li>
-              <a href="{{ routes.account_url }}" class="icon-user" title="{{ 'layout.customer.my_account' | t }} {% if customer %}({{ customer.email }}){% endif %}"> <span>{% if customer %}{{ 'layout.customer.my_account' | t }}{% else %}{{ 'layout.customer.log_in' | t }}{% endif %}</span></a>
-            </li>
-          {% endif %}
         </ul>
 
         {% if section.settings.show_cart %}
           <div class="cart-container">
-            <a href="{{ routes.cart_url }}" class="mini_cart dropdown_link" data-no-instant>
-              {% include 'icon-pack' with icon:'cart' %} <span>Cart</span>
+            <a href="{{ routes.cart_url }}" class="mini_cart dropdown_link flex gap" data-no-instant>
+              {% include 'icon-pack' with icon:'cart' %} <span class="capitalize">Cart</span>
             </a>
           </div>
         {% endif %}
@@ -254,15 +247,20 @@
         {% capture logo %}
           <div class="header__logo {% if section.settings.logo_home == blank and section.settings.logo == blank %}logo--text{% else %}logo--image{% endif %}">
             <a href="{{ routes.root_url }}" title="{{ shop.name }}">
-              {% if section.settings.logo_home != blank %}
-                <img src="{{ section.settings.logo_home | img_url: '410x' }}" class="secondary_logo" alt="{{ shop.name | escape }}" />
-              {% endif %}
-
-              {% if section.settings.logo != blank %}
-                <img src="{{ section.settings.logo | img_url: '410x' }}" class="primary_logo lazyload" alt="{{ shop.name | escape }}" />
-              {% else %}
-                <span class="header__logo-text">{{ shop.name }}</span>
-              {% endif %}
+              <div class="sticky_logo">
+                {% if section.settings.logo_home != blank %}
+                  <img src="{{ section.settings.logo_home | img_url: '410x' }}" class="secondary_logo" alt="{{ shop.name | escape }}" />
+                {% else %}
+                  {{ section.settings.secondary_logo_text }}
+                {% endif %}
+              </div>
+              <div class="logo">
+                {% if section.settings.logo != blank %}
+                  <img src="{{ section.settings.logo | img_url: '410x' }}" class="primary_logo lazyload" alt="{{ shop.name | escape }}" />
+                {% else %}
+                  {{section.settings.logo_text}}
+                {% endif %}
+              </div>
             </a>
           </div>
         {% endcapture %}
@@ -635,16 +633,31 @@
         "info": "400 x 200px recommended"
       },
       {
+        "type": "richtext",
+        "id": "logo_text",
+        "label": "Logo text"
+      },
+      {
         "type": "image_picker",
         "id": "logo_home",
         "label": "Secondary logo over content (optional)",
         "info": "400 x 200px recommended"
       },
       {
+        "type": "richtext",
+        "id": "secondary_logo_text",
+        "label": "Secondary Logo text"
+      },
+      {
         "type": "image_picker",
         "id": "logo_mobile",
         "label": "Mobile logo",
         "info": "100 x 50px recommended"
+      },
+      {
+        "type": "richtext",
+        "id": "mobile_logo_text",
+        "label": "Mobile Logo text"
       },
       {
         "type": "header",

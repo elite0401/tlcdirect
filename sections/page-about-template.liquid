@@ -3,153 +3,165 @@
 - Page template
 - Uses blocks
 {% endcomment %}
-
-<a name="pagecontent" id="pagecontent"></a>
-
-<div class="detail-sections">
-  {% if section.blocks.size > 0 %}
-    {% for block in section.blocks %}
-      <div {{ block.shopify_attributes }} class="block__{{ block.type }} block__{{ block.id }} {% if block.type == "image_with_text_overlay" and block.settings.wide_display %}under-menu{% elsif block.type == "featured_video" and block.settings.wide_display %}under-menu{% elsif block.type == "featured_collection" %}shopify-section--featured-collection{% endif %}">
-        {% if block.type == "image_with_text" %}
-          <!-- Image with text -->
-          <section class="section
-                    {% if block.settings.wide_display == false %}
-                    is-width-standard
-                    {% else %}
-                    is-width-wide has-no-side-gutter
-                    {% endif %}
-                    ">
-            <div class="container
-                        image-with-text-container
-                        featured_collections
-                        is-flex-{{ block.settings.frontpage_image_position }}
+<section>
+  <a name="pagecontent" id="pagecontent"></a>
+  <div class="container content page">
+    <div class="one-whole column">
+      <h1 class="hero center">{{ page.title }}</h1>
+    </div>
+    <div class="detail-sections">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          <div {{ block.shopify_attributes }} class="block__{{ block.type }} block__{{ block.id }} {% if block.type == "image_with_text_overlay" and block.settings.wide_display %}under-menu{% elsif block.type == "featured_video" and block.settings.wide_display %}under-menu{% elsif block.type == "featured_collection" %}shopify-section--featured-collection{% endif %}">
+            {% if block.type == "image_with_text" %}
+              <!-- Image with text -->
+              <section class="section
+                        {% if block.settings.wide_display == false %}
+                        is-width-standard
+                        {% else %}
+                        is-width-wide has-no-side-gutter
+                        {% endif %}
                         ">
-              <div class="featured-link--half one-half column image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
-                <div class="featured-link--wrap">
-                  <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
-                    {% if block.settings.image != blank %}
-                      {% render 'image-element',
-                              image: block.settings.image,
-                              alt: block.settings.image.alt
-                      %}
-                    {% else %}
-                      {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
-                      {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
-                    {% endif %}
-                  </a>
+                <div class="container
+                            image-with-text-container
+                            featured_collections
+                            is-flex-{{ block.settings.frontpage_image_position }}
+                            ">
+                  <div class="featured-link--half one-half column image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
+                    <div class="featured-link--wrap">
+                      <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
+                        {% if block.settings.image != blank %}
+                          {% render 'image-element',
+                                  image: block.settings.image,
+                                  alt: block.settings.image.alt,
+                                  additional_classes: "medium-down--hide"
+                          %}
+                          {% render 'image-element',
+                                  image: block.settings.mobile_image,
+                                  alt: block.settings.image.alt,
+                                  additional_classes: "medium-down--show hide"
+                          %}
+                        {% else %}
+                          {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                          {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+                        {% endif %}
+                      </a>
+                    </div>
+                  </div>
+                  <div class="featured-link--half one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
+                    <div class="info text-align--{{ block.settings.frontpage_text_align }}">
+                      <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
+                        {{ block.settings.title | escape }}
+                      </a>
+                      {% if block.settings.text != blank %}
+                        <div class="description">{{ block.settings.text }}</div>
+                      {% endif %}
+                      {% if block.settings.button_label != blank %}
+                        <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="button">
+                          {{ block.settings.button_label }}
+                        </a>
+                      {% endif %}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="featured-link--half one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
-                <div class="info text-align--{{ block.settings.frontpage_text_align }}">
-                  <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
-                    {{ block.settings.title | escape }}
-                  </a>
-                  {% if block.settings.text != blank %}
-                    <div class="description">{{ block.settings.text }}</div>
-                  {% endif %}
-                  {% if block.settings.button_label != blank %}
-                    <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="button">
-                      {{ block.settings.button_label }}
-                    </a>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {% if block.settings.wide_display == false %}
-            <style>
-              #shopify-section-{{ section.id }} .featured-link--section {
-                margin-bottom: 20px;
-              }
-              @media only screen and (max-width: 480px) {
-                #shopify-section-{{ section.id }} .featured-link--section {
-                  margin-bottom: 10%;
-                }
-              }
-            </style>
-          {% endif %}
-        {% elsif block.type == 'text_column' %}
-            <!-- Image with text -->
-            <section class="section
+              </section>
+    
               {% if block.settings.wide_display == false %}
-              is-width-standard has-no-side-gutter
-              {% else %}
-              is-width-wide has-no-side-gutter
-              {% endif %}
-              ">
-              <div class="container
-                          image-with-text-container
-                          featured_collections
-                          is-flex-{{ block.settings.frontpage_image_position }}
-                          ">
-                <div class="featured-link--half has-padding one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole" style="background: {{block.settings.color_1}};">
-                  
-                  <div class="info text-align--{{ block.settings.frontpage_text_align }}">
-                    <div class="icon">
-                      {{ block.settings.icon_1 }}
-                    </div>
-                    <div class="detail">
-                      <a {% if block.settings.link != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="collection_title">
-                        {{ block.settings.title_1 | escape }}
-                      </a>
-                      {% if block.settings.text_1 != blank %}
-                        <div class="description">{{ block.settings.text_1 }}</div>
-                      {% endif %}
-                      {% if block.settings.button_label_1 != blank %}
-                        <a {% if block.settings.link != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="button blue">
-                          {{ block.settings.button_label_1 }}
-                        </a>
-                      {% endif %}
-                    </div>
-                    
-                  </div>
-                </div>
-                <div class="featured-link--half has-padding one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole" style="background: {{block.settings.color_2}}; ">
-                  
-                  <div class="info text-align--{{ block.settings.frontpage_text_align }}">
-                    <div class="icon">
-                      {{ block.settings.icon_2 }}
-                    </div>
-                    <div class="detail">
-                      <a {% if block.settings.link != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="collection_title">
-                        {{ block.settings.title_2 | escape }}
-                      </a>
-                      {% if block.settings.text_2 != blank %}
-                        <div class="description">{{ block.settings.text_2 }}</div>
-                      {% endif %}
-                      {% if block.settings.button_label_2 != blank %}
-                        <a {% if block.settings.link != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="button pink">
-                          {{ block.settings.button_label_2 }}
-                        </a>
-                      {% endif %}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {% if block.settings.wide_display == false %}
-              <style>
-                #shopify-section-{{ section.id }} .featured-link--section {
-                  margin-bottom: 20px;
-                }
-                @media only screen and (max-width: 480px) {
+                <style>
                   #shopify-section-{{ section.id }} .featured-link--section {
-                    margin-bottom: 10%;
+                    margin-bottom: 20px;
                   }
-                }
-              </style>
+                  @media only screen and (max-width: 480px) {
+                    #shopify-section-{{ section.id }} .featured-link--section {
+                      margin-bottom: 10%;
+                    }
+                  }
+                </style>
+              {% endif %}
+            {% elsif block.type == 'text_column' %}
+                <!-- Image with text -->
+                <section class="section
+                  {% if block.settings.wide_display == false %}
+                  is-width-standard has-no-side-gutter
+                  {% else %}
+                  is-width-wide has-no-side-gutter
+                  {% endif %}
+                  ">
+                  <div class="container
+                              image-with-text-container
+                              featured_collections
+                              is-flex-{{ block.settings.frontpage_image_position }}
+                              ">
+                    <div class="featured-link--half has-padding one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole" style="background: {{block.settings.color_1}};">
+                      
+                      <div class="info text-align--{{ block.settings.frontpage_text_align }}">
+                        <div class="icon">
+                          {{ block.settings.icon_1 }}
+                        </div>
+                        <div class="detail">
+                          <a {% if block.settings.link != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="collection_title">
+                            {{ block.settings.title_1 | escape }}
+                          </a>
+                          {% if block.settings.text_1 != blank %}
+                            <div class="description">{{ block.settings.text_1 }}</div>
+                          {% endif %}
+                          {% if block.settings.button_label_1 != blank %}
+                            <a {% if block.settings.link != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="button blue">
+                              {{ block.settings.button_label_1 }}
+                            </a>
+                          {% endif %}
+                        </div>
+                        
+                      </div>
+                    </div>
+                    <div class="featured-link--half has-padding one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole" style="background: {{block.settings.color_2}}; ">
+                      
+                      <div class="info text-align--{{ block.settings.frontpage_text_align }}">
+                        <div class="icon">
+                          {{ block.settings.icon_2 }}
+                        </div>
+                        <div class="detail">
+                          <a {% if block.settings.link != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="collection_title">
+                            {{ block.settings.title_2 | escape }}
+                          </a>
+                          {% if block.settings.text_2 != blank %}
+                            <div class="description">{{ block.settings.text_2 }}</div>
+                          {% endif %}
+                          {% if block.settings.button_label_2 != blank %}
+                            <a {% if block.settings.link != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="button pink">
+                              {{ block.settings.button_label_2 }}
+                            </a>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+    
+                {% if block.settings.wide_display == false %}
+                  <style>
+                    #shopify-section-{{ section.id }} .featured-link--section {
+                      margin-bottom: 20px;
+                    }
+                    @media only screen and (max-width: 480px) {
+                      #shopify-section-{{ section.id }} .featured-link--section {
+                        margin-bottom: 10%;
+                      }
+                    }
+                  </style>
+                {% endif %}
+            {% elsif block.type == 'divider' %}
+              <!-- Divider -->
+              {% include 'include-divider', type: 'block' %}
+    
             {% endif %}
-        {% elsif block.type == 'divider' %}
-          <!-- Divider -->
-          {% include 'include-divider', type: 'block' %}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
 
-        {% endif %}
-      </div>
-    {% endfor %}
-  {% endif %}
-</div>
 
 {% schema %}
   {
@@ -232,6 +244,11 @@
             "id": "image",
             "label": "Image",
             "info": "1024 x 1024px recommended"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile image"
           },
           {
             "type": "select",

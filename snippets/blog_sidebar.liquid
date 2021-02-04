@@ -1,0 +1,44 @@
+{% if section.blocks.size > 0 %}
+<div class="sidebar toggle-all--{{ section.settings.toggle }}" {% if context == 'product' %}data-product-sidebar{% endif %}>
+    <div class="sidebar-wrap">
+      <div class="sidebar-block" {{ block.shopify_attributes }}>
+        <h4 class="uppercase">Categories</h4>
+        <ul class="toggle_list">
+          {% for block in section.blocks %}
+            {% if block.type == 'blog' %}
+              {% assign blog = blogs[block.settings.blog] %}
+              <li>
+                <a data-no-instant data-blog="{{blog.title | handleize}}" href="{{ blog.url }}" class="parent-link--true">
+                  {{ blog.title }}
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {% if context == 'product' %}
+    {% style %}
+
+      #shopify-section-{{ section.id }} {
+        width: 25%;
+      }
+
+      #shopify-section-{{ section.id }} + .has-sidebar-option {
+        width: 75%;
+      }
+    {% endstyle %}
+  {% else %}
+    {% style %}
+      #shopify-section-{{ section.id }} .sidebar {
+        width: 25%;
+      }
+
+      #shopify-section-{{ section.id }} .has-sidebar-option {
+        width: 75%;
+      }
+    {% endstyle %}
+  {% endif %}
+{% endif %}

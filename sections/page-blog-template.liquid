@@ -1,0 +1,284 @@
+{% comment %}
+** Sidebar page - custom view **
+- Page template
+- Uses blocks
+{% endcomment %}
+
+{% comment %} Check to see if sidebar should be enabled {% endcomment %}
+{% if section.blocks.size > 0 %}
+  {%- assign sidebar = true -%}
+{% else %}
+  {%- assign sidebar = false -%}
+{% endif %}
+
+<section>
+  <a name="pagecontent" id="pagecontent"></a>
+  {% for block in section.blocks %}
+    {% if block.type == "image_with_text" %}
+      <!-- Image with text -->
+      <section class="section
+      {% if block.settings.wide_display == false %}
+      is-width-standard
+      {% else %}
+      is-width-wide has-no-side-gutter
+      {% endif %}
+      ">
+        <div class="container
+                    image-with-text-container
+                    featured_collections
+                    is-flex-{{ block.settings.frontpage_image_position }}
+                    ">
+          <div class="featured-link--half seven image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
+            <div class="featured-link--wrap">
+              <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
+                {% if block.settings.image != blank %}
+                  {% render 'image-element',
+                          image: block.settings.image,
+                          alt: block.settings.image.alt
+                  %}
+                {% else %}
+                  {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                  {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+                {% endif %}
+              </a>
+            </div>
+          </div>
+          <div class="featured-link--half nine image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
+            <div class="info text-align--{{ block.settings.frontpage_text_align }}">
+              <h1 class="collection_title">
+                {{ block.settings.title | escape }}
+              </h1>
+              {% if block.settings.text != blank %}
+                <div class="description">{{ block.settings.text }}</div>
+              {% endif %}
+              <h3>{{ block.settings.sub_title | escape }}</h3>
+              {% if block.settings.button_label_1 != blank %}
+                <a {% if block.settings.link_1 != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="button pink">
+                  {{ block.settings.button_label_1 }}
+                </a>
+              {% endif %}
+              {% if block.settings.button_label_2 != blank %}
+                <a {% if block.settings.link_2 != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="button blue">
+                  {{ block.settings.button_label_2 }}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {% if block.settings.wide_display == false %}
+      <style>
+        #shopify-section-{{ section.id }} .featured-link--section {
+          margin-bottom: 20px;
+        }
+        @media only screen and (max-width: 480px) {
+          #shopify-section-{{ section.id }} .featured-link--section {
+            margin-bottom: 10%;
+          }
+        }
+      </style>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  <div class="container content">
+    <div class="content-wrapper content-wrapper--page is-flex is-flex-wrap">
+      {% render 'blog_sidebar' %} 
+
+      <div class="has-sidebar-option sidebar-enabled--{{ sidebar }}">
+        {% capture blogs %}
+            <div class="blog-content on-whole medium-down--one-whole column flex is-flex-wrap">
+              {% for block in section.blocks %}
+                {% if block.type == 'blog' %}
+                    {% assign blog = blogs[block.settings.blog] %}
+                    {% for article in blog.articles %}
+                      <div class="one-third medium-down--one-whole column blog-item">
+                        <div class="image">
+                          {% include 'image-element' with 
+                            image: article.image,
+                            alt: article.title
+                          %}
+                        </div>
+                        <div class="info">
+                          <h2 class="article_title capitalize">{{article.title}}</h2>
+                          {{article.content | strip_html | truncatewords: 15, '...'}}
+                          <a class="uppercase bold" href="{{article.url}}">Read more</a>
+                        </div>
+                      </div>
+                    {% endfor %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endcapture %}
+        {% for block in section.blocks %}
+          {% if block.type == 'alert' %}
+            <div class="alert one-whole medium-down--one-whole column flex is-justify-center is-align-center gap has-padding">
+              {% include 'icon-pack' with icon:"exclamation" %}
+              {{ block.settings.title }}
+            </div>
+          {% endif %}
+        {% endfor %}
+        {{ blogs }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Page | sidebar",
+    "class": "shopify-section--page-sidebar-template shopify-section--page-blog-template",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Create sidebar by adding content blocks."
+      },
+      {
+        "type": "checkbox",
+        "id": "toggle",
+        "label": "Toggle sidebar content",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image_with_text",
+        "name": "Image with text",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "wide_display",
+            "label": "Wide display"
+          },
+          {
+            "type": "select",
+            "id": "frontpage_text_align",
+            "label": "Text alignment",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "frontpage_image_position",
+            "label": "Image position",
+            "default": "row",
+            "options": [
+              {
+                "value": "row",
+                "label": "Left"
+              },
+              {
+                "value": "row-reverse",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "1024 x 1024px recommended"
+          },
+          {
+            "type": "select",
+            "id": "image_crop",
+            "label": "Image cropping",
+            "default": "none",
+            "info": "Only applied when text area is taller than image.",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "none",
+                "label": "None"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Your headline"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Promotion description appears here.</p>"
+          },
+          {
+            "type": "text",
+            "id": "sub_title",
+            "label": "Sub title"
+          },
+          {
+            "type": "url",
+            "id": "link_1",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "button_label_1",
+            "label": "Button label",
+            "default": "View all"
+          },
+          {
+            "type": "url",
+            "id": "link_2",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "button_label_2",
+            "label": "Button label",
+            "default": "View all"
+          }
+        ]
+      },
+      {
+        "type": "blog",
+        "name": "Blog",
+        "settings": [
+          {
+            "type": "blog",
+            "id": "blog",
+            "label": "Blog"
+          }
+        ]
+      },
+      {
+        "type": "alert",
+        "name": "Alert",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "title",
+            "label": "Title"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -6,9 +6,9 @@
 
 <section class="section">
   <a name="pagecontent" id="pagecontent"></a>
-  <div class="container content">
+  <div class="container content medium-down--has-no-side-gutter">
     {% if section.settings.image != blank or section.settings.text != blank or section.settings.title != blank %}
-      <div class="one-whole column" style="background: {{section.settings.bg_color}};">
+      <div class="one-whole medium-down--one-whole column" style="background: {{section.settings.bg_color}};">
         <div class="team-page__content--{{ section.settings.image_position }} {% if section.settings.image != blank and section.settings.text != blank %}teamPage__content--multiple{% endif %}">
           {% if section.settings.image != blank %}
             <div class="team-page__image">
@@ -61,6 +61,7 @@
                     alt: block.settings.image.alt,
                     stretch_width: true
             %}
+            
           {% else %}
             {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
             {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}

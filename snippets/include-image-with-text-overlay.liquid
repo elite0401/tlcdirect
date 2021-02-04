@@ -55,14 +55,20 @@
 {% endstyle %}
 
 <section id="banner-{{ object.id }}" class="section {{ css_class }} {% if object.settings.wide_display == false %}is-width-standard{% else %}is-width-wide has-no-side-gutter{% endif %} full-width--{{ object.settings.wide_display }}">
-  <div class="container">
-    <div class="one-whole column banner">
+  <div class="container medium-down--has-no-side-gutter">
+    <div class="one-whole medium-down--one-whole column banner">
     {% if image != blank %}
       {% render 'image-element',
               image: image,
               alt: image.alt,
               stretch_width: true,
-              additional_classes: mobile_crop
+              additional_classes: "medium-down--hide"
+      %}
+      {% render 'image-element',
+          image: section.settings.mobile_image,
+          alt: section.settings.image.alt,
+          stretch_width: true,
+          additional_classes: "medium-down--show hide"
       %}
     {% else %}
       {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--banner' }}
@@ -90,12 +96,12 @@
             <div class="heading flex wrapper">
               <div class="titles">
                 {% if pretext != blank %}
-                  <div class="pretext {{uppercase}}">
+                  <div class="pretext {{uppercase}} medium-down--text-center">
                     {{ pretext }}
                   </div>
                 {% endif %}
                 {% if title != blank %}
-                  <h1 class="headline {{uppercase}}">
+                  <h1 class="headline {{uppercase}} medium-down--text-center">
                     {{ title }}
                   </h1>
                 {% endif %}
@@ -107,12 +113,12 @@
               </div>
               <div class="buttons">
                 {% if button1 != blank %}
-                  <a {% if button1_link != blank %}href="{{ button1_link }}"{% endif %} class="action_button first_button highlight-{{ button1_highlight }}">
+                  <a {% if button1_link != blank %}href="{{ button1_link }}"{% endif %} class="action_button blue first_button highlight-{{ button1_highlight }}">
                     {{ button1 }}
                   </a>
                 {% endif %}
                 {% if button2 != blank %}
-                  <a {% if button2_link != blank %}href="{{ button2_link }}"{% endif %} class="action_button second_button highlight-{{ button2_highlight }}">
+                  <a {% if button2_link != blank %}href="{{ button2_link }}"{% endif %} class="action_button pink second_button highlight-{{ button2_highlight }}">
                     {{ button2 }}
                   </a>
                 {% endif %}

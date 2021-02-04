@@ -1,0 +1,26 @@
+<aside class="one-fourth column medium-down--one-whole account-sidebar">
+    <p class="name capitalize pre medium-down--hide">
+      <strong>hi, {{ customer.first_name }}</strong>
+    </p>
+    <div class="sidebar-menu wrapper">
+        <div class="select-box hide medium-down--show">
+          {% case type %}
+            {% when 'account' %}
+                {{ 'customer.account.dashboard' | t }}
+            {% when 'wishlist' %}
+                {{ 'customer.account.wish_list' | t }}
+            {% when 'address' %}
+                {{ 'customer.account.address' | t }}
+            {% when 'reward' %}
+                {{ 'customer.account.reward' | t }}
+          {% endcase %}
+        </div>
+        <ul>
+          <li class="{% if type == 'account' %}active{% endif %}"><a href="/account">{{ 'customer.account.dashboard' | t }}</a></li>
+          <li class="{% if type == 'wishlist' %}active{% endif %}"><a href="/apps/iwish" target="_blank">{{ 'customer.account.wish_list' | t }}</a></li>
+          <li class="{% if type == 'address' %}active{% endif %}"><a href="/account/addresses">{{ 'customer.account.address' | t }}</a></li>
+          <li class="{% if type == 'reward' %}active{% endif %}"><a href="/page/reward">{{ 'customer.account.reward' | t }}</a></li>
+          <li class=""><a href="/account/logout">{{ 'customer.account.logout' | t }}</a></li>
+        </ul>
+    </div>
+</aside>

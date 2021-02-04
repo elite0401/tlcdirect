@@ -67,7 +67,7 @@
   {% if section.settings.show_banner == blank %}
     <a name="pagecontent" id="pagecontent"></a>
   {% endif %}
-  <div class="container main content is-justify-center">
+  <div class="container main  medium-down--has-no-side-gutter content is-justify-center">
     <div class="one-whole column page">
       {% unless section.settings.image != blank or section.settings.show_banner %}
         <h1>{{ page.title }}</h1>
@@ -77,7 +77,7 @@
       {% render 'page-multi-column', content: page.content %}
     </div>
     {% if section.settings.subtitle != blank %}
-    <div class="alert one-whole column flex is-justify-center is-align-center gap has-padding">
+    <div class="alert one-whole medium-down--one-whole column flex is-justify-center is-align-center gap has-padding">
       {% include 'icon-pack' with icon:"exclamation" %}
       {{ section.settings.subtitle }}
     </div>

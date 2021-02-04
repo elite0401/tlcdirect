@@ -26,6 +26,15 @@ $(document).ready(function() {
       cellAlign: 'left',
       wrapAround: true
     });
+
+    $('#banner-image-with-text-overlay .thumbnails').flickity({
+      pageDots: true,
+      imagesLoaded: true,
+      arrowShape: arrowSize,
+      lazyLoad: 2,
+      cellAlign: 'left',
+      wrapAround: true
+    });
   }
 
   $('.checkbox').click(function () {
@@ -43,7 +52,11 @@ $(document).ready(function() {
       var error = `<div class="errors"><ul><li>Please confirm your password.</li></ul></div>`;
       $('div#first_name').before(error);
     }
-  })
+  });
 
+  $('.sidebar-menu .select-box').on('click',function(){
+    $(this).next('ul').slideToggle(280);
+  });
+  
 });
 
