@@ -297,6 +297,7 @@ $(function() {
   utils.createAccordion('.toggle-all--true', 'h4.toggle', 'ul.toggle_list');
   utils.createAccordion('.footer_menu', 'h6', 'ul');
   utils.createAccordion('.footer_content', 'h6', 'div.toggle_content');
+  createAccordion('.product__info .description', 'h2', 'div.toggle-content');
   utils.createAccordion('.product_section .accordion-tabs', '.tabs li > a', '.tabs-content li');
 
   utils.mobileParentActiveAccordion('#mobile_menu', 'li.sublink > a.parent-link--true span', 'li.sublink ul');
@@ -682,6 +683,21 @@ $(function() {
       currencyConverter.convertCurrencies();
     }
 
+  }
+
+  function createAccordion(container, tab, content) {
+    $container = $(container);
+    $contents = $(container + ' ' +content);
+    console.log(container + ' ' +content)
+    $(container).find(tab).on('click', function () {
+      if ($(this).hasClass('active')) {
+        $(this).removeClass('active');
+        $(this).next().removeClass('active');
+      } else {
+        $(this).addClass('active');
+        $(this).next().addClass('active');
+      }
+    })
   }
 
   $('body').on('change', '[data-cart-quantity-input]', function() {

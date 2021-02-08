@@ -15,7 +15,14 @@
   {% else %}
     <span class="price {% if product.compare_at_price_max > product.price %}sale{% endif %}">
       {% unless product.available == false and settings.display_price == false %}
+        {% assign variant = product.selected_or_first_available_variant %}
+        {% if variant.price < variant.compare_at_price %}
+        <span class="was_price">
+          <span class="money"><del>{% render 'price-element', price: variant.compare_at_price %}</del></span>
+        </span>
+        {% endif %}
         <span class="current_price">
+          Sale : 
           {% if product.price_varies and product.price_min > 0 %}
             <small><em>{{ 'products.general.from' | t }}</em></small>
           {% endif %}
@@ -25,12 +32,7 @@
             {{ settings.free_price_text }}
           {% endif %}
         </span>
-        {% assign variant = product.selected_or_first_available_variant %}
-        <span class="was_price">
-          {% if variant.price < variant.compare_at_price %}
-            <span class="money">{% render 'price-element', price: variant.compare_at_price %}</span>
-          {% endif %}
-        </span>
+        
       {% endunless %}
       <div class="sold-out">
         {% unless product.available %}

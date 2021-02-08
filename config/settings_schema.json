@@ -626,6 +626,12 @@
         "default": "#888888"
       },
       {
+        "type": "color",
+        "id": "menu_bg_color",
+        "label": "Mega menu background",
+        "default": "#888888"
+      },
+      {
         "type": "checkbox",
         "id": "header_background",
         "label": "Enable solid menu background color",

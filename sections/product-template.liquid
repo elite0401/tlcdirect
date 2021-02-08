@@ -11,10 +11,10 @@
   {% endstyle %}
 {% endif %}
 
-<div class="one-whole column product-{{ product.id }}">
+<div class="one-whole product-{{ product.id }}">
   <div class="product product-name--{{ product.handle }} product_section js-product_section is-flex media-position--{{ section.settings.product_images_position }}" data-rv-handle="{{ product.handle }}">
 
-    <div class="three-fifths columns medium-down--one-whole product__images">
+    <div class="one-half columns medium-down--one-whole product__images">
       {% render 'product-images',
               product: product,
               video_looping: section.settings.video_looping,
@@ -22,7 +22,7 @@
       %}
     </div>
 
-    <div class="two-fifths columns medium-down--one-whole">
+    <div class="one-half columns medium-down--one-whole product__info">
       {%- assign collection_handles = product.collections | map: 'handle' -%}
       {%- assign variant = product.selected_or_first_available_variant -%}
 
@@ -56,25 +56,24 @@
       {% endif %}
       <div class="feature_divider"></div>
 
-      {%- assign product_tags = product.tags | join: ' ' -%}
-      {% if product_tags contains 'meta-size-chart-' %}
-        {% for tag in product.tags %}
-          {% if tag contains 'meta-size-chart-' %}
-            <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart{{product.id}}" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
-            {% render 'popup-size-chart', product_id: product.id %}
-          {% endif %}
-        {% endfor %}
-      {% elsif settings.size_chart != blank %}
-        <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart{{product.id}}" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }} <span class="icon-right-arrow"></span></a>
-      {% endif %}
-
       {% if collection_handles contains 'coming-soon' %}
         <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
       {% else %}
         <div class="modal_price">
           {% unless product.available == false and settings.display_price == false %}
             <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
-              <span content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+              <p><span>Our price: </span>
+                <span class="was_price">
+                   <del>
+                    {% if variant.price < variant.compare_at_price %}
+                      {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price -%}{% render 'price-element', price: compare_at %}</span>)
+                    {% endif %}
+                  </del>
+                </span>
+              </p>
+              
+              <p content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+                <span>Sale price: </span>
                 <span class="current_price">
                   {% if variant.price > 0 %}
                     <span class="money">{% render 'price-element', price: variant.price %}</span>
@@ -82,19 +81,15 @@
                     {{ settings.free_price_text }}
                   {% endif %}
                 </span>
-              </span>
-              <span class="was_price">
-                {% if variant.price < variant.compare_at_price %}
-                  {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price -%}{% render 'price-element', price: compare_at %}</span>)
-                {% endif %}
-              </span>
+              </p>
+              
               {% if section.settings.display_savings %}
                 <span class="sale savings">
                   {% if variant.price < variant.compare_at_price %}
                     {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price %}{% render 'price-element', price: compare_at -%}</span>)
                   {% endif %}
                 </span>
-            {% endif %}
+              {% endif %}
             </div>
           {% endunless %}
           <div class="sold-out__container">
@@ -122,7 +117,8 @@
       {% if section.settings.product_description_position == "bottom" %}
         {% if product.description != blank %}
           <div class="description bottom">
-            {{ product.description | split: '<!-- split -->' | first }}
+            {% assign content_top = product.description | split: '<!-- split -->' | first | replace: '<h2>', '</div><h2>' | replace: '</h2>', '</h2><div class="toggle-content">' | remove_first: '</div>' %}
+            {{ content_top }}
           </div>
         {% endif %}
       {% endif %}
@@ -380,6 +376,15 @@
         "label": "Show dynamic checkout button",
         "default": true,
         "info": "Each customer will see their preferred payment method from those available on your store, such as PayPal or Apple Pay. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)"
+      },
+      {
+        "type": "header",
+        "content": "Size guide modal"
+      },
+      {
+        "type": "text",
+        "id": "size_title",
+        "label": "Otpion title"
       },
       {
         "type": "header",

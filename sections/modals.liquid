@@ -1,0 +1,112 @@
+{% schema %}
+{
+    "name": "Modals",
+    "class": "modals",
+    "settings": [
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background color"
+        },
+        {
+            "type": "color",
+            "id": "content_color",
+            "label": "Content color"
+        },
+        {
+            "type": "text",
+            "id": "width",
+            "label": "Width"
+        },
+        {
+            "type": "checkbox",
+            "id": "close_icon",
+            "label": "Show close icon?"
+        }
+    ],
+    "blocks": [ 
+        {
+            "type": "modal",
+            "name": "modal",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "id",
+                    "label": "Id"
+                },
+                {
+                    "type": "header",
+                    "content": "Header"
+                },
+                {
+                    "type": "text",
+                    "id": "heading_title",
+                    "label": "Heading title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "sub_title",
+                    "label": "Sub title"
+                },
+                {
+                    "type": "select",
+                    "id": "heading_align",
+                    "label": "Heading align",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ]
+                },
+                {
+                    "type": "header",
+                    "content": "content"
+                },
+                {
+                    "type": "html",
+                    "id": "html_content",
+                    "label": "Html content"
+                },
+                {
+                    "type": "text",
+                    "id": "content_title",
+                    "label": "Content title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "content_text",
+                    "label": "Content text"
+                },
+                {
+                    "type": "select",
+                    "id": "content_align",
+                    "label": "Content align",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "center",
+                            "label": "Center"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

@@ -36,7 +36,7 @@
   {% comment %} HTML markup {% endcomment %}
   {% capture product_collections_markup %}
     <div class="recommended-products__title {% unless section.settings.product_recommendations_style == 'slider' %}one-whole column{% endunless %}" data-recommended-product-count="{% if show_dynamic_collection == true %}{{ recommendations.products_count }}{% else %}{{ collection_size }}{% endif %}">
-      <h2 class="title center">{{ section.settings.product_recommendations_heading }}</h2>
+      <h3 class="center">{{ section.settings.product_recommendations_heading }}</h3>
       <div class="feature_divider"></div>
     </div>
 
