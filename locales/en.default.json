@@ -361,7 +361,7 @@
   },
   "cart": {
     "general": {
-      "title": "Shopping Cart",
+      "title": "Your Shopping Bag",
       "products": "Products",
       "remove": "Remove",
       "price": "Price",
@@ -373,16 +373,16 @@
       "continue_browsing_html": "There are no items in your cart.",
       "continue_shopping_link_html": "Continue Shopping",
       "excluding_tax_shipping": "Excluding tax & shipping",
-      "orders_processed_in_currency_html": "Orders will be processed in {{ currency }}.",
+      "orders_processed_in_currency_html": "Excludes applicable taxes and shipping",
       "note": "Order Notes",
       "agree_to_terms_html": "I Agree with the Terms & Conditions",
       "view_terms": "[View Terms]",
       "agree_to_terms_warning": "You must agree with the terms and conditions to checkout.",
       "or": "or",
-      "subtotal": "Subtotal",
+      "subtotal": "SUB TOTAL",
       "discount": "Discount",
       "update": "Update Subtotal",
-      "checkout": "Checkout"
+      "checkout": "begin secure checkout"
     },
     "shipping_calculator": {
       "estimated_shipping": "estimated shipping",

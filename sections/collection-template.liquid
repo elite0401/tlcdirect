@@ -10,24 +10,34 @@
     <div class="container">
       <div class="one-whole column">
         <header class="banner center page-banner dark-overlay-{{ section.settings.image_darken }} full-width--{{ section.settings.wide_display }}">
-          {% if collection.image %}
-            {%- assign image = collection.image -%}
-          {%- elsif section.settings.image -%}
-            {%- assign image = section.settings.image -%}
-          {%- else %}
-            {%- assign image = collection.products.first.featured_image -%}
-          {% endif %}
+          {% if collection.image != blank or collection.text != blank or collection.title != blank %}
+            <div class="one-whole medium-down--one-whole column" style="background: {{section.settings.bg_color}};">
+              <div class="team-page__content--{{ section.settings.image_position }} {% if collection.image != blank and section.settings.text != blank %}teamPage__content--multiple{% endif %}">
+                {% if collection.image != blank %}
+                  <div class="team-page__image">
+                    {% render 'image-element',
+                            image: collection.image,
+                            alt: collection.image.alt,
+                            progressive: true
+                    %}
+                  </div>
+                {% endif %}
 
-          {% render 'image-element',
-                  image: image,
-                  alt: collection.title,
-                  stretch_width: true,
-                  progressive: true
-          %}
+                {% if collection.content != blank or collection.title != blank %}
+                  <div class="team-page__text text-align--{{ section.settings.text_position }}">
+                    <span class="team-page__container">
+                      
+                      {% if collection.title %}
+                        <h2>{{ collection.title }}</h2>
+                      {% endif %}
 
-          {% if section.settings.display_collection_title %}
-            <div class="caption captionOverlay--true">
-              <h1 class="headline">{{ collection.title }}</h1>
+                      {% if collection.description %}
+                        {{ collection.description }}
+                      {% endif %}
+                    </span>
+                  </div>
+                {% endif %}
+              </div>
             </div>
           {% endif %}
         </header>
@@ -118,12 +128,6 @@
       </div>
     </div>
 
-    {% if section.settings.display_collection_title and section.settings.featured_collection_image == false %}
-      <div class="one-half column medium-down--one-whole">
-        <h1>{{ collection.title }}</h1>
-      </div>
-    {% endif %}
-
     <div class="{% if section.settings.display_collection_title and section.settings.featured_collection_image == false %}one-half column medium-down--one-whole{% else %}one-whole column{% endif %} section_select">
       {% if collection.handle != blank and collection.products_count > 0 %}
         {% if section.settings.collection_tags %}
@@ -173,16 +177,7 @@
       {% render 'sidebar' %}
 
       <div class="has-sidebar-option sidebar-enabled--{{ sidebar }}">
-        {% if collection.description != blank %}
-          <div class="container">
-            <div class="one-whole column">
-              <div class="collection_description">
-                {{ collection.description }}
-              </div>
-            </div>
-          </div>
-        {% endif %}
-
+    
         <div class="container">
           <div class="one-whole column">
             {% if collection.products.size == 0 %}
@@ -261,6 +256,47 @@
         "type": "checkbox",
         "id": "display_collection_title",
         "label": "Show collection title"
+      },
+      {
+        "type": "select",
+        "id": "image_position",
+        "label": "Image position",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_position",
+        "label": "Text alignment",
+        "default": "center",
+        "options": [
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
       },
       {
         "type": "checkbox",
