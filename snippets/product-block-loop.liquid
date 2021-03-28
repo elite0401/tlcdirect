@@ -1,0 +1,37 @@
+{%- assign product_found = false -%}
+{%- assign skip = false -%}
+
+{% unless template contains 'product' %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": [
+        {% for product in products limit: limit %}
+          {
+            "@type": "ListItem",
+            "position": "{{ forloop.index | json }}",
+            "url": "{{ shop.url }}{{ product.url }}",
+            "name": "{{ product.title | escape }}"
+          } {%- unless forloop.last -%},{%- endunless -%}
+        {% endfor %}
+      ]
+    }
+  </script>
+{% endunless %}
+
+{%- assign matrixType = 'collection-matrix' -%}
+{% if settings.pagination_type == 'load_more_button' %}
+  {%- assign paginationType = 'data-load-more--grid' -%}
+{% endif %}
+
+<div itemtype="http://schema.org/ItemList" class="product-list {{ matrixType }} is-flex is-flex-wrap equal-columns--outside-trim" {{ paginationType }}>
+  {% for block in section.blocks %}
+    {% assign product = all_products[block.settings.product] %}
+    {% render 'product-thumbnail',
+            product: product,
+            products_per_row: products_per_row,
+            sidebar: sidebar
+    %}
+  {% endfor %}
+</div>

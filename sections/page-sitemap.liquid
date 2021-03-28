@@ -5,7 +5,12 @@
     </header>
     <div class="container has-margin-top">
         <div class="section content one-whole column">
-            {{page.content}}
+            <div class="column">
+                {{page.content | split: '<!-- split -->' | first}}
+            </div>
+            <div class="column">
+                {{page.content | split: '<!-- split -->' | last}}
+            </div>
         </div>
     </div>
 </section>
@@ -13,7 +18,7 @@
 {% schema %}
 {
     "name": "Page section",
-    "class": "shopify-section--page-template",
+    "class": "shopify-section--page-template sitemap",
     "settings": [
         {
             "type": "header",

@@ -1,0 +1,63 @@
+{% comment %}
+** Featured collection - dynamic **
+- Draggable section
+{% endcomment %}
+
+{% comment %} Assign object as block or section {% endcomment %}
+{% if type == 'block' %}
+  {%- assign object = block -%}
+{% else %}
+  {%- assign object = section -%}
+{% endif %}
+
+{%- assign id = object.id -%}
+
+{% comment %} Content settings {% endcomment %}
+{%- assign title = object.settings.title | escape -%}
+{%- assign collection = collections[object.settings.collection] -%}
+{% comment %} End content settings {% endcomment %}
+
+{% comment %} Advanced {% endcomment %}
+{%- assign css_class = object.settings.css_class -%}
+{%- assign custom_css = object.settings.custom_css -%}
+
+{% comment %} Section specific CSS {% endcomment %}
+{% style %}
+  {% render 'css-loop',
+          css: custom_css,
+          id: id
+  %}
+{% endstyle %}
+
+<div class="{{ css_class }}">
+  <section class="section has-margin-bottom">
+    <div class="container">
+      <div class="one-whole column center homepage_content">
+        {% if title != blank %}
+          <a href="{{ collection.url }}">
+            <h3 class="title">{{ title }}</h3>
+          </a>
+
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  {% if object.settings.collection_style == 'slider' %}
+    <div class="js-product-slider homepage-product-slider full-width--true {% if object.settings.products_per  == 2 or object.settings.products_per  == 4 or object.settings.products_per  == 6 %}even-num-slides{% endif %} featured-collection__products">
+      {% render 'product-block-slider',
+              per_slide: object.settings.products_per
+      %}
+    </div>
+  {% else %}
+    <section class="section">
+      <div class="container">
+        <div class="one-whole column">
+          {% render 'product-block-loop',
+                  products_per_row: object.settings.products_per
+          %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+</div>

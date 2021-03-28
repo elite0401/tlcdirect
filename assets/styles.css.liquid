@@ -315,18 +315,18 @@ Description: Shopify Theme (https://www.shopify.com/&ref=out-of-the-sandbox)
 
 /* Margin helpers */
 .has-margin-top {
-  margin-top: 20px;
+  margin-top: 20px!important;
 }
 .has-margin-left{
-  margin-left: 20px;
+  margin-left: 20px!important;
 }
 
 .has-margin-right{
-  margin-right: 20px;
+  margin-right: 20px!important;
 }
 
 .has-margin-bottom {
-  margin-bottom: 20px;
+  margin-bottom: 20px!important;
 }
 
 /* Text alignment */
@@ -3463,8 +3463,7 @@ div.collection_title_tags {
 
 .headline,
 .empty_cart,
-.promo-banner,
-.title {
+.promo-banner {
   font-family: {{ headline__font }}, {{ settings.headline__font.fallback_families }};
   font-weight: {{ settings.headline__font.weight }};
   font-style: {{ settings.headline__font.style }};
@@ -3475,6 +3474,18 @@ div.collection_title_tags {
   letter-spacing: {{ settings.headline_letter_spacing | append: 'px' }};
   text-rendering: optimizeLegibility;
   font-size: {{ font_size_header | times: 1 | append: 'px' }};
+}
+
+.title {
+  font-family: {{ headline__font }}, {{ settings.headline__font.fallback_families }};
+  font-weight: {{ settings.headline__font.weight }};
+  font-style: {{ settings.headline__font.style }};
+  text-transform: {{ settings.headline_font_style }};
+  line-height: 1.5;
+  color: {{ settings.headline_color }};
+  display: block;
+  letter-spacing: {{ settings.headline_letter_spacing | append: 'px' }};
+  text-rendering: optimizeLegibility;
 }
 
 .title.center.blog a {
@@ -9526,7 +9537,7 @@ a.tag {
   vertical-align: bottom;
   transition: opacity 0.3s ease-in;
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: top center;
 }
 .product-list .thumbnail .product-info__caption,
@@ -9773,7 +9784,7 @@ a.tag {
 .slider-gallery .thumbnail img {
     max-height: {{ settings.collection_height | append: 'px' }};
     width: 100%;
-    object-fit: contain;
+    object-fit: cover;
   }
 
 .product-list .thumbnail video,
@@ -15671,13 +15682,18 @@ footer .social_icons a:hover {
 }
 @media only screen and (max-width: 798px) {
   .products-slider.slider-gallery.products-length-4 .gallery-cell {
-    width: calc(40% - 10px);
+    width: 90%;
   }
 }
 .products-slider.slider-gallery.products-length-3 .gallery-cell, .products-slider.slider-gallery.products-length-2 .gallery-cell, .products-slider.slider-gallery.products-length-1 .gallery-cell {
   width: calc(33.33% - 10px);
 }
 
+@media only screen and (max-width: 798px) {
+  .products-slider.slider-gallery.products-length-3 .gallery-cell, .products-slider.slider-gallery.products-length-2 .gallery-cell, .products-slider.slider-gallery.products-length-1 .gallery-cell {
+    width: 100%;
+  }
+}
 .products-slider.slider-gallery .gallery-cell.visible-2 {
   width: calc(50% - 10px);
 }

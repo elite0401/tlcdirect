@@ -52,7 +52,7 @@
       </div>
     {% else %}
       {% comment %} Recommended Products Grid {% endcomment %}
-      <div class="recommended-products--grid">
+      <div class="recommended-products--grid medium-down--hide">
         <div class="container">
           <div class="one-whole column">
             {% render 'product-loop',
@@ -63,6 +63,14 @@
             %}
           </div>
         </div>
+      </div>
+      <div class="recommended-products--slider js-recommended-products-slider hide medium-down--show">
+        {% render 'product-slider',
+                limit: section.settings.recommended_products_limit,
+                products: products,
+                per_slide: 1,
+                skip_product: product
+        %}
       </div>
     {% endif %}
   {% endcapture %}

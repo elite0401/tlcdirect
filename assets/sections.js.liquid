@@ -1067,7 +1067,8 @@ var productPage = {
       adaptiveHeight: true,
       dragThreshold: 10,
       imagesLoaded: true,
-      pageDots: false,
+      pageDots: true,
+      cellAlign: 'left',
       prevNextButtons: $productGallery.data('media-count') > 1 || $slides.length > 1 ? true : false,
       autoPlay: slideshowSpeed * 1000,
       fade: slideshowAnimation === 'fade' ? true : false,
@@ -1599,12 +1600,11 @@ var productPage = {
         "lazyLoad": 2,
         "imagesLoaded": true,
         "draggable": draggable,
-        "cellAlign": cellAlign,
+        "cellAlign": 'left',
         "prevNextButtons": prevNext,
         "wrapAround": wrapAround,
         "pageDots": usePageDots,
         "contain": true,
-        "freeScroll": true,
         "arrowShape": arrowSize,
         "initialIndex": initialIndex
       });

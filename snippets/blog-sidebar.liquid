@@ -1,12 +1,12 @@
 {% if section.blocks.size > 0 %}
   <div class="sidebar toggle-all--{{ section.settings.toggle }}">
-    <div class="sidebar__content">
+    <div class="sidebar-wrap">
       {% for block in section.blocks %}
         <div class="sidebar-block" {{ block.shopify_attributes }}>
           {% if block.type == 'menu' %}
             {% assign sidebar_menu = linklists[block.settings.custom_menu_linklist] %}
             {% if sidebar_menu != blank %}
-              <h4 class="toggle">{{ sidebar_menu.title }}<span class="right icon-down-arrow"></span></h4>
+              <h4 class="toggle">{{ sidebar_menu.title }}</h4>
               <ul class="toggle_list">
                 {% for link in sidebar_menu.links %}
                   {% if link.active %}
@@ -75,7 +75,7 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <h4 class="toggle">Menu title<span class="right icon-down-arrow"></span></h4>
+              <h4 class="toggle">Menu title</h4>
               <ul class="toggle_list">
                 <li><p>{{ 'homepage.onboarding.no_content' | t }}</p></li>
               </ul>
@@ -100,7 +100,7 @@
             {% render 'newsletter-form', context: 'blog' %}
 
           {% elsif block.type == 'recent_posts' %}
-            <h4 class="toggle">{{ 'blogs.sidebar.recent_articles' | t }}<span class="right icon-down-arrow"></span></h4>
+            <h4 class="toggle">{{ 'blogs.sidebar.recent_articles' | t }}</h4>
             <ul class="toggle_list">
               {% for article in blogs[blog_handle].articles limit: block.settings.blog_post_count %}
                 <li>
@@ -115,7 +115,7 @@
             </ul>
 
           {% elsif block.type == 'post_tags'  %}
-            <h4 class="toggle">{{ 'blogs.sidebar.categories' | t }}<span class="right icon-down-arrow"></span></h4>
+            <h4 class="toggle">{{ 'blogs.sidebar.categories' | t }}</h4>
             <ul class="toggle_list">
               {% for tag in blogs[blog_handle].all_tags %}
                 <li>
@@ -131,14 +131,14 @@
                 <li>{{ pages[block.settings.content_page].content }}</li>
               </ul>
             {% else %}
-              <h4 class="toggle">Page title<span class="right icon-down-arrow"></span></h4>
+              <h4 class="toggle">Page title</h4>
               <ul class="toggle_list">
                 <li><p>{{ 'homepage.onboarding.no_content' | t }}</p></li>
               </ul>
             {% endif %}
 
           {% elsif block.type == 'text' %}
-            <h4 class="toggle">{{ block.settings.title }}<span class="right icon-down-arrow"></span></h4>
+            <h4 class="toggle">{{ block.settings.title }}</h4>
             <ul class="toggle_list content_block">
               <li>{{ block.settings.text }}</li>
             </ul>

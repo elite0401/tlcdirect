@@ -250,6 +250,14 @@ $(function() {
     $menu.find('ul').slideToggle();
   });
 
+  $('body').on('click', '.sidebar .sidebar-block .toggle', function(e) {
+    e.preventDefault();
+    $menu = $(this).parent('.sidebar-block');
+    $menu.find('.toggle').toggleClass('active');
+    $menu.find('ul').slideToggle();
+  });
+
+
   if (Shopify.theme_settings.newsletter_popup){
     newsletter_popup.init();
   }

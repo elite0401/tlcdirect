@@ -22,9 +22,6 @@
                   alt: article.image.alt,
                   stretch_width: true
           %}
-          <div class="caption captionOverlay--true">
-            <h1 class="headline">{{ article.title }}</h1>
-          </div>
         </div>
       </div>
     </section>
@@ -34,7 +31,9 @@
     {% if article.image == blank or section.settings.featured_image != 'banner' %}
       <a name="pagecontent" id="pagecontent"></a>
     {% endif %}
+
     <div class="blog-article__main sidebar-enabled--{{ sidebar }} container content">
+      {% render "blog-sidebar", blog_handle: blog.handle %}
       <div class="has-sidebar-option">
         <div class="container">
 
@@ -90,12 +89,9 @@
             {% endif %}
           </div>
 
-          {% unless article.image and section.settings.featured_image == 'banner' %}
           <div class="one-whole column">
             <h1 class="align_left article_title">{{ article.title }}</h1>
-            <div class="feature_divider"></div>
           </div>
-          {% endunless %}
 
           <div class="one-whole column">
             <p class="blog_meta">
@@ -133,6 +129,13 @@
             </p>
           </div>
 
+          <div class="one-whole column">
+            <ul class="contact_content">
+              <li><a href="#">{% include 'icon-pack' with icon: 'fax' %}Print</a></li>
+              <li><a href="#">{% include 'icon-pack' with icon: 'email' %}Email to a Friend</a></li>
+            </ul>
+          </div>
+
           <div class="article_content one-whole column">
             {% if article.image and section.settings.featured_image == 'content' %}
               {% render 'image-element',
@@ -141,7 +144,7 @@
               %}
             {% endif %}
 
-            <p class="has-padding-top">{{ article.content }}</p>
+            {{ article.content }}
           </div>
 
           {% if section.settings.blog_author or section.settings.display_social_buttons %}
@@ -299,7 +302,6 @@
           {% endif %}
         </div>
       </div>
-      {% render "blog-sidebar", blog_handle: blog.handle %}
     </div>
   </section>
 {% endpaginate %}

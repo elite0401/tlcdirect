@@ -1,0 +1,76 @@
+{% include 'include-featured-block-products' %}
+
+{% schema %}
+  {
+    "name": "Featured product",
+    "class": "shopify-section--featured-collection",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+      {
+        "type": "radio",
+        "id": "collection_style",
+        "label": "Collection layout",
+        "default": "grid",
+        "options": [
+          {
+            "value": "slider",
+            "label": "Slider"
+          },
+          {
+            "value": "grid",
+            "label": "Grid"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Products"
+      },
+      {
+        "type": "range",
+        "id": "products_per",
+        "label": "Products per row",
+        "min": 2,
+        "max": 7,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "header",
+        "content": "Advanced"
+      },
+      {
+        "type": "paragraph",
+        "content": "[Learn more](https://help.outofthesandbox.com/hc/en-us/articles/360022329373)"
+      },
+      {
+        "type": "text",
+        "id": "css_class",
+        "label": "CSS Class"
+      },
+      {
+        "type": "textarea",
+        "id": "custom_css",
+        "label": "Custom CSS"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "product",
+        "name": "product",
+        "settings": [
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Product"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,46 @@
+<section class="section has-margin-bottom">
+    <a name="pagecontent" id="pagecontent"></a>
+    <div class="container content">
+      <div class="one-whole column collection_nav">
+        <h1 class="collection_title text-center">{{ section.settings.title }}</h1>
+      </div>
+  
+      <div class="one-whole column">
+        <div class="carousel promotion-slider">
+            {% for block in section.blocks %}
+                <div class="carousel-cell one-whole text-center">
+                    {{ block.settings.content }}
+                </div>
+            {% endfor %}
+        </div>
+      </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": "Not found page",
+    "class": "notfound-template",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "content",
+            "type": "content",
+            "settings": [
+                {
+                    "type": "richtext",
+                    "id": "content",
+                    "label": "Content"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+  
