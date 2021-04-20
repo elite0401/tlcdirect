@@ -12,7 +12,7 @@
 
       <div class="breadcrumb-collection breadcrumb-collection--product">
         {% if collection.previous_product or collection.next_product %}
-          <div class="nav_arrows breadcrumb_text">
+          <div class="nav_arrows breadcrumb_text one-whole column">
             {% if collection.previous_product %}
               <a href="{{ collection.previous_product }}" title="{{ 'products.general.previous_product_html' | t }}" class="breadcrumb_link"><span class="icon-left-arrow"> {{ 'products.general.previous_product_html' | t }}</span></a>
             {% endif %}
@@ -30,8 +30,11 @@
   </div>
 </section>
 
-{% section 'product-details-template' %}
+{% section 'product-gift-template' %}
 
 <section class="section">
   {% section 'product-recommendations' %}
 </section>
+
+{% section 'newsletter' %}
+{% section 'icon-bar' %}

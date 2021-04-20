@@ -52,7 +52,11 @@ Shopify.theme_settings.search_pagination_type = {{ settings.search_pagination_ty
 Shopify.theme_settings.enable_shopify_review_comments = {{ settings.enable_shopify_review_comments | json }};
 Shopify.theme_settings.enable_shopify_collection_badges = {{ settings.enable_shopify_collection_badges | json }};
 Shopify.theme_settings.quick_shop_thumbnail_position = {{ settings.quick_shop_thumbnail_position | json }};
-Shopify.theme_settings.product_form_style = {{ settings.product_form_style | json }};
+{% if template == 'product.gift' %}
+    Shopify.theme_settings.product_form_style = {{ "dropdown" | json }};
+{% else %}
+    Shopify.theme_settings.product_form_style = {{ settings.product_form_style | json }};
+{% endif %}
 Shopify.theme_settings.sale_banner_enabled = {{ settings.sale_banner_enabled | json }};
 Shopify.theme_settings.display_savings = {{ settings.display_savings | json }};
 Shopify.theme_settings.display_sold_out_price = {{ settings.display_price | json }};
