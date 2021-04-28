@@ -165,6 +165,9 @@
     {% if settings.size_chart != blank and template contains 'product' %}
       {% render 'popup-size-chart' %}
     {% endif %}
+    {% if settings.choose_chart != blank and template contains 'product' %}
+      {% render 'popup-choose-chart' %}
+    {% endif %}
     {% if settings.newsletter_popup %}
       {% render 'popup-newsletter' %}
     {% endif %}

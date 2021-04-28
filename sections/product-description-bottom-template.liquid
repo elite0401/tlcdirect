@@ -55,20 +55,6 @@
     {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
       <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
     {% endif %}
-    <div class="feature_divider"></div>
-
-    {%- assign product_tags = product.tags | join: ' ' -%}
-    {% if product_tags contains 'meta-size-chart-' %}
-      {% for tag in product.tags %}
-        {% if tag contains 'meta-size-chart-' %}
-          <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart{{product.id}}" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }}</a>
-          {% render 'popup-size-chart', product_id: product.id %}
-        {% endif %}
-      {% endfor %}
-    {% elsif settings.size_chart != blank %}
-      <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart{{product.id}}" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }}</a>
-    {% endif %}
-
 
     {% if collection_handles contains 'coming-soon' %}
       <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>

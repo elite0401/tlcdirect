@@ -58,6 +58,69 @@
 
       {% if collection_handles contains 'coming-soon' %}
         <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
+      {% elsif product.price_varies %}
+        {% for tag in product.tags %}
+          {% if tag contains 'price_variant_title' %}
+            {% assign price_option_name = tag | remove: 'price_variant_title:' %}
+          {% endif %}
+        {% endfor %}
+        {% for product_option in product.options_with_values %}
+          {% if product_option.name == price_option_name %}
+              {% assign price_option_arr = product_option %}
+          {% endif %}
+        {% endfor %}
+        <div class="modal_price">
+          {% assign variant_price_str = '' %}
+          {% for variant in product.variants %}
+            {% unless variant_price_str contains variant.price %}
+              <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
+                {% if variant.compare_at_price > variant.price %}
+                  <span class="was_price_variant">
+                      <span class="label">
+                        {% for value in price_option_arr.values %}
+                          {% if variant.title contains value %}
+                            {{value}} : 
+                          {% endif %}
+                        {% endfor %}
+                      </span>
+                      <del>{% render 'price-element', price: variant.compare_at_price %}</del>
+                  </span>
+                {% endif %}
+                <span content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+                  {% if variant.compare_at_price > variant.price %}
+                    Sale Price: 
+                  {% else %}
+                    <span class="label">
+                      {% for value in price_option_arr.values %}
+                        {% if variant.title contains value %}
+                          {{value}} : 
+                        {% endif %}
+                      {% endfor %}
+                    </span>
+                  {% endif %}
+                  
+                  <span class="current_price_variant">
+                    {% if variant.price > 0 %}
+                      <span class="money">{% render 'price-element', price: variant.price %}</span>
+                    {% else %}
+                      {{ settings.free_price_text }}
+                    {% endif %}
+                  </span>
+                </span>
+
+                {% if section.settings.display_savings %}
+                  <span class="sale savings">
+                    {% if variant.price < variant.compare_at_price %}
+                      {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price %}{% render 'price-element', price: compare_at -%}</span>)
+                    {% endif %}
+                  </span>
+              {% endif %}
+              </div>
+              {% assign variant_price_str = variant_price_str | append: ',' | append: variant.price %}
+            {% endunless %}
+          {% endfor %}
+        </div>
+        
       {% else %}
         <div class="modal_price">
           {% unless product.available == false and settings.display_price == false %}
@@ -376,15 +439,6 @@
         "label": "Show dynamic checkout button",
         "default": true,
         "info": "Each customer will see their preferred payment method from those available on your store, such as PayPal or Apple Pay. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)"
-      },
-      {
-        "type": "header",
-        "content": "Size guide modal"
-      },
-      {
-        "type": "text",
-        "id": "size_title",
-        "label": "Option title"
       },
       {
         "type": "header",

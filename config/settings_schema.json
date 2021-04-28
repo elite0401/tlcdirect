@@ -1498,10 +1498,24 @@
         "default": "Free"
       },
       {
+        "type": "header",
+        "content": "Size/Choose guide modal"
+      },
+      {
+        "type": "text",
+        "id": "size_title",
+        "label": "Option title"
+      },
+      {
         "type": "page",
         "id": "size_chart",
         "label": "Size chart",
         "info": "[Learn more](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/115006910707-Using-the-Size-Chart-Sections-themes-)"
+      },
+      {
+        "type": "page",
+        "id": "choose_chart",
+        "label": "Choosing Bra content"
       },
       {
         "type": "header",

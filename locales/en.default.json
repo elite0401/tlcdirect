@@ -172,6 +172,7 @@
       "product_types": "Type",
       "tags": "Category",
       "size_chart": "Size Guide",
+      "choose_chart": "Choosing a BRA",
       "savings": "You Save",
       "products_tagged": "Products tagged {{ tag }}",
       "items_left_count": {
