@@ -1630,6 +1630,20 @@ div.content {
           font-size: 16px;
           @include font-gothic-bold();
         }
+        &.retail_price {
+          display: none;
+          &.active{
+            display: block;
+          }
+        }
+        &.sale_price{
+          font-size: 16px;
+          @include font-gothic-bold();
+          color: #BA0C2F;
+          .label{
+            color: #BA0C2F;
+          }
+        }
       }
     }
     .product_form{

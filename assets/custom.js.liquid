@@ -57,6 +57,20 @@ $(document).ready(function() {
   $('.sidebar-menu .select-box').on('click',function(){
     $(this).next('ul').slideToggle(280);
   });
-  
+  $(document).on('click', '.choose_chart_btn', function (e) {
+    e.preventDefault();
+    $.fancybox.close();
+    $.fancybox.open($('#choose-chart'), {
+      touch: false
+    })
+  })
+
+  $(document).on('click', '.size_chart_btn', function (e) {
+    e.preventDefault();
+    $.fancybox.close();
+    $.fancybox.open($('#size-chart'), {
+      touch: false
+    }) 
+  })
 });
 

@@ -1,23 +1,35 @@
-<div class="js-sizechart-lightbox" id="choose-chart{{ product.id }}" style="display: none">
-  <div class="size-chart-wrap">
+
     {%- assign product_tags = product.tags | join: ' ' -%}
 
     {% if product_tags contains 'meta-choose-chart-' %}
       {% for tag in product.tags %}
         {% if tag contains 'meta-choose-chart-' %}
-          {%- assign size_chart = tag | handle | remove: 'meta-choose-chart-' -%}
-          {{ pages[size_chart].content }}
+          <div class="js-sizechart-lightbox" id="choose-chart{{ product.id }}" style="display: none">
+            <div class="size-chart-wrap">
+              {%- assign size_chart = tag | handle | remove: 'meta-choose-chart-' -%}
+              {{ pages[size_chart].content }}
+              <div class="bottom">
+                <div class="actions">
+                  <a class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
+                  <a class="capitalize"> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
+                </div>
+                <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
+              </div>
+            </div>
+          </div>
         {% endif %}
       {% endfor %}
     {% elsif settings.choose_chart != blank %}
-      {{ pages[settings.choose_chart].content }}
+      <div class="js-sizechart-lightbox" id="choose-chart" style="display: none">
+        <div class="size-chart-wrap">
+          {{ pages[settings.choose_chart].content }}
+          <div class="bottom">
+            <div class="actions">
+              <a class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
+              <a class="capitalize"> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
+            </div>
+            <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
+          </div>
+        </div>
+      </div>
     {% endif %}
-  </div>
-  <div class="bottom">
-    <div class="actions">
-      <a class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
-      <a class="capitalize"> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
-    </div>
-    <a class="button border close">close</a>
-  </div>
-</div>

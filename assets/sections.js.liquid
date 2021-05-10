@@ -669,11 +669,18 @@ selectCallback = function(variant, selector) {
   }
 
   if (variant && variant.available == true) {
+    var id = `#variant-${variant.id}`;
+    $('.retail_price', $product).removeClass('active');
+    $(id, $product).addClass('active');
     if(variant.price < variant.compare_at_price){
+      $('.compare_price .label', $product).removeClass('hide');
+      $('.sale_price .label', $product).removeClass('hide');
+      
       $('.was_price', $product).html('<span class="money">' + Shopify.formatMoney(variant.compare_at_price, $('body').data('money-format')) + '</span>');
       $('.savings', $product).html(Shopify.translation.savings_text + ' ' + parseInt(((variant.compare_at_price - variant.price) * 100) / variant.compare_at_price) + '% ( ' + '<span class="money">' + Shopify.formatMoney(variant.compare_at_price - variant.price, $('body').data('money-format')) + '</span>)');
       $('.current_price', $product).parent().addClass('sale');
     } else {
+      $('.compare_price .label', $product).addClass('hide');
       $('.was_price', $product).html('');
       $('.savings', $product).html('');
       $('.current_price', $product).parent().removeClass('sale');
@@ -718,6 +725,7 @@ selectCallback = function(variant, selector) {
     $product.find($notifyFormInputs).empty();
   } else {
     // When product is sold out
+    $('.retail_price', $product).removeClass('active');
     var message = variant ? Shopify.theme_settings.sold_out_text : Shopify.translation.unavailable_text;
 
     if (variant){
@@ -734,6 +742,9 @@ selectCallback = function(variant, selector) {
     } else {
       // Add class to quickshop so we know variant is unavailable
       $('.modal_price', $product).addClass('variant-unavailable');
+      $('.compare_price .label', $product).addClass('hide');
+      $('.sale_price .label', $product).addClass('hide');
+
       $('.current_price', $product).html('');
       $('.was_price', $product).html('');
       $('.savings', $product).html('');
@@ -742,6 +753,9 @@ selectCallback = function(variant, selector) {
 
     // If show price setting disabled, hide price, compare at price and savings
     if (!Shopify.theme_settings.display_sold_out_price){
+      $('.compare_price .label', $product).addClass('hide');
+      $('.sale_price .label', $product).addClass('hide');
+
       $('.current_price', $product).html('');
       $('.was_price', $product).html('');
       $('.savings', $product).html('');
@@ -761,7 +775,7 @@ selectCallback = function(variant, selector) {
       $notifyFormInputs.empty();
       $notifyFormInputs.append(notifyFormHTML);
     }
-  }
+  } 
 
   if (Currency.show_multiple_currencies) {
     currencyConverter.convertCurrencies();
