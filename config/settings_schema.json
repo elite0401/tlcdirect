@@ -1283,7 +1283,7 @@
         "options": [
           {
             "value": "product",
-            "label": "Products"
+            "label": "Product"
           },
           {
             "value": "product,page,article",
@@ -2176,6 +2176,31 @@
         "type": "text",
         "id": "disqus_shortname",
         "label": "[DISQUS](http:\/\/help.disqus.com\/en\/articles\/1717111-what-s-a-shortname\/) shortname"
+      }
+    ]
+  },
+  {
+    "name": "Email to friend form",
+    "settings": [
+      {
+        "type": "text",
+        "id": "email_title",
+        "label": "Heading"
+      },
+      {
+        "type": "product",
+        "id": "email_product",
+        "label": "Product"
+      }
+    ]
+  },
+  {
+    "name": "Quiz Popup",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "quiz_title",
+        "label": "Quiz title"
       }
     ]
   }

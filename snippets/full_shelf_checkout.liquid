@@ -1,0 +1,11 @@
+<script>
+window.fullShelfLineItems = [];
+{% for item in checkout.line_items %}
+	var lineItem = {};
+	lineItem.inventoryQuantity = {{item.variant.inventory_quantity | json}};
+    lineItem.fullShelfItems = {{item.variant.metafields.full_shelf_items | json}};
+    lineItem.quantity = {{item.quantity | json}};
+    lineItem.tags = {{item.product.tags | json}};    
+	fullShelfLineItems.push(lineItem);
+{% endfor %} 
+</script>

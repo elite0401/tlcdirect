@@ -16,19 +16,6 @@
 /*============================================================================
   #Sass Mixins
 ==============================================================================*/
-@font-face {
-  font-family: 'Amazone BT';
-  src: url({{'AmazoneBT-Regular.eot' | asset_url }});
-  src: url({{'AmazoneBT-Regular.eot' | asset_url }}) format('embedded-opentype'),
-      url({{'AmazoneBT-Regular.woff2' | asset_url }}) format('woff2'),
-      url({{'AmazoneBT-Regular.woff' | asset_url }}) format('woff'),
-      url({{'AmazoneBT-Regular.ttf' | asset_url }}) format('truetype'),
-      url({{'AmazoneBT-Regular.svg' | asset_url }}) format('svg');
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
-}
-
 .clearfix {
   *zoom: 1;
 }
@@ -85,24 +72,7 @@ footer {
   text-transform: {{ settings.logo_font_style }};
   line-height: 1.2;
 }
-.giftcard-header__logo p{
-  margin: 0;
-  font-family: "Amazone BT";
-  font-size: 22px;
-  text-transform: none;
-  line-height: 1;
-  color: #C0218D;
-    
-}
 
-.giftcard-header__logo strong{
-  font-family: "Amazone BT";
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 1;
-  color: #9D114E;
-  letter-spacing: -0.52px;
-}
 .shop-url {
   display: none;
 }
@@ -112,10 +82,10 @@ footer {
 }
 
 .giftcard__border {
-  /* background-color: #eee;
+  background-color: #eee;
   border-radius: 4px;
   border: 1px solid #e1e1e1;
-  padding: 1em; */
+  padding: 1em;
   animation: container-slide 0.8s ease-in-out;
 }
 
@@ -123,6 +93,8 @@ footer {
   *zoom: 1;
   background-color: #fff;
   color: #666;
+  border: 1px solid #e1e1e1;
+  border-radius: 3px;
   animation: cardslide 0.8s ease-in-out;
 }
 .giftcard__content:after {
@@ -169,27 +141,34 @@ footer {
 
 .giftcard__wrap {
   position: relative;
+  margin: 15px 15px 30px;
 }
 .giftcard__wrap img {
   position: relative;
   display: block;
-  border-radius: 0;
+  border-radius: 10px;
   z-index: 2;
 }
-.giftcard__wrap:before {
+.giftcard__wrap:before, .giftcard__wrap:after {
   content: "";
   position: absolute;
-  width: 90%;
-  height: 90%;
-  border: 1px solid white;
+  width: 0;
+  height: 0;
+  border: 24px solid white;
   z-index: 3;
-  background: transparent;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
-
-
+.giftcard__wrap:before {
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  top: -1px;
+  left: -1px;
+}
+.giftcard__wrap:after {
+  border-top-color: transparent;
+  border-left-color: transparent;
+  bottom: -1px;
+  right: -1px;
+}
 .lt-ie9 .giftcard__wrap:before, .lt-ie9 .giftcard__wrap:after {
   display: none;
 }
@@ -242,31 +221,17 @@ footer {
 
 .giftcard__amount {
   position: absolute;
-  top: 50%;
-  right: auto;
-  color: black;
-  background: white;
-  text-align: center;
+  top: 0;
+  right: 0;
+  color: #fff;
+  font-size: 2.75em;
   line-height: 1.2;
   padding: 15px;
   z-index: 50;
-  left: 51px;
-  transform: translateY(-50%);
 }
 .giftcard__amount strong {
-  font-family: sans-serif;
-  font-size: 48px;
-  font-weight: normal;
-}
-
-.giftcard__amount hr{
-  border-top: 1px solid;
-}
-
-.giftcard__amount p {
-  font-size: 22px;
-  text-transform: uppercase;
-  font-family: sans-serif;
+  display: block;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
 .giftcard__amount--medium {
@@ -327,10 +292,7 @@ footer {
 
 .giftcard__instructions {
   text-align: center;
-  margin: 10px 15px 30px;
-  font-family: 'News Gothic';
-  color: #030303;
-  font-size: 16px;
+  margin: 0 15px 30px;
 }
 
 .giftcard__actions {

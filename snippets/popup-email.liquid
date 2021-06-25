@@ -1,0 +1,20 @@
+<a data-fancybox href="javascript:;" class="capitalize modal-btn" data-src="#email_friend"> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
+<div class="email_friend js-popup" id="email_friend">
+    <div class="heading">
+        <h2 class="text-center">{{settings.email_title}}</h2>
+    </div>
+    <div class="content">
+        <div class="form">
+            {formbuilder:49115}
+        </div>
+        <div class="image">
+            {% assign email_product = all_products[settings.email_product] %}
+            {% render 'image-element' with 
+                image: email_product.featured_image,
+                alt: settings.email_image.alt,
+            %}
+            <p>{{email_product.title}}</p>
+        </div>
+    </div>
+
+</div>

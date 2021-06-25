@@ -18,7 +18,7 @@
   {% endif %}
 {% endfor %}
 
-<div class="product_form init smart-payment-button--{{ show_payment_button }} {% if product.variants.size > 1 or product.options.size > 1 %}product_form_options{% endif %} product_form--{{ settings.product_form_style }}"
+<div class="product_form init smart-payment-button--{{ show_payment_button }} {% if bold_variants_size > 1 or product.options.size > 1 %}product_form_options{% endif %} product_form--{{ settings.product_form_style }}"
       id="product-form-{{ product.id }}"
       data-product-form
       data-options-size="{{ product.options.size }}"
@@ -34,19 +34,6 @@
       >
   {% form 'product', product %}
 
-  
-
-  {% if product.metafields.global.color_product != blank %}
-  <div class="color_links">
-    <div class="option_title">
-      Color
-    </div>
-    <div class="wrapper">
-      {{ product.metafields.global.color_product }}
-    </div>
-  </div>
-  {% endif %}
-
   {% if product.options.size > 1 %}
     <div class="select">
       <select id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}" name="id" class="multi_select">
@@ -55,7 +42,7 @@
         {% endfor %}
       </select>
     </div>
-  {% elsif product.options.size == 1 and product.variants.size > 1 or product.options.size == 1 and product.options[0] != "Title" %}
+  {% elsif product.options.size == 1 and bold_variants_size > 1 or product.options.size == 1 and product.options[0] != "Title" %}
     <div class="select">
       <label>{{ product.options[0] }}</label>
       <select id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}" name="id">
@@ -67,10 +54,10 @@
   {% else %}
     <input type="hidden" name="id" value="{{ variant.id }}" />
   {% endif %}
-
+  <div class="bold_qb_grid" data-variant-id="{{ product.selected_or_first_available_variant.id }}"></div>
   <div id="hulkapps_custom_options_{{ product.id }}"> </div>
 
-  {% if settings.product_form_style == "swatches" and product.variants.size > 1 or settings.product_form_style == "swatches" and product.options[0] != "Title" %}
+  {% if settings.product_form_style == "swatches" and bold_variants_size > 1 or settings.product_form_style == "swatches" and product.options[0] != "Title" %}
     <div class="swatch_options">
       {% for option in product.options %}
         {% render 'product-swatch',
@@ -109,9 +96,6 @@
         <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
       </div>
     {% endif %}
-    {% if product.metafields.global.qty_break_msg != blank %}
-      <p class="qty_break_message">{% render 'qty_break' %}{{ product.metafields.global.qty_break_msg }}</p>
-    {% endif %}
     <div class="purchase-details__buttons purchase-details__spb--{{ show_payment_button }} {% if product.available == false %}product-is-unavailable{% endif %}">
       {% if settings.cart_action == 'reload_page' %}
         <input type="hidden" name="return_to" value="back" />
@@ -135,10 +119,3 @@
   </div>
 {% endform %}
 </div>
-<div class="bottom-content">
-  {% render 'popup-email' %}
-</div>
-<div class="bottom-content">
-  {% render 'popup-quiz' %}
-</div>
-

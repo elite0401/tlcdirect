@@ -7,6 +7,11 @@ $(document).ready(function() {
     wrapAround: true
   });
 
+  $(document).on('click', '.email_friend .content .form .globo-form-app form .footer .description p', function (e) {
+    e.preventDefault();
+    $.fancybox.close();
+  })
+
   $('.image-text-slider').flickity({
       pageDots: false,
       imagesLoaded: true,
@@ -72,5 +77,6 @@ $(document).ready(function() {
       touch: false
     }) 
   })
+  
 });
 

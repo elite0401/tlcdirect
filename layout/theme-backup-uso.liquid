@@ -70,7 +70,6 @@
     {% endif %}
     {{ content_for_header }}
     {% include 'bold-common' %}
-    {%- render 'bold-pr' -%}
     {% render 'social-meta-info' %}
     {% if collection.previous_product %}<link rel="prev" href="{{ collection.previous_product }}">{% endif %}
     {% if collection.next_product %}<link rel="next" href="{{ collection.next_product }}">{% endif %}
@@ -159,7 +158,7 @@
       {% endif %}
 
     </div>
-    {% section 'modals' %}
+
     {{ content_for_layout }}
 
     {% unless template contains 'index' or settings.secondary_newsletter_banner == false %}
@@ -171,9 +170,11 @@
     {% if settings.size_chart != blank and template contains 'product' %}
       {% render 'popup-size-chart' %}
     {% endif %}
+ 
     {% if settings.choose_chart != blank and template contains 'product' %}
       {% render 'popup-choose-chart' %}
     {% endif %}
+
     {% if settings.newsletter_popup %}
       {% render 'popup-newsletter' %}
     {% endif %}
@@ -201,11 +202,7 @@
     <script src="{{ 'utilities.js' | asset_url }}"></script>
     <script src="{{ 'app.js' | asset_url }}"></script>
     <script src="{{ 'custom.js' | asset_url }}"></script>
-
-    {% if template contains 'catalog_single' or template contains 'catalog_multiple' %}
     <script src="{{ 'country_state.js' | asset_url }}"></script>
-    {% endif %}
-   
     {%- if settings.show_multiple_currencies or shop.enabled_currencies.size > 1 -%}
       <script defer src="{{ 'currencies.js' | asset_url }}"></script>
     {%- endif -%}
@@ -251,16 +248,14 @@
     <script>
       {{ settings.custom_scripts }}
     </script>
+
     <script>
       (function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"4052751"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");
       window.uetq = window.uetq || [];
       window.uetq.push('event', '', { 'revenue_value': {{ cart.total_price | money_without_currency }}, 'currency': '{{ shop.currency }}' }); 
     </script>
     <script type="text/javascript" charset="utf-8"> var shappify_customer_tags = {{ customer.tags | json }} </script>
-  
-{% render 'special-offers' %}
-
-</body>
+  </body>
 </html>
 {% endcapture %}
 {% assign content = content | replace_first: '<!DOCTYPE', '!DOCTYPE' | split: ' <' %}

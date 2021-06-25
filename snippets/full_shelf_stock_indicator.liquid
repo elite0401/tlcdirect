@@ -1,0 +1,6 @@
+<div class="full-shelf-stock-indicator" 
+     data-full-shelf-items="{{variant.metafields.full_shelf_items | json | escape}}"
+     data-inventory-quantity="{{variant.inventory_quantity}}"
+     data-line-item-quantity="{{line_item_quantity}}"
+     data-product-tags="{{product.tags | join: ','}}"
+></div>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+    {% include 'qikify-contactform' %}
+    
+    {% comment %} Full Shelf app {% endcomment %}
+    {{'full_shelf.css' | asset_url | stylesheet_tag}}
+    {% comment %} END - Full Shelf app {% endcomment %}
+</head>
+  <body>
+    {{ skip_to_content_link }}
+
+    <header class="banner" data-header role="banner">
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </header>
+
+    {{ order_summary_toggle }}
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main">
+          <header class="main__header" role="banner">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            
+            {% comment %} The Vaan Group - Order Bump (1/2) {% endcomment %}
+            <div id="superbump"></div>
+            {% comment %} END OF The Vaan Group - Order Bump (1/2) {% endcomment %}
+            {% comment %}
+            {{ alternative_payment_methods }}
+            {% endcomment %}
+          </header>
+          <main class="main__content" role="main">
+            {{ content_for_layout }}
+          </main>
+          <footer class="main__footer" role="contentinfo">
+            {{ content_for_footer }}
+          </footer>
+        </div>
+        <aside class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </aside>
+      </div>
+    </div>
+    
+
+
+    {{ tracking_code }}
+    
+    {% comment %} Full Shelf app {% endcomment %}
+    {% render 'full_shelf_checkout' %}
+    <script src="{{'full_shelf.js' | asset_url}}" defer></script>
+    {% comment %} END - Full Shelf app {% endcomment %}
+
+    
+    {% comment %} The Vaan Group - Order Bump (2/2) {% endcomment %}
+    <script src="/apps/superbump/superbump_widget.js"></script>
+    {% comment %} END OF The Vaan Group - Order Bump (2/2) {% endcomment %}
+                
+  </body>
+</html>
