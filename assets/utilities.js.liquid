@@ -1466,6 +1466,70 @@ var quickShop = {
 
     });
 
+    $('body').on('click', '.js-buy-this-look-link', function(e){
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      //Set productData object based on data attributes
+      var productData = {
+        handle: $(this).data('handle'),
+        product_id: $(this).data('id'),
+        single_variant: $(this).attr('data-single-variant'),
+        product_in_collection_url: $(this).data('url'),
+        escaped_title: $(this).data('title').replace('"',""),
+        escaped_vendor: $(this).data('vendor').replace(/\&/g,'%26'),
+        details_text: $(this).data('details-text'),
+        full_description: $(this).data('full-description'),
+        regular_description: $(this).data('regular-description'),
+        feat_img: $(this).data('feat-img'),
+        image_array: quickShop.createImageObjects($(this).data('images')),
+        thumbnail_array: quickShop.createImageObjects($(this).data('thumbnail-images')),
+        collection_handles: $(this).data('collection-handles').trim(',').split(','),
+        money_format: $('body').data('money-format')
+      }
+
+      //Find current product and notify forms
+      var $notifyForm = $(this).next('.js-quickshop-forms__container').find('.notify_form');
+      var $productForm = $(this).next('.js-quickshop-forms__container').find('.product_form');
+      var $buy_this_popup = $(this).parent().find('.js-buy-this-look');
+      $.fancybox.open($buy_this_popup, {
+        baseClass: 'quick-shop__lightbox product-' + productData.product_id,
+        hash: false,
+        infobar : false,
+        toolbar: false,
+        loop: false,
+        smallBtn : true,
+        video: {
+          autoStart: false
+        },
+        touch: false,
+        mobile: {
+          preventCaptionOverlap: false,
+          toolbar: true,
+          buttons: [
+            "close"
+          ]
+        },
+        beforeLoad: function(){
+          $buy_this_popup.find('.quick-shop').each(function () {
+            var $gallery = $(this).find('.quick-shop__gallery .product_gallery');
+            console.log($gallery);
+            $gallery.flickity({
+
+            });
+          })
+        }
+      })
+
+    });
+
+    $('body').on('click', '.js-buy-this-look .js-product_sidebar .content .js-product-item', function (e) {
+      e.preventDefault();
+      var id = $(this).attr('href');
+      console.log(id);
+      $(this).parent().parent().parent().find('.js-product_section .quick-shop').removeClass('active');
+      $(this).parent().parent().parent().find('.js-product_section').find(id).addClass('active');
+    })
+
     //Swatch toggler
     $('.swatch_options input').each(function(){
       if($(this).is(':checked')) {
@@ -1600,6 +1664,7 @@ var quickShop = {
 
     var variantPrice = $('.js-current-price .money').text();
     $('.js-quick-shop-link[data-id=' + productData.product_id + ']').attr('data-initial-modal-price', variantPrice);
+    $('.js-buy-this-look-link[data-id=' + productData.product_id + ']').attr('data-initial-modal-price', variantPrice);
     $('.js-current-price, .js-was-price, .js-savings').empty();
 
   },

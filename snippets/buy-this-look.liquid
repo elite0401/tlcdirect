@@ -1,0 +1,56 @@
+<div class="js-buy-this-look">
+  <div class="js-product-content">
+    {% assign btl_status = false %}
+    {% for tag in product.tags %}
+      {% if tag contains 'BTL:' %}
+        {% assign btl_status = true %}
+      {% endif %}
+    {% endfor %}
+    
+    {% if btl_status %}
+    <div class="js-product_sidebar">
+      <div class="heading">
+        <h2>Shop the look</h2>
+      </div>
+      <div class="content">
+        <a href="#recomment-{{product.id}}" class="js-product-item">
+          {% render 'image-element' with
+            image: product.featured_image
+          %}
+        </a>
+        {% for tag in product.tags %}
+          {% if tag contains 'BTL:' %}
+            {% assign r_product_link = tag | remove: 'BTL:'  %}
+            {% assign r_product = all_products[r_product_link] %}
+            <a href="#recomment-{{r_product.id}}" class="js-product-item">
+              {% render 'image-element' with
+                image: r_product.featured_image
+              %}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="js-product_section">
+      <div class="quick-shop active" id="recomment-{{product.id}}">
+        <div class="quick-shop__container container js-quick-shop-container media-position--{{ settings.product_images_position }}">
+          {% render 'product-content' r_product: product %}
+        </div>
+      </div>
+      {% for tag in product.tags %}
+        {% if tag contains 'BTL:' %}
+          {% assign r_product_link = tag | remove: 'BTL:'  %}
+          {% assign r_product = all_products[r_product_link] %}
+          <div class="quick-shop" id="recomment-{{r_product.id}}">
+            <div class="quick-shop__container container js-quick-shop-container media-position--{{ settings.product_images_position }}">
+              {% render 'product-content' r_product: r_product %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  
+</div>
