@@ -1,0 +1,249 @@
+<div class="one-whole column product-{{ product.id }}">
+    <div class="product product-name--{{ product.handle }} product_section js-product_section is-flex media-position--{{ section.settings.product_images_position }}" data-rv-handle="{{ product.handle }}">
+  
+      <div class="one-half columns medium-down--one-whole product__images">
+        {% render 'product-images',
+                product: product,
+                video_looping: section.settings.video_looping,
+                set_product_height: section.settings.set_product_height
+        %}
+      </div>
+  
+      <div class="one-half columns medium-down--one-whole product__info">
+        {%- assign collection_handles = product.collections | map: 'handle' -%}
+        {%- assign variant = product.selected_or_first_available_variant -%}
+  
+        {% if product.available %}
+          {% if settings.sale_banner_enabled and product.compare_at_price > product.price %}
+            <div class="sale_banner_product">{{ 'collections.general.sale' | t }}</div>
+          {% endif %}
+        {% endif %}
+  
+        {% if collection_handles contains 'new' %}
+          <div class="new_banner_product">{{ 'collections.general.new' | t }}</div>
+        {% endif %}
+        {% if collection_handles contains 'pre-order' %}
+          <div class="preorder_banner_product">{{ 'collections.general.pre_order' | t }}</div>
+        {% endif %}
+  
+        {% if section.settings.display_vendor %}
+          <p class="vendor">
+            <span class="vendor">{{ product.vendor | link_to_vendor }}</span>
+          </p>
+        {% endif %}
+  
+        {% if variant.sku != blank and section.settings.display_sku %}
+          <p class="sku">
+            <span>{{ variant.sku }}</span>
+          </p>
+        {% endif %}
+        <h1 class="product_name">{{ product.title }}</h1>
+        {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
+          <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+        {% endif %}
+        <div class="feature_divider"></div>
+  
+        {% if collection_handles contains 'coming-soon' %}
+          <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
+        {% elsif product.price_varies %}
+          {% for tag in product.tags %}
+            {% if tag contains 'price_variant_title' %}
+              {% assign price_option_name = tag | remove: 'price_variant_title:' %}
+            {% endif %}
+          {% endfor %}
+          {% for product_option in product.options_with_values %} 
+            {% if product_option.name == price_option_name %}
+                {% assign price_option_arr = product_option %}
+            {% endif %}
+          {% endfor %}
+          <div class="modal_price">
+            {% assign variant_price_str = '' %}
+            {% for variant in product.variants %}
+              {% unless variant_price_str contains variant.price %}
+                <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
+                  {% if variant.compare_at_price > variant.price %}
+                    <span class="was_price_variant">
+                        <span class="label">
+                          {% for value in price_option_arr.values %}
+                            {% if variant.title contains value %}
+                              {{value}} : 
+                            {% endif %}
+                          {% endfor %}
+                        </span>
+                        <del>{% render 'price-element', price: variant.compare_at_price %}</del>
+                    </span>
+                  {% endif %}
+                  <span content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+                    {% if variant.compare_at_price > variant.price %}
+                      Sale Price: 
+                    {% else %}
+                      <span class="label">
+                        {% for value in price_option_arr.values %}
+                          {% if variant.title contains value %}
+                            {{value}} : 
+                          {% endif %}
+                        {% endfor %}
+                      </span>
+                    {% endif %}
+                    
+                    <span class="current_price_variant">
+                      {% if variant.price > 0 %}
+                        <span class="money">{% render 'price-element', price: variant.price %}</span>
+                      {% else %}
+                        {{ settings.free_price_text }}
+                      {% endif %}
+                    </span>
+                  </span>
+  
+                  {% if section.settings.display_savings %}
+                    <span class="sale savings">
+                      {% if variant.price < variant.compare_at_price %}
+                        {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price %}{% render 'price-element', price: compare_at -%}</span>)
+                      {% endif %}
+                    </span>
+                {% endif %}
+                </div>
+                {% assign variant_price_str = variant_price_str | append: ',' | append: variant.price %}
+              {% endunless %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="modal_price">
+            {% unless product.available == false and settings.display_price == false %}
+              <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
+                {% for variant_item in product.variants %}
+                  {% if variant_item.id == variant.id %}
+                    {% if variant_item.metafields.retail.price != blank %}
+                      <p id="variant-{{variant_item.id}}" class="retail_price">
+                        <span class="label">Suggested Retail:</span>
+                        <span class="retail money">{% render 'price-element', price: variant_item.metafields.retail.price %}</span>
+                      </p>
+                    {% endif %}
+                  {% else %}
+                    {% if variant_item.metafields.retail.price != blank %}
+                      <p id="variant-{{variant_item.id}}" class="retail_price">
+                        <span class="label">Suggested Retail:</span>
+                        <span class="retail money">{% render 'price-element', price: variant_item.metafields.retail.price %}</span>
+                      </p>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+                
+  
+                {% if variant.price < variant.compare_at_price %}
+                  <p class="compare_price">
+                    <span class="label">Our Price:</span>
+                    <span class="was_price">
+                      
+                        {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price -%}{% render 'price-element', price: compare_at %}</span>)
+                      
+                    </span>
+                  </p>
+                {% endif %}
+  
+                <p class="sale_price">
+                  <span class="label">Sale Price: </span>
+                  <span content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+                    <span class="current_price">
+                      {% if variant.price > 0 %}
+                        <span class="money">{% render 'price-element', price: variant.price %}</span>
+                      {% else %}
+                        {{ settings.free_price_text }}
+                      {% endif %}
+                    </span>
+                  </span>
+                </p>
+                
+                
+                {% if section.settings.display_savings %}
+                  <span class="sale savings">
+                    {% if variant.price < variant.compare_at_price %}
+                      {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price %}{% render 'price-element', price: compare_at -%}</span>)
+                    {% endif %}
+                  </span>
+                {% endif %}
+              </div>
+            {% endunless %}
+            <div class="sold-out__container">
+              <span class="sold_out">{% if variant.available == false %}{{ settings.sold_out_text }}{% endif %}</span>
+            </div>
+          </div>
+        {% endif %}
+  
+        {% if section.settings.product_description_position == "top" %}
+          {% if product.description != blank %}
+            <div class="description">
+              {{ product.description | split: '<!-- split -->' | first }}
+            </div>
+          {% endif %}
+        {% endif %}
+  
+        {% unless collection_handles contains 'coming-soon' %}
+          {% render 'product-form',
+                  context: 'product',
+                  collection_handles: collection_handles
+          %}
+          {% render 'product-notify-me', product: product %}
+        {% endunless %}
+  
+        {% if section.settings.product_description_position == "bottom" %}
+          {% if product.description != blank %}
+            <div class="description bottom">
+              {% assign content_top = product.description | split: '<!-- split -->' | first | replace: '<h2>', '</div><h2>' | replace: '</h2>', '</h2><div class="toggle-content">' | remove_first: '</div>' %}
+              {{ content_top }}
+            </div>
+          {% endif %}
+        {% endif %}
+  
+        {% if section.settings.review_position == "next_to_gallery" %}
+          <div class="shopify-reviews reviewsVisibility--{{ settings.enable_shopify_review_comments }}">
+            <div id="shopify-product-reviews" data-id="{{ product.id }}">{{ product.metafields.spr.reviews }}</div>
+          </div>
+        {% endif %}
+  
+        {% if section.settings.display_collections or section.settings.display_tags or section.settings.display_type %}
+          <div class="product_links">
+            {% if section.settings.display_collections %}
+              <p>
+                <span class="label">{{ 'products.product.collections' | t }}:</span>
+                <span>
+                  {% for col in product.collections %}
+                    <a href="{{ col.url }}" title="{{ col.title }}">{{ col.title }}</a>{% unless forloop.last %},{% endunless %}
+                  {% endfor %}
+                </span>
+              </p>
+            {% endif %}
+  
+            {% if section.settings.display_type %}
+              <p>
+                <span class="label">{{ 'products.product.product_types' | t }}:</span>
+                <span>{{ product.type | link_to_type }}</span>
+              </p>
+            {% endif %}
+  
+            {% if section.settings.display_tags %}
+              <p>
+                {% for tag in product.tags %}
+                  {% if forloop.first %}
+                    <span class="label">{{ 'products.product.tags' | t }}:</span>
+                  {% endif %}
+  
+                  {% unless tag contains 'meta-' %}
+                    <span>
+                      <a href="{{ routes.collections_url }}/{% if collection %}{{ collection.handle }}{% else %}all{% endif %}/{{ tag | handle }}" title="{{ 'products.product.products_tagged' | t: tag: tag }}">{{ tag }}</a>{% unless forloop.last %},{% endunless %}
+                      </span>
+                  {% endunless %}
+                {% endfor %}
+              </p>
+            {% endif %}
+          </div>
+        {% endif %}
+  
+        <div class="meta">
+          {% if section.settings.display_social_buttons %}
+            {% render 'social-buttons', context: 'product' %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>

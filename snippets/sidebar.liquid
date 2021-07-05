@@ -264,6 +264,31 @@
                 <li>{% render 'sidebar-recently-viewed', products_limit: block.settings.sidebar_rv_per %}</li>
               </ul>
             </div>
+          {% elsif block.type =='buy_this_look' %}
+            <h4 class="text-uppercase text-center" >Shop buy look</h4>
+            <ul class="recommend_link">
+              <li class="carousel-cell">
+                <a href="#recomment-{{product.id}}" class="js-product-item" data-product="{{ product | json | escape }}">
+                  {% render 'image-element' with
+                    image: product.featured_image
+                  %}
+                </a>
+              </li>
+              
+              {% for tag in product.tags %}
+                {% if tag contains 'BTL:' %}
+                  {% assign r_product_link = tag | remove: 'BTL:'  %}
+                  {% assign r_product = all_products[r_product_link] %}
+                  <li class="carousel-cell">
+                    <a href="#recomment-{{r_product.id}}" class="js-product-item" data-product="{{ r_product | json | escape }}">
+                      {% render 'image-element' with
+                        image: r_product.featured_image
+                      %}
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
           {% endif %}
         </div>
       {% endfor %}

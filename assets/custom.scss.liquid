@@ -1517,6 +1517,8 @@ div.content {
   
 }
 
+
+
 .shopify-section--article-template{
   
   .banner {
@@ -1682,8 +1684,15 @@ div.content {
         .swatch-element{
           border-color: #979797;
           border-radius: 5px;
+          &:hover{
+            transition: all .2s ease-in;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(63, 63, 68, 0.15);
+            z-index: 2;
+          }
           label{
             padding: 10px 20px;
+            
           }
         }
       }
@@ -2696,6 +2705,81 @@ div[data-product-recommendations-container]{
         button.action {
           max-width: 400px;
           width: 100%;
+        }
+      }
+    }
+  }
+}
+
+#shopify-section-product-sidebar + .has-sidebar-option{
+  width: calc(100% - 240px)!important;
+}
+
+.shopify-section--product-sidebar{
+  width: 240px!important;
+  .sidebar {
+    .sidebar-wrap{
+      .sidebar-block{
+        height: 760px;
+        .recommend_link{
+          width: 760px;
+          transform: rotate(90deg) translate(0px,-100%);
+          transform-origin: left top;
+          padding: 0 60px;
+          height: 200px;
+          @media screen and (max-width: 1200px) {
+            transform: rotate(90deg) translate(30px, -50%);
+          }
+          .flickity-button{
+            opacity: 1;
+            &[disabled]{
+              opacity: 0;
+            }
+            &.previous{
+              right: 0!important;
+              left: auto!important;
+              transform: rotate(180deg) translateY(50%);
+            }
+            &.next{
+              right: auto!important;
+              transform: rotate(180deg) translateY(50%);
+              left: 0;
+              [disabled]{
+                opacity: 0;
+              }
+            }
+            svg{
+              padding: 0;
+              .arrow {
+                fill: #333!important;
+              }
+            }
+          }
+          .carousel-cell {
+            transform: rotate(-90deg);
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            margin-right: 1rem;
+            font-size: 1.4rem;
+            
+            /* selected cell */
+            &.is-nav-selected {
+              background: #ED2;
+            }
+          }
+          
+          .flickity-prev-next-button {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            &.previous{
+              left: -40px;
+            }
+            &.next{
+              right: -40px;
+            }
+          }
         }
       }
     }

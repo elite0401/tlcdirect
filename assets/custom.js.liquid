@@ -22,6 +22,22 @@ $(document).ready(function() {
       adaptiveHeight: true
   });
 
+  $('.shopify-section--product-sidebar .recommend_link').flickity({
+    draggable: false,
+    percentPosition: false,
+    groupCells: "100%",
+    pageDots: false,
+    contain: true
+  });
+
+  $('.shopify-section--product-sidebar .recommend_link a').on('click', function (e) {
+    e.preventDefault();
+    var product_data = $(this).data('product');
+    console.log(product_data);
+  })
+
+
+
   if ($(window).width() < 768) {
     $('.featured-collection-slider').flickity({
       pageDots: true,
