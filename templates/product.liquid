@@ -26,9 +26,18 @@
         {% render 'product__breadcrumb' %}
       </div>
     </div>
-
-    <section class="section--has-sidebar-option is-flex is-flex-wrap has-padding-top">
+    {% assign status = false %}
+    {% for tag in product.tags %}
+      {% if tag contains 'BTL:' %}
+        {% assign status = true %}
+      {% endif %}
+    {% endfor %}
+    
+    <section class="section--has-sidebar-option is-flex is-flex-wrap has-padding-top {% if status %}has-sidebar-option{% endif %}">
+      {% if status %}
       {% section 'product-sidebar' %}
+      {% endif %}
+      
       {% section 'product-template' %}
       {% section 'product-recommendations' %}
     </section>

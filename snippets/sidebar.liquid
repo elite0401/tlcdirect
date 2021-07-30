@@ -268,7 +268,7 @@
             <h4 class="text-uppercase text-center" >Shop buy look</h4>
             <ul class="recommend_link">
               <li class="carousel-cell">
-                <a href="#recomment-{{product.id}}" class="js-product-item" data-product="{{ product | json | escape }}">
+                <a href="{{product.url}}" class="js-product-item">
                   {% render 'image-element' with
                     image: product.featured_image
                   %}
@@ -280,7 +280,7 @@
                   {% assign r_product_link = tag | remove: 'BTL:'  %}
                   {% assign r_product = all_products[r_product_link] %}
                   <li class="carousel-cell">
-                    <a href="#recomment-{{r_product.id}}" class="js-product-item" data-product="{{ r_product | json | escape }}">
+                    <a href="{{r_product.url}}" class="js-product-item">
                       {% render 'image-element' with
                         image: r_product.featured_image
                       %}

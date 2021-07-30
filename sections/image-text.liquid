@@ -87,6 +87,9 @@
                     {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
                   {% endif %}
                 </a>
+                <div class="caption">
+                  {{block.settings.caption_text}}
+                </div>
               </div>
             </div>
             {% if object.settings.carousel == true %}
@@ -348,6 +351,11 @@
           "id": "image",
           "label": "Image",
           "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "richtext",
+          "id": "caption_text",
+          "label": "Caption text"
         },
         {
           "type": "select",

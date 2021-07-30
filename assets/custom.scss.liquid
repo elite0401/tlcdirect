@@ -1598,6 +1598,10 @@ div.content {
 
 .shopify-section--product-template{
   .product__images{
+    @include respond-to("medium-down"){
+      margin: 0 -10px;
+      width: calc(100% + 20px);
+    }
     .product_gallery {
       .gallery-cell{
         @include respond-to("medium-down"){
@@ -2490,6 +2494,26 @@ div[data-product-recommendations-container]{
 
 .image-with-text-container{
   .featured-link--half{
+    position: relative;
+    .caption{
+      bottom: 0;
+      top: auto;
+      left: 0;
+      width: auto;
+      display: table;
+      text-align: left;
+      p{
+        font-size: 14px;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 1.76px;
+        @include font-gothic-bold();
+        strong{
+          font-size: 36px;
+          line-height: 43px;
+        }
+      }
+    }
     .info {
       .button {
         margin-bottom: 10px;
@@ -2710,17 +2734,35 @@ div[data-product-recommendations-container]{
     }
   }
 }
-
-#shopify-section-product-sidebar + .has-sidebar-option{
-  width: calc(100% - 240px)!important;
+.has-sidebar-option{
+  #shopify-section-product-template {
+    width: calc(100% - 240px)!important;
+    @media screen and (max-width: 768px) {
+      width: 100%!important;
+    }
+  }
 }
+
 
 .shopify-section--product-sidebar{
   width: 240px!important;
+  @media screen and (max-width: 768px) {
+    width: 100%!important;
+  }
   .sidebar {
     .sidebar-wrap{
       .sidebar-block{
         height: 760px;
+        @media screen and (max-width: 768px) {
+          height: auto;
+        }
+        h4{
+          @media screen and (max-width: 768px) {
+            border: none;
+            font-size: 16px;
+            text-transform: uppercase!important;
+          }
+        }
         .recommend_link{
           width: 760px;
           transform: rotate(90deg) translate(0px,-100%);
@@ -2729,6 +2771,14 @@ div[data-product-recommendations-container]{
           height: 200px;
           @media screen and (max-width: 1200px) {
             transform: rotate(90deg) translate(30px, -50%);
+           overflow: initial;
+          }
+          @media screen and (max-width: 768px) {
+            transform: none;
+            padding:0;
+            width: 100%;
+            height: auto;
+            transform-origin: none;
           }
           .flickity-button{
             opacity: 1;
@@ -2762,7 +2812,11 @@ div[data-product-recommendations-container]{
             cursor: pointer;
             margin-right: 1rem;
             font-size: 1.4rem;
-            
+            @media screen and (max-width: 768px) {
+              transform: none;
+              width: 100px;
+              height: 100px;
+            }
             /* selected cell */
             &.is-nav-selected {
               background: #ED2;
@@ -2773,6 +2827,9 @@ div[data-product-recommendations-container]{
             width: 40px;
             height: 40px;
             background: transparent;
+            @media screen and (max-width: 768px) {
+              top: -40px;
+            }
             &.previous{
               left: -40px;
             }

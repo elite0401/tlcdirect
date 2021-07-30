@@ -32,8 +32,7 @@ $(document).ready(function() {
 
   $('.shopify-section--product-sidebar .recommend_link a').on('click', function (e) {
     e.preventDefault();
-    var product_data = $(this).data('product');
-    console.log(product_data);
+    location = $(this).attr('href');
   })
 
 
