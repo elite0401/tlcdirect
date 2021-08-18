@@ -265,26 +265,28 @@
               </ul>
             </div>
           {% elsif block.type =='buy_this_look' %}
-            <h4 class="text-uppercase text-center" >Shop buy look</h4>
-            <ul class="recommend_link">
-              <li class="carousel-cell">
-                <a href="{{product.url}}" class="js-product-item">
-                  {% render 'image-element' with
-                    image: product.featured_image
-                  %}
-                </a>
-              </li>
-              
+            <h4 class="text-uppercase text-center" >Shop the look</h4>
+            <ul class="recommend_link">              
               {% for tag in product.tags %}
                 {% if tag contains 'BTL:' %}
-                  {% assign r_product_link = tag | remove: 'BTL:'  %}
+                  {% assign r_product_handle = tag | remove: 'BTL:'  %}
+                  {% assign r_product_link = r_product_handle | split: ':' | first %}
+                  {% assign r_product_variant = r_product_handle | split: ':' | last | abs %}
                   {% assign r_product = all_products[r_product_link] %}
                   <li class="carousel-cell">
-                    <a href="{{r_product.url}}" class="js-product-item">
-                      {% render 'image-element' with
-                        image: r_product.featured_image
-                      %}
-                    </a>
+                    {% assign selected_or_first_available_variant = product.selected_or_first_available_variant %}
+                    {% for r_variant in r_product.variants %}
+                      {% if r_variant.id == r_product_variant %}
+                        {% assign selected_or_first_available_variant = r_variant %}
+                      {% endif %}
+                    {% endfor %}
+                    
+                    {% render 'sidebar-product-thumbnail',
+                      product: r_product,
+                      variant: selected_or_first_available_variant,
+                      products_per_row: 1,
+                      sidebar: true
+                    %}
                   </li>
                 {% endif %}
               {% endfor %}

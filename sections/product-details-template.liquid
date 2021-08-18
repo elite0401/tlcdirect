@@ -51,7 +51,7 @@
 
           {% if variant.sku != blank and section.settings.display_sku %}
             <p class="sku">
-              <span>{{ variant.sku }}</span>
+              <span>{{ variant.sku | split: " " | first }}</span>
             </p>
           {% endif %}
           <h1 class="product_name">{{ product.title }}</h1>

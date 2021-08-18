@@ -13,18 +13,27 @@
         <h2>Shop the look</h2>
       </div>
       <div class="content">
-        <a href="#recomment-{{product.id}}" class="js-product-item">
-          {% render 'image-element' with
-            image: product.featured_image
-          %}
-        </a>
         {% for tag in product.tags %}
           {% if tag contains 'BTL:' %}
-            {% assign r_product_link = tag | remove: 'BTL:'  %}
+            {% assign r_product_link = tag | remove: 'BTL:' | split: ':' | first %}
+            {% assign r_variant_id = tag | remove: 'BTL:' | split: ':' | last | abs %}
+
             {% assign r_product = all_products[r_product_link] %}
+            {% assign selected_or_first_available_variant = r_product.selected_or_first_available_variant %}
+            {% for r_variant in r_product.variants %}
+              {% if r_variant.id == r_variant_id %}
+                {% assign selected_or_first_available_variant = r_variant %}
+              {% endif %}
+            {% endfor %}
+            {% if selected_or_first_available_variant.featured_image != blank %}
+              {% assign image = selected_or_first_available_variant.featured_image %}
+            {% else %}
+              {% assign image = r_product.featured_media.preview_image %}
+            {% endif %}
             <a href="#recomment-{{r_product.id}}" class="js-product-item">
               {% render 'image-element' with
-                image: r_product.featured_image
+                image: image,
+                alt: image.alt
               %}
             </a>
           {% endif %}
@@ -33,7 +42,7 @@
     </div>
     {% endif %}
 
-    <div class="js-product_section">
+    <div class="js-product_content">
       <div class="quick-shop active" id="recomment-{{product.id}}">
         <div class="quick-shop__container container js-quick-shop-container media-position--{{ settings.product_images_position }}">
           {% render 'product-content' r_product: product %}
@@ -41,13 +50,16 @@
       </div>
       {% for tag in product.tags %}
         {% if tag contains 'BTL:' %}
-          {% assign r_product_link = tag | remove: 'BTL:'  %}
-          {% assign r_product = all_products[r_product_link] %}
-          <div class="quick-shop" id="recomment-{{r_product.id}}">
-            <div class="quick-shop__container container js-quick-shop-container media-position--{{ settings.product_images_position }}">
-              {% render 'product-content' r_product: r_product %}
+          {% assign r_product_link = tag | remove: 'BTL:' | split: ':' | first  %}
+          {% if r_product_link != product.handle %}
+            {% assign r_product = all_products[r_product_link] %}
+            <div class="quick-shop" id="recomment-{{r_product.id}}">
+              <div class="quick-shop__container container js-quick-shop-container media-position--{{ settings.product_images_position }}">
+                {% render 'product-content' r_product: r_product %}
+              </div>
             </div>
-          </div>
+          {% endif %}
+          
         {% endif %}
       {% endfor %}
     </div>

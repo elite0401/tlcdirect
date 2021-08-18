@@ -1,0 +1,57 @@
+{%- assign secondaryImage = product.media[1] -%}
+{%- assign collection_handles = product.collections | map: 'handle' -%}
+
+{% if product.featured_media.preview_image.alt contains 'youtube' or image.alt contains 'vimeo' %}
+  {%- assign alt_text = product.title -%}
+{% else %}
+  {%- assign alt_text = product.featured_image.alt -%}
+{% endif %}
+
+{% style %}
+  .shopify-model-viewer-ui model-viewer {
+    --progress-bar-height: 2px;
+    --progress-bar-color: $product-media-fill-color;
+  }
+{% endstyle %}
+
+<div class="
+    {% render 'column-width', value: products_per_row %}
+    column
+    {% if settings.mobile_products_per_row == '1' %}
+      medium-down--one-half small-down--one-whole
+    {% else %}
+      medium-down--one-half small-down--one-half
+    {% endif %}
+    thumbnail
+    {% if settings.quick_shop_enabled %}
+      quick-shop-style--{{ settings.quick_shop_style }}
+    {% endif %}
+    product-{{ product.id }}"
+    {% if settings.pagination_type == 'load_more_button' %}data-load-more--grid-item{% endif %}>
+  <div class="product-wrap">
+    <div class="relative product_image">
+      <a class="product-link" href="{{ product.url | within: collection }}"></a>
+        
+        {% if variant.featured_image != blank %}
+          {% assign image = variant.featured_image %}
+        {% else %}
+          {% assign image = product.featured_media.preview_image %}
+        {% endif %}
+        <div class="image__container">
+          {% render 'image-element',
+            image: image,
+            alt: image.alt,
+            object_fit: align_height,
+            max_height: collection_height
+          %}
+        </div>
+        
+      {% render 'sidebar-product-details', product: product, variant: variant %}
+    </div>
+    {% render 'sidebar-product-details',
+        product: product,
+        variant: variant,
+        collection_handles: collection_handles
+    %}
+  </div>
+</div>

@@ -11,6 +11,7 @@
 {% assign variant = product.selected_or_first_available_variant %}
 {% endif %}
 
+{{selected_variant.title}}
 {%- assign checkout_url = '/checkout' -%}
   {% for locale in shop.enabled_locales %}
     {% if locale.primary == true %}
@@ -37,9 +38,7 @@
       >
   {% form 'product', product %}
 
-  {% if product.metafields.global.qty_break_msg != blank %}
-  <p><strong style="color: #BA0C2F;">{{ product.metafields.global.qty_break_msg }}</strong></p>
-  {% endif %}
+  
 
   {% if product.metafields.global.color_product != blank %}
   <div class="color_links">
@@ -74,23 +73,6 @@
   {% endif %}
 
   <div id="hulkapps_custom_options_{{ product.id }}"> </div>
-
-  {% if product.metafields.global.color_html != blank %}
-  <div class="static-colors">
-    {{ product.metafields.global.color_html }}
-  </div>
-  {% endif %}
-  {% if settings.product_form_style == "swatches" and product.variants.size > 1 or settings.product_form_style == "swatches" and product.options[0] != "Title" %}
-    <div class="swatch_options">
-      {% for option in product.options %}
-        {% render 'product-swatch',
-                option: option,
-                product: product
-        %}
-      {% endfor %}
-    </div>
-  {% endif %}
-
   {% if product.available %}
     {% if settings.display_inventory_left %}
       <div class="items_left">
@@ -130,9 +112,9 @@
       {% endif %}
 
       {% capture add_to_cart_label %}{% if collection_handles contains 'pre-order' %}{{ 'collections.general.pre_order' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}{% endcapture %}
-      <button type="{% if settings.cart_action == 'ajax' %}button{% else %}submit{% endif %}" name="add" class="{% if settings.cart_action == 'ajax' %} ajax-submit {% endif %}action_button add_to_cart {% if show_payment_button %} action_button--secondary {% endif %} {% if product.available == false %}disabled{% endif %}" data-label={{ add_to_cart_label | json }}>
+      <button type="{% if settings.cart_action == 'ajax' %}button{% else %}submit{% endif %}" name="add" class="{% if settings.cart_action == 'ajax' %} ajax-submit {% endif %}action_button add_to_cart {% if show_payment_button %} action_button--secondary {% endif %} {% if variant.available == false %}disabled{% endif %}" data-label={{ add_to_cart_label | json }}>
         <span class="text">
-          {% if product.available %}{{ add_to_cart_label }}{% else %}{{ settings.sold_out_text }}{% endif %}
+          {% if variant.available %}{{ add_to_cart_label }}{% else %}{{ settings.sold_out_text }}{% endif %}
         </span>
         <svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" class="checkmark">
           <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
@@ -145,10 +127,3 @@
   </div>
 {% endform %}
 </div>
-<div class="bottom-content">
-  {% render 'popup-email' %}
-</div>
-<div class="bottom-content">
-  {% render 'popup-quiz' %}
-</div>
-

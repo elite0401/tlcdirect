@@ -26,7 +26,7 @@
               {% else %}
                 {% render 'image-element',
                         image: product.media[1].preview_image,
-                        alt: alt_text,
+                        alt: product.media[1].preview_image.alt,
                         additional_classes: 'secondary lazypreload secondary-media-hidden'
                 %}
               {% endif %}

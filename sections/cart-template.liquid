@@ -2,7 +2,7 @@
 ** Cart page - default view **
 - Template section
 {% endcomment %}
-
+{%- include 'bold-cart' -%}
 <section class="section">
   <a name="pagecontent" id="pagecontent"></a>
   <div class="container content">
@@ -32,6 +32,7 @@
             {%- assign total_saving = 0 -%}
 
             {% for item in cart.items %}
+              {%- include 'bold-cart-item' with item -%}
               {% if item.variant.compare_at_price > item.variant.price %}
                 {%- assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity -%}
                 {%- assign total_saving = saving | plus: total_saving -%}
@@ -51,7 +52,10 @@
 
                 <div class="eight-tenths columns medium-down--one-whole cart_content_info cart__item--content">
                   <h3 class="cart__item--title">
-                    <a href="{{ item.url }}">{{ item.product.title }}</a>
+                    <a href="{{ item.url }}">{{ item.product.title }}
+                      <span class="saso-cart-item-discount-notes" data-key="{{item.key}}"></span>
+                      <span class="saso-cart-item-upsell-notes" data-key="{{item.key}}"></span>
+                                </a>
                   </h3>
 
                   {% unless item.product.has_only_default_variant or item.variant.title contains "Title" %}
@@ -145,7 +149,7 @@
 
               <p class="cart_subtotal js-cart_subtotal">
                 <span class="right">
-                  <span class="money">{% render 'price-element', price: cart.total_price %}</span>
+                  <span class="money" data-key="{{item.key}}" data-cart-total>{{ cart.total_price | money }}</span>
                 </span>
                 <span>{{ 'cart.general.subtotal' | t }}</span>
               </p>
@@ -224,6 +228,12 @@
     </div>
   {% endfor %}
 </div>
+
+{% comment %}Full Shelf app{% endcomment %}
+<script src="{{'full_shelf.js' | asset_url}}" defer></script>
+{{'full_shelf.css' | asset_url | stylesheet_tag}}
+{% comment %}END - Full Shelf app{% endcomment %}
+
 
 {% schema %}
   {

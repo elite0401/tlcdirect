@@ -1526,8 +1526,8 @@ var quickShop = {
       e.preventDefault();
       var id = $(this).attr('href');
       console.log(id);
-      $(this).parent().parent().parent().find('.js-product_section .quick-shop').removeClass('active');
-      $(this).parent().parent().parent().find('.js-product_section').find(id).addClass('active');
+      $(this).parent().parent().parent().find('.js-product_content .quick-shop').removeClass('active');
+      $(this).parent().parent().parent().find('.js-product_content').find(id).addClass('active');
     })
 
     //Swatch toggler
@@ -1649,12 +1649,12 @@ var quickShop = {
     var $carousel = $('.js-gallery-carousel');
 
     $('.js-gallery-carousel .gallery-cell').off('click');
-
+    $gallery.flickity('destroy');
     //Remove image slides from gallery
-    $gallery.flickity( 'remove', $('.gallery-cell', $gallery));
+    $gallery.find('.gallery-cell').remove();
 
     //Destroy sliders when modal closes
-    $gallery.flickity('destroy');
+    
     if ($carousel.hasClass('flickity-enabled')){
       $carousel.flickity( 'remove', $('.gallery-cell', $carousel) );
       $carousel.flickity('destroy');

@@ -6,5 +6,5 @@ price: <product price>
 {% if settings.currency_format == 'money_with_currency_format' %}
   {{ price | money_with_currency }}
 {% else %}
-  {{ price | money }}
+<span class="money" data-product-id="{{ product.id }}">{{ price | money }}</span>
 {% endif %}

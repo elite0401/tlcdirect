@@ -39,13 +39,13 @@
                   srcset="data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='{{ media.width }}'%20height='{{ media.height }}'></svg>"
                   />
           {% else %}
-            <img src="{{ image | img_url: 'master' }}" />
+            <img src="{{ image | img_url: 'master' }}" alt="{{ image_alt | escape }}" />
           {% endif %}
         </div>
       {% else %}
         {% render 'image-element',
           image: product.featured_media.preview_image,
-          alt: alt_text,
+          alt: product.featured_media.preview_image.alt,
           object_fit: align_height,
           max_height: collection_height
         %}
@@ -57,7 +57,7 @@
     <div class="gallery-cell">
       {% render 'image-element',
               image: product.featured_media.preview_image,
-              alt: alt_text,
+              alt: product.featured_media.preview_image.alt,
               object_fit: align_height,
               max_height: collection_height
       %}

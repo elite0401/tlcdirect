@@ -459,6 +459,12 @@ $(function() {
         line: cartItem.lineID
       },
       success: function (data) {
+        
+        if(typeof window.BOLD !== 'undefined'
+           && typeof window.BOLD.common !== 'undefined'
+           && typeof window.BOLD.common.cartDoctor !== 'undefined') {
+          data = window.BOLD.common.cartDoctor.fix(data);
+        }
 
         var cartItemsArray = data.items;
         var lineIDIndex = cartItem.lineID - 1;
@@ -520,6 +526,10 @@ $(function() {
         } else {
           refreshCart(data);
         }
+        
+        if(typeof BOLD === 'object' && BOLD.common && BOLD.common.eventEmitter && typeof BOLD.common.eventEmitter.emit === 'function') {
+          BOLD.common.eventEmitter.emit("BOLD_COMMON_cart_loaded");
+        }
       }
     });
   }
@@ -538,6 +548,14 @@ $(function() {
   }
 
   function refreshCart(cart) {
+    // Bold:PRE
+    if (typeof window.BOLD !== 'undefined'
+    && typeof window.BOLD.common !== 'undefined'
+    && typeof window.BOLD.common.cartDoctor !== 'undefined') {
+    // NOTE: "cart" should be the variable containing the cart JSON data
+    cart = window.BOLD.common.cartDoctor.fix(cart);
+    }
+    // Bold:PRE
     $(".cart_count").empty();
     $cartBtn = $(".cart_count");
     var value = $cartBtn.text() || '0';
@@ -641,12 +659,20 @@ $(function() {
             var itemPrice = Shopify.formatMoney(item.final_price, $('body').data('money-format')) + ' </span><span class="money was_price">' + Shopify.formatMoney(item.price, $('body').data('money-format')) + '</span>';
             cart_items_html += '<span class="money sale">' + itemPrice + '</strong>';
           } else {
-            var itemPrice = Shopify.formatMoney(item.price, $('body').data('money-format'));
-            cart_items_html += '<span class="money">' + itemPrice + '</span></strong>';
+            if (itemDiscounts.length > 0) {
+              var itemPrice = Shopify.formatMoney(item.final_price - item.total_discount, $('body').data('money-format')) + ' </span><span class="money was_price">' + Shopify.formatMoney(item.price, $('body').data('money-format')) + '</span>';
+              cart_items_html += '<span class="money sale">' + itemPrice + '</strong>';
+            } else {
+              var itemPrice = Shopify.formatMoney(item.price, $('body').data('money-format'));
+              cart_items_html += '<span class="money">' + itemPrice + '</span></strong>';
+            }
           }
         }
 
-        if (item.price > item.final_price) {
+        /*if (item.price > item.final_price) {
+          cart_items_html += discountMessage;
+        }*/
+        if (itemDiscounts.length > 0) {
           cart_items_html += discountMessage;
         }
 
@@ -768,6 +794,13 @@ $(function() {
           $addToCartBtn.find('span').removeClass("fadeInDown").addClass('animated zoomOut');
         },
         success: function(itemData) {
+          
+          if(typeof window.BOLD !== 'undefined'
+             && typeof window.BOLD.common !== 'undefined'
+             && typeof window.BOLD.common.cartDoctor !== 'undefined') {
+            itemData = window.BOLD.common.cartDoctor.fixItem(itemData);
+          }
+          
           $addToCartBtn.find('.checkmark').addClass('checkmark-active');
 
           window.setTimeout(function(){
@@ -807,6 +840,10 @@ $(function() {
               }, 500)
             }
           });
+          
+          if(typeof BOLD === 'object' && BOLD.common && BOLD.common.eventEmitter && typeof BOLD.common.eventEmitter.emit === 'function') {
+            BOLD.common.eventEmitter.emit("BOLD_COMMON_cart_loaded");
+          }
         },
         error: function(XMLHttpRequest) {
           var response = eval('(' + XMLHttpRequest.responseText + ')');

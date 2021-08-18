@@ -48,14 +48,14 @@
 
     {% if variant.sku != blank and section.settings.display_sku %}
       <p class="sku">
-        <span>{{ variant.sku }}</span>
+        <span>{{ variant.sku | split: " " | first }}</span>
       </p>
     {% endif %}
     <h1 class="product_name">{{ product.title }}</h1>
     {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
       <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
     {% endif %}
-
+    
     {% if collection_handles contains 'coming-soon' %}
       <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
     {% else %}

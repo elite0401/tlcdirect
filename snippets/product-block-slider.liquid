@@ -39,14 +39,14 @@
                 {% if product.selected_or_first_available_variant.image %}
                   {% render 'image-element',
                           image: product.selected_or_first_available_variant.image,
-                          alt: alt_text,
+                          alt: product.selected_or_first_available_variant.image.alt,
                           object_fit: settings.align_height,
                           max_height: settings.collection_height
                   %}
                 {% else %}
                   {% render 'image-element',
                           image: product.featured_media.preview_image,
-                          alt: alt_text,
+                          alt: product.featured_media.preview_image.alt,
                           object_fit: settings.align_height,
                           max_height: settings.collection_height
                   %}
@@ -65,7 +65,7 @@
                   {% else %}
                     {% render 'image-element',
                             image: product.media[1].preview_image,
-                            alt: alt_text,
+                            alt: product.media[1].preview_image.alt,
                             additional_classes: 'secondary lazypreload secondary-media-hidden'
                     %}
                   {% endif %}

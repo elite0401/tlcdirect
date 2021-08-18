@@ -65,9 +65,9 @@ Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
         {% endif %}
 
         {% if is_color %}
-        {% assign value_handle = value | handle %}
+          {% assign value_handle = value | handle %}
           {% assign color_name = product.vendor | handle | append: '-' | append: value_handle %}
-          <label {% if variant.featured_image %}data-image="{{ variant.featured_image | product_img_url: '600x' }}"{% endif %} for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" style="background-image: url({{ color_name | append: '.' | append: file_extension | asset_img_url: '50x' | prepend: 'https:' }}); background-color: {{ value | split: ' ' | last | handle }};">
+          <label {% if variant.featured_image %}data-image="{{ variant.featured_image | product_img_url: '600x' }}"{% endif %} for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" style="background-image: url({{ color_name | append: '.' | append: file_extension | file_img_url | prepend: 'https:' }}); background-color: {{ value | split: ' ' | last | handle }};">
             <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" aria-label="sold out" alt="sold out"/>
           </label>
         {% else %}

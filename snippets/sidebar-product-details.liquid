@@ -1,31 +1,17 @@
 {% if settings.thumbnail_hover_enabled or settings.quick_shop_enabled and settings.quick_shop_style == 'popup' %}
   <div class="thumbnail-overlay">
-    <a href="{{ product.url | within: collection }}" itemprop="url" class="hidden-product-link">
-      {{ product.title }}
-    </a>
-
     <div class="info">
-      {% if settings.thumbnail_hover_enabled %}
-        {% render 'product-info',
-                product: product,
-                collection_handles: collection_handles
-        %}
-      {% endif %}
       {% for tag in product.tags %}
         {% if tag contains 'BTL:' %}
           {% assign by_this_look_status = true  %}
         {% endif %}
       {% endfor %}
       {% if settings.quick_shop_enabled and settings.quick_shop_style == 'popup' %}
-        {% if by_this_look_status == true%}
-          {% unless template contains 'product'  %}
-            {% render 'buy-this-look-button', product: product %}
-          {% else %}
-            {% render 'quick-shop-button', product: product %}
-          {% endunless %}
+        {% unless template contains 'product'  %}
+          {% render 'buy-this-look-button', product: product %}
         {% else %}
-          {% render 'quick-shop-button', product: product %}
-        {% endif %}
+          {% render 'sidebar-quick-shop-button', product: product, r_variant: variant %}
+        {% endunless %}
       {% endif %}
     </div>
   </div>

@@ -11,7 +11,7 @@
             {% assign email_product = all_products[settings.email_product] %}
             {% render 'image-element' with 
                 image: email_product.featured_image,
-                alt: settings.email_image.alt,
+                alt: email_product.featured_image.alt,
             %}
             <p>{{email_product.title}}</p>
         </div>

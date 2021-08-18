@@ -35,7 +35,7 @@
 	<table><tr>
     {{#products}}
     <td class="saso-product-container" data-product-id="{{id}}" data-variant-id="{{variants.0.id}}">
-        <div class="saso-image"><a href="/products/{{handle}}" class="saso-crosssell-nav" data-product-id="{{id}}"><img src="{{image.src}}" /></a></div>
+        <div class="saso-image"><a href="/products/{{handle}}" class="saso-crosssell-nav" data-product-id="{{id}}"><img src="{{image.src}}" alt="{{title}}" /></a></div>
         <div class="saso-title">{{{title}}}</div>
         <div class="saso-variants-container" style="{{{variants_style}}}">{{{variants_select}}}</div>
         <span class="saso-price">{{{variants.0.price}}}</span>
@@ -66,7 +66,7 @@
 
       <div class="saso-product-container" data-product-id="{{id}}" data-variant-id="{{variants.0.id}}" data-quantity="{{quantity}}">
           <div class="saso-image">
-          	<a href="/products/{{handle}}" class="saso-crosssell-nav" data-product-id="{{id}}"><img src="{{image.src}}" /></a>
+          	<a href="/products/{{handle}}" class="saso-crosssell-nav" data-product-id="{{id}}"><img src="{{image.src}}" alt="{{title}}" /></a>
             <div class="saso-quantity-container">
           	{{{quantityx}}}
       		</div>

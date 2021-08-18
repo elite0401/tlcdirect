@@ -1838,7 +1838,7 @@ div.content {
     border: none;
     display: block;
     padding-bottom: 50px!important;
-    .js-product_section{
+    .js-product_content{
       .product_gallery {
         .gallery-cell{
           @include respond-to("medium-down"){
@@ -2089,7 +2089,7 @@ div.content {
           margin-bottom: 15px;
         }
       }
-      .js-product_section {
+      .js-product_content {
         width: 100%;
         min-width: calc(100% - 190px);
 
@@ -2168,6 +2168,10 @@ div.content {
     
     .content{
       .octane-ai-quiz-rendered{
+        min-height: auto!important;
+        & > div{
+          min-height: 69vh!important;
+        }
         [data-element="oct-quiz-multiplechoice oct-quiz-media"]{
           
           ul{
@@ -2820,6 +2824,22 @@ div[data-product-recommendations-container]{
             /* selected cell */
             &.is-nav-selected {
               background: #ED2;
+            }
+            .thumbnail{
+              .product-link{
+                display: none;
+              }
+              @media screen and (max-width: 768px) {
+                margin: 0;
+                width: 100%;
+                .product-link{
+                  display: block;
+                  position: absolute;
+                  width: 100%;
+                  z-index: 100;
+                  height: 100%;
+                }
+              }
             }
           }
           
