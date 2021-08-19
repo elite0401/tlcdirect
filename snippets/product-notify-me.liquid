@@ -12,7 +12,7 @@
             {{ settings.notify_me_richtext }}
           {% endif %}
           <div class="notify_form__inputs {% if customer %}customer--true{% endif %}"  data-url="{{ canonical_url }}">
-            {% if product.variants.size == 1 and product.available == false %}
+            {% if bold_variants_size == 1 and product.available == false %}
               <input required type="email" class="notify_email" name="contact[email]" id="contact[email]" placeholder="{{ 'products.notify_form.email' | t }}" value="{% if customer %}{{ customer.email }}{% else %}{{ contact.fields.email }}{% endif %}" />
 
               <input type="hidden" name="challenge" value="false" />

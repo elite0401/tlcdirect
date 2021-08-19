@@ -128,7 +128,7 @@
             <div class="thumbnails">
               {% for block in section.blocks %}
                 <div class="thumbnail">
-                  {% include 'image-element' with 
+                  {% render 'image-element' with 
                     image: block.settings.image,
                     alt: block.settings.title
                   %}

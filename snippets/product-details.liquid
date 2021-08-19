@@ -33,7 +33,7 @@
 
 <div class="banner_holder">
   {% if product.available %}
-    {% if settings.sale_banner_enabled and product.compare_at_price > product.price %}
+    {% if settings.sale_banner_enabled and bold_compare_at_price > bold_price %}
       <div class="sale_banner thumbnail_banner">
         {{ 'collections.general.sale' | t }}
       </div>

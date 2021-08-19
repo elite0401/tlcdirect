@@ -1,7 +1,7 @@
 {% comment %}
 ** Product snippet - only used as AJAX reference for recently viewed **
 {% endcomment %}
-
+{%- include 'bold-product' with product, hide_action: 'break', output: 'none' -%}
 <div class="js-recently-viewed-product">
   <div class="product-wrap {% if settings.collection_secondary_image != blank and product.media[1] != blank %}has-secondary-media-swap{% endif %}">
       <div class="relative product_image">
@@ -26,20 +26,20 @@
               {% else %}
                 {% render 'image-element',
                         image: product.media[1].preview_image,
-                        alt: product.media[1].preview_image.alt,
+                        alt: alt_text,
                         additional_classes: 'secondary lazypreload secondary-media-hidden'
                 %}
               {% endif %}
             {% endif %}
           </div>
           </a>
-        {% render "product-details", product: product %}
+        {% include "product-details", product: product %}
       </div>
       <a class="product-info__caption {% if settings.thumbnail_hover_enabled %}hidden{% endif %}" href="{{ product.url | within: collection }}">
-        {% render "product-info", product: product %}
+        {% include "product-info", product: product %}
       </a>
       </div>
-    {% render 'collection-swatch', product: product %}
+    {% include 'collection-swatch', product: product %}
   </div>
 </div>
 <div class="js-recommended-products"></div>

@@ -167,14 +167,17 @@
     </div>
 
     {% comment %} Check to see if sidebar should be enabled {% endcomment %}
-    {% if section.blocks.size > 0 and collection.handle != 'types' and collection.handle != 'vendors' %}
+    {% if section.blocks.size > 0 and collection.handle != 'types' and collection.handle != 'vendors' and collection.handle contains 'wigs' %}
       {%- assign sidebar = true -%}
     {% else %}
       {%- assign sidebar = false -%}
     {% endif %}
 
     <div class="content-wrapper is-flex is-flex-wrap">
-      {% render 'sidebar' %}
+      {% if collection.handle contains 'wigs' %}
+      {% render 'collection-sidebar' %}
+      {% endif %}
+      
 
       <div class="has-sidebar-option sidebar-enabled--{{ sidebar }}">
     
@@ -187,7 +190,7 @@
             {% else %}
               {%- assign products_per_row = section.settings.products_per_row -%}
 
-              {% render 'product-loop',
+              {% include 'product-loop',
                       paginate: paginate,
                       products: products,
                       products_per_row: products_per_row,

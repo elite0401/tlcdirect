@@ -1,3 +1,4 @@
+{%- include 'bold-cart' -%}
 {% comment %}
 ** Cart page - default view **
 - Template section
@@ -32,7 +33,8 @@
             {%- assign total_saving = 0 -%}
 
             {% for item in cart.items %}
-              {%- include 'bold-cart-item' with item -%}
+{%- include 'bold-cart-item' with item -%}
+              <script type="application/json" class="bold-product-json">{{ item.product | json }}</script>
               {% if item.variant.compare_at_price > item.variant.price %}
                 {%- assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity -%}
                 {%- assign total_saving = saving | plus: total_saving -%}

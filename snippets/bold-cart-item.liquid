@@ -1,20 +1,25 @@
-
 <!-- bold-cart-item.liquid -->
 {% comment %} Last updated 2018-May-14 {% endcomment %}
 {% capture bold_cart_item_liquid %}
 {% comment %}
 BOLD-CART-ITEM.LIQUID - Universal Bold Cart Updater
 This file creates liquid variables to assist in updating line items in cart.liquid.
+
 USED BY: Product Options, Recurring Orders, Product Builder
 REQUIRES: bold.css
+
 To use this file:
 * Include this file immediately after the start of the item loop in the cart.
 	Example: {% include 'bold-cart-item' with item %}
+
+
 * Make the following replacements.
 	bold_item_price         replaces	item.price
 	bold_item_line_price    replaces	item.line_price
+
 * Follow the install instructions for your app to see where these variables need to be inserted
   (See bold-cart.liquid for additional installation requirements)
+
   PRODUCT OPTIONS
     {{ bold_row_class }}         inserted	Inside the class attribute of the first row after  "for item in cart.items"
     {{ bold_row_data }}          inserted	Inside the first row tag, outside of any other attributes
@@ -25,10 +30,12 @@ To use this file:
     {{ bold_qty_attr }}          inserted	Inside the quantity box input tag, outside of any other attributes
     {{ bold_item_properties }}   inserted	Placed where you want the selected options to display, usually shortly after the {{ item.title }}
     {{ bold_qty_button_attr }} 	 inserted	Inside any +/- buttons on the cart.liquid page (if they exist)
+
   RECURRING ORDERS
     {{ bold_remove_class }}      inserted	Inside the class attribute of the remove button
     {{ bold_recurring_desc }}    inserted	Placed where you want the recurring orders description to appear, usually shortly after the {{ item.title }}
     (See bold-cart.liquid for additional installation requirements)
+
   PRODUCT BUILDER
     {{ bold_row_class }}         inserted	Inside the class attribute of the first row after  "for item in cart.items"
     {{ bold_row_data }}          inserted	Inside the first row tag, outside of any other attributes
@@ -42,14 +49,18 @@ To use this file:
     {{ bold_builder_img_src }} inserted	Wrap the image tag with {% if bold_builder_img_src != blank %}<img src="{{ bold_builder_img_src }}" alt="{{ bold_builder_img_alt }}" />{% else %} <!-- Original Image Code --> {% endif %}
     {{ bold_builder_img_alt }} inserted	See bold_builder_image_src above
     {{ bold_builder_href }}      replaces	item.url (Some themes use item.product.url or item.variant.url instead)
+
   BOLD D&H
     {{ bold_qty_attr }}          inserted       Inside the quantity box input tag, outside of any other attributes
+
   BUY THE MEASURE
     {{ bold_qty_class }}         inserted       Inside the class attribute of the quantity box
+
   QUANTITY BREAKS, CUSTOMER PRICING, PRODUCT BUNDLES
     {{ bold_row_data }}          inserted	Inside the first row tag, outside of any other attributes
     ** Inventory control also requires bold-variant-inventory.liquid and bold-base-variant.liquid
     (See bold-cart.liquid for additional installation requirements)
+
 {% endcomment %}
 
 {% comment %} SET UP DEFAULTS BEFORE ANY APP INTERFERENCE {% endcomment %}
@@ -340,7 +351,24 @@ To use this file:
         BOLD = BOLD || {};
         BOLD.recurring_orders = BOLD.recurring_orders || {};
         BOLD.recurring_orders.convertible_products = BOLD.recurring_orders.convertible_products || {};
-        BOLD.recurring_orders.convertible_products['{{bold_item.properties._convertible_product_handle}}'] = {{ all_products[bold_item.properties._convertible_product_handle] | json }};
+        var convertible_handle = {{bold_item.properties._convertible_product_handle | json }};
+        var convertible_variant = {{bold_item.properties._convertible_variant_id | json }};
+        var convertible_product = {{ all_products[bold_item.properties._convertible_product_handle] | json }};
+
+        if(BOLD.recurring_orders.addConvertibleVariants)
+        {
+            if(BOLD.recurring_orders.convertible_products[convertible_handle])
+            {
+                BOLD.recurring_orders.addConvertibleVariants(convertible_product, convertible_handle, convertible_variant);
+            } else {
+                BOLD.recurring_orders.convertible_products[convertible_handle] = {
+                    title: convertible_product.title,
+                    price: convertible_product.price,
+                    variants: [],
+                };
+                BOLD.recurring_orders.addConvertibleVariants(convertible_product, convertible_handle, convertible_variant);
+            }
+        }
     </script>
 {% endif %}
 

@@ -39,6 +39,10 @@ $(document).ready(function() {
 
 
   if ($(window).width() < 768) {
+    $('.sidebar-toggle-btn').on('click', function(e){
+      e.preventDefault();
+      $('.sidebar').toggleClass('active');
+    })
     $('.featured-collection-slider').flickity({
       pageDots: true,
       imagesLoaded: true,

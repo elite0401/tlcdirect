@@ -2862,3 +2862,106 @@ div[data-product-recommendations-container]{
     }
   }
 }
+
+.shappify-qty-msg{
+  width: 100%;
+  margin-top: 20px;
+}
+
+.shopify-section--collection-template{
+  .sidebar {
+    @media screen and (max-width: 768px) {
+      display: none;
+      &.active{
+        display: block;
+      }
+    }
+    .sidebar-wrap{
+      background: #F5F7FB;
+      border: none;
+      padding: 25px;
+      .sidebar-block{
+        border: none;
+        &.block--text{
+          margin-bottom: 0;
+          .toggle{
+            font-size: 18px;
+            letter-spacing: 0.77px;
+          }
+        }
+        .toggle{
+          @include font-gothic-bold();
+          font-size: 14px;
+          letter-spacing: 0.6px;
+          color: #030303;
+        }
+        .toggle_list{
+          padding: 0;
+          li{
+            margin-left: 5px; 
+            display: flex;
+            position: relative;
+            &.active{
+              &::after{
+                content: " ";
+                width: 10px;
+                height: 5px;
+                border: 1px solid #122f54;
+                display: block;
+                position: absolute;
+                left: 5px;
+                border-top: none;
+                top: 13px;
+                border-right: none;
+                transform: rotate(-45deg);
+              }
+            }
+             &::before{
+              content: " ";
+              width: 20px;
+              height: 20px;
+              display:block;
+              background: white;
+              border: 1px solid #122F54;
+              margin-right: 10px;
+             }
+            a{
+              font-size: 16px;
+              @include font-gothic-regular();
+              letter-spacing: 0.68px;
+              color: #030303;
+            }
+          }
+        }
+      }
+    }
+  }
+  .sidebar-toggle-btn{
+    display: none;
+    @media screen and (max-width: 768px) {
+      display: block;
+      width: 300px;
+      text-align: center;
+      padding: 5px 10px;
+      border: 1px solid black;
+      margin: auto;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.product_gallery {
+  padding: 0;
+  .gallery-cell {
+    .caption{
+      position: initial;
+      transform: none;
+      margin-top: 10px;
+      padding: 0;
+      p{
+        font-size: 18px;
+        line-height: 25px;
+      }
+    }
+  }
+}

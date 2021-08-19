@@ -28,7 +28,7 @@
 <div itemtype="http://schema.org/ItemList" class="product-list {{ matrixType }} is-flex is-flex-wrap equal-columns--outside-trim" {{ paginationType }}>
   {% for block in section.blocks %}
     {% assign product = all_products[block.settings.product] %}
-    {% render 'product-thumbnail',
+    {% include 'product-thumbnail',
             product: product,
             products_per_row: products_per_row,
             sidebar: sidebar

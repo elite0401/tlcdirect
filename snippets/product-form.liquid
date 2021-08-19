@@ -5,11 +5,9 @@
 {% else %}
   {% assign show_payment_button = false %}
 {% endif %}
-{% if selected_variant != blank %}
-{% assign variant = selected_variant %}
-{% else %}
-{% assign variant = product.selected_or_first_available_variant %}
-{% endif %}
+
+{% assign variant = bold_selected_or_first_available_variant %}
+{%- include 'bold-variant' with variant, output: 'none' -%}
 
 {%- assign checkout_url = '/checkout' -%}
   {% for locale in shop.enabled_locales %}
@@ -21,7 +19,7 @@
   {% endif %}
 {% endfor %}
 
-<div class="product_form init smart-payment-button--{{ show_payment_button }} {% if product.variants.size > 1 or product.options.size > 1 %}product_form_options{% endif %} product_form--{{ settings.product_form_style }}"
+<div class="product_form init smart-payment-button--{{ show_payment_button }} {% if bold_variants_size > 1 or product.options.size > 1 %}product_form_options{% endif %} product_form--{{ settings.product_form_style }}"
       id="product-form-{{ product.id }}"
       data-product-form
       data-options-size="{{ product.options.size }}"
@@ -29,9 +27,10 @@
       data-shop-currency="{{ shop.currency }}"
       data-select-id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}"
       data-enable-state="{% if template contains 'product' %}true{% else %}false{% endif %}"
-      data-product="{{ product | json | escape }}"
+      data-product="{%- include 'bold-product', output: 'json', escape: true -%}"
       {% if settings.limit_quantity or settings.display_inventory_left %}
-        data-variant-inventory='[{%- for v in product.variants -%}{"id":{{v.id}},"inventory_quantity":{{v.inventory_quantity}},"inventory_management":"{{v.inventory_management}}","inventory_policy":"{{v.inventory_policy}}"}{% if forloop.last == false %},{% endif %}{%- endfor -%}]'
+        data-variant-inventory='[{%- for v in product.variants -%}
+{%- include 'bold-variant' with v, hide_action: 'skip' -%}{"id":{{v.id}},"inventory_quantity":{{v.inventory_quantity}},"inventory_management":"{{v.inventory_management}}","inventory_policy":"{{v.inventory_policy}}"}{% if forloop.last == false %},{% endif %}{%- endfor -%}]'
       {% endif %}
       data-product-id="{{ product.id }}"
       >
@@ -56,15 +55,17 @@
     <div class="select">
       <select id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}" name="id" class="multi_select">
         {% for v in product.variants %}
+{%- include 'bold-variant' with v, hide_action: 'skip' -%}
           <option {% if v == variant %}selected="selected"{% endif %} value="{{ v.id }}" data-featured-image="{{ v.featured_media }}" data-image="{{ v.featured_media | product_img_url: '600x' }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
         {% endfor %}
       </select>
     </div>
-  {% elsif product.options.size == 1 and product.variants.size > 1 or product.options.size == 1 and product.options[0] != "Title" %}
+  {% elsif product.options.size == 1 and bold_variants_size > 1 or product.options.size == 1 and product.options[0] != "Title" %}
     <div class="select">
       <label>{{ product.options[0] }}</label>
       <select id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}" name="id">
         {% for v in product.variants %}
+{%- include 'bold-variant' with v, hide_action: 'skip' -%}
           <option {% if v == variant %}selected="selected"{% endif %} value="{{ v.id }}" data-featured-image="{{ v.featured_media }}" data-image="{{ v.featured_media | product_img_url: '600x' }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
         {% endfor %}
       </select>
@@ -72,8 +73,6 @@
   {% else %}
     <input type="hidden" name="id" value="{{ variant.id }}" />
   {% endif %}
-
-  <div id="hulkapps_custom_options_{{ product.id }}"> </div>
 
   {% if product.metafields.global.color_html != blank %}
   <div class="static-colors">
@@ -83,7 +82,7 @@
   {% if settings.product_form_style == "swatches" and product.variants.size > 1 or settings.product_form_style == "swatches" and product.options[0] != "Title" %}
     <div class="swatch_options">
       {% for option in product.options %}
-        {% render 'product-swatch',
+        {% include 'product-swatch',
                 option: option,
                 product: product
         %}
@@ -109,7 +108,10 @@
       </div>
     {% endif %}
   {% endif %}
-
+{%- unless qb_loaded == 'true' -%}
+<div class='shappify-qty-msg'>{{bold_selected_or_first_available_variant.metafields.shappify_csp.pricing_html}}</div>
+{%- assign qb_loaded = 'true' -%}
+{%- endunless -%}
   <div class="purchase-details">
     {% if settings.display_product_quantity %}
       <div class="purchase-details__quantity product-quantity-box">

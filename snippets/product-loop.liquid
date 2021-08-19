@@ -34,14 +34,14 @@
 
 <div itemtype="http://schema.org/ItemList" class="product-list {{ matrixType }} is-flex is-flex-wrap equal-columns--outside-trim" {{ paginationType }}>
   {% for product in products limit: limit %}
-  <script type="application/json" class="bold-product-json">{{ product | json }}</script>
+  <script type="application/json" class="bold-product-json">{%- include 'bold-product', output: 'json' -%}</script>
     {% if product.id == skip_product.id or skip == true %}
       {%- assign product_found = true -%}
     {% else %}
       {% if forloop.rindex0 == 0 and product_found == false and forloop.length != products.size and template != 'search' and template != 'index' and template != 'page.details' %}
         {%- assign skip = true -%}
       {% else %}
-        {% render 'product-thumbnail',
+        {% include 'product-thumbnail',
                 product: product,
                 products_per_row: products_per_row,
                 sidebar: sidebar

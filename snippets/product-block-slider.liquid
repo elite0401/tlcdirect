@@ -36,17 +36,17 @@
           <div class="relative product_image">
             <a href="{{ product.url | within: collection }}">
               <div class="image__container">
-                {% if product.selected_or_first_available_variant.image %}
+                {% if bold_selected_or_first_available_variant.image %}
                   {% render 'image-element',
                           image: product.selected_or_first_available_variant.image,
-                          alt: product.selected_or_first_available_variant.image.alt,
+                          alt: alt_text,
                           object_fit: settings.align_height,
                           max_height: settings.collection_height
                   %}
                 {% else %}
                   {% render 'image-element',
                           image: product.featured_media.preview_image,
-                          alt: product.featured_media.preview_image.alt,
+                          alt: alt_text,
                           object_fit: settings.align_height,
                           max_height: settings.collection_height
                   %}
@@ -65,7 +65,7 @@
                   {% else %}
                     {% render 'image-element',
                             image: product.media[1].preview_image,
-                            alt: product.media[1].preview_image.alt,
+                            alt: alt_text,
                             additional_classes: 'secondary lazypreload secondary-media-hidden'
                     %}
                   {% endif %}
@@ -73,30 +73,30 @@
               </div>
             </a>
 
-            {% render 'product-details',
+            {% include 'product-details',
                     product: product
                     collection_handles: collection_handles
             %}
 
             {% if settings.quick_shop_style == 'inline' %}
-              {% render 'collection-swatch', product: product %}
+              {% include 'collection-swatch', product: product %}
             {% endif %}
           </div>
           <a class="product-info__caption {% if settings.thumbnail_hover_enabled %}hidden{% endif %}" href="{{ product.url | within: collection }}">
-            {% render 'product-info',
+            {% include 'product-info',
                     product: product,
                     collection_handles: collection_handles
             %}
           </a>
         </div>
         {% if settings.quick_shop_style == 'popup' and settings.quick_shop_enabled %}
-          {% render 'collection-swatch', product: product %}
+          {% include 'collection-swatch', product: product %}
         {% endif %}
 
         {% if settings.quick_shop_style == 'inline' and settings.quick_shop_enabled %}
           {% unless collection_handles contains 'coming-soon' %}
             <div class="inline-quickshop js-product_section product-{{ product.id }}">
-              {% render 'product-form',
+              {% include 'product-form',
                       product: product,
                       collection_handles: collection_handles,
                       show_payment_button_quickshop: settings.show_payment_button

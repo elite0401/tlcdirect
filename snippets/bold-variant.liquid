@@ -2,11 +2,11 @@
 {%- comment -%}
 BOLD-VARIANT.LIQUID
 Last updated: 2018-December-7
- 
+
 Sets all appropriate liquid variables for Bold Apps that affect the variant.
 Creates an updated JSON object that includes key information relating to our apps.
 Combines the functionality of bold-hidden-variants, bold-base-variant and bold-variant-inventory
- 
+
 FLAGS:
   base_product:      {product object}                          Base product object for the variant, used to check/set several properties. If not supplied, defaults to bold_product. If no bold_product is set, defaults to product
   line_item:         {line item object} | null (default)       If set, pass the line item to the included snippets - some apps may adjust prices differently depending on whether we're influencing the cart total or not
@@ -17,37 +17,37 @@ FLAGS:
   custom_app_list:   {string} | null (default)                 List of apps to apply to the price. Associated snippets will be automatically included.  If not specified, will check for a shop metafield to get a list of all relevant apps that need to be included.
   third_party_check: false | true (default)                    If true, runs additional checks that we know about to be compatible with third-party apps
   additonal_includes: {string} | null (default)                 Additional snippets that need to be included after the initial liquid variable assignments (comma-delimited)
- 
+
 {%- endcomment -%}
- 
+
 {%- comment -%}
 ============================================================================================================
     ASSIGN LIQUID VARIABLES
 ============================================================================================================
 {%- endcomment -%}
- 
- 
+
+
 {%- comment -%} Assign flags to their default values if not set {%- endcomment -%}
- 
+
 {%- assign bold_apps_installed = shop | map: 'metafields' | map: 'bold_apps_installed' | first -%}
- 
+
 {%- assign bold_variant = bold-variant | default: variant -%}
 {%- assign bold_variant_line_item = line_item | default: false -%}
 {%- assign bold_variant_base_product = base_product | default: bold_product | default: bold_variant_line_item.product | default: product | default: item.product | default: item -%}
 {%- assign bold_variant_output = output | default: 'none' -%}
 {%- assign bold_variant_hide_action = hide_action | default: 'none' -%}
 {%- assign bold_variant_customer_tag = customer_tag | default: csp_customer_tag -%}
- 
+
 {%- comment -%} Check for CSP visibility. Other 'hide' rules are based directly on metafields on the variants. {%- endcomment -%}
- 
+
 {%- assign csp_hidden = false -%}
 {%- if bold_variant_hide_action == 'skip' and bold_apps_installed contains 'Customer Pricing' -%}
   {%- if shop.metafields.shop_csp_tag_group.shop_csp_tag or bold_variant.metafields.shappify_csp -%}
     {%- assign csp_flag_string = ' (' | append: bold_variant_customer_tag | append: ')' -%}
     {%- assign all_shop_tags = shop.metafields.shop_csp_tag_group.shop_csp_tag | append: ',default' | split: ',' -%}
- 
+
     {%- unless bold_variant.metafields.shappify_csp.csp_tag == blank -%}
- 
+
       {%- if bold_variant.metafields.shappify_csp.csp_tag == 'default' and bold_variant_customer_tag != 'default' -%}
         {%- if bold_variant_base_product -%}
           {%- assign found_csp_level = false -%}
@@ -63,18 +63,18 @@ FLAGS:
     {%- endunless -%}
   {%- endif -%}
 {%- endif -%}
- 
+
 {%- assign app_list = '' -%}
 {%- if app_list != blank and custom_app_list != blank -%}
   {%- assign bold_variant_app_list = app_list | append: ',' | append: custom_app_list -%}
 {%- else -%}
   {%- assign bold_variant_app_list = app_list | default: custom_app_list | default: false -%}
 {%- endif -%}
- 
+
 {%- assign bold_variant_price = bold_variant.price -%}
- 
+
 {%- if bold_variant_app_list -%}
- 
+
   {%- assign bold_variant_app_list = bold_variant_app_list | split: ',' -%}
   {%- for app in bold_variant_app_list -%}
     {%- assign snippet_title = 'bold-' | append: app | append: '-variant' -%}
@@ -82,15 +82,15 @@ FLAGS:
         {%- include snippet_title with bold_variant, base_product: bold_variant_base_product, line_item: bold_variant_line_item, customer_tag: bold_variant_customer_tag -%}
     {%- endcapture -%}
   {%- endfor -%}
- 
+
 {%- endif -%}
- 
+
 {%- assign bold_variant_available = bold_variant.available -%}
- 
+
 {% if bold_apps_installed contains 'Quantity Breaks' or bold_apps_installed contains 'Customer Pricing' or bold_apps_installed contains 'Product Bundles' %}
   {%- comment -%} Find the base variant and base variant's inventory {%- endcomment -%}
   {%- assign bold_base_variant_id = bold_variant.metafields.shappify_csp['csp_base'] | default: bold_variant.metafields.shappify_qb['qb_parent'] | default: bold_variant.metafields.shappify_bundle['bundle_parent'] | default: bold_variant.id -%}
- 
+
   {%- comment -%} Make sure we can find the indicated base variant! {%- endcomment -%}
   {%- assign bold_is_base_variant = true -%}
   {%- assign bold_base_variant = bold_variant -%}
@@ -103,11 +103,11 @@ FLAGS:
       {%- endif -%}
     {%- endfor -%}
   {%- endunless -%}
- 
+
   {%- comment -%} Assign inventory variables (based on the base_variant, if different from the current variant) {%- endcomment -%}
   {%- assign target_variant_inventory_quantity = bold_base_variant.inventory_quantity -%}
   {%- assign target_variant_inventory_policy = bold_base_variant.inventory_policy -%}
- 
+
   {%- assign bold_variant_cart_quantity = 0 -%}
   {%- for inv_check_item in cart.items -%}
     {%- assign cart_variant = inv_check_item.variant -%}
@@ -116,25 +116,25 @@ FLAGS:
       {%- assign bold_variant_cart_quantity = bold_variant_cart_quantity | plus: inv_check_item.quantity -%}
     {%- endif -%}
   {%- endfor -%}
- 
+
   {%- assign bold_variant_inventory_quantity =  bold_base_variant.inventory_quantity  -%}
   {%- assign bold_variant_remaining_quantity = bold_variant_inventory_quantity | minus: bold_variant_cart_quantity -%}
   {%- assign bold_variant_inventory_policy = bold_base_variant.inventory_policy -%}
   {%- assign bold_variant_inventory_management = bold_base_variant.inventory_management -%}
- 
+
   {%- comment -%} Now that we've established quantity, re-evaluate the variant's availablility {%- endcomment -%}
   {%- if bold_variant_remaining_quantity <= 0 and bold_variant_inventory_policy == 'deny' and bold_variant_inventory_management != blank -%}
     {%- assign bold_variant_available = false -%}
   {%- endif -%}
- 
- 
+
+
   {%- comment -%} If we're calling this from bold-cart-item, also set the max quantity the line item can go up to {%- endcomment -%}
   {%- if bold_item and bold_variant_inventory_management != blank and bold_variant_inventory_policy == 'deny' -%}
     {%- assign bold_item_max_quantity = bold_item.quantity | plus: bold_variant_remaining_quantity -%}
   {%- else -%}
     {%- assign bold_item_max_quantity = '' -%}
   {%- endif -%}
- 
+
   {%- comment -%} Check for QB level, hide variant and update title as appropriate {%- endcomment -%}
   {%- if bold_apps_installed contains 'Quantity Breaks'  or bold_apps_installed contains 'Customer Pricing' -%}
     {%- assign qb_hidden = false -%}
@@ -144,22 +144,22 @@ FLAGS:
       {%- assign bold_variant_title = 'Default title' -%}
     {%- endif -%}
   {%- endif -%}
- 
+
   {%- comment -%} If required, check for third-party Hide Rules as well {%- endcomment -%}
- 
+
   {%- if third_party_check == blank -%}{%- assign third_party_check = true -%}{%- endif -%}
   {%- assign third_party_hidden = false -%}
   {%- if third_party_check -%}
     {%- if bold_variant.title contains '% Off' or bold_variant.metafields.brodev_scn.hide == "true" or bold_variant.metafields.secomapp.freegifts or bold_variant.title contains '(Bundle price)' -%}{%- assign third_party_hidden = true%}{%- endif -%}
   {%- endif -%}
- 
+
   {%- if csp_hidden or qb_hidden or third_party_hidden or bold_variant.metafields.shappify_bundle.is_bundle == 'true' or third_party_hidden -%}
     {%- assign bold_hidden_variant = true -%}
   {%- else -%}
     {%- assign bold_hidden_variant = false -%}
   {%- endif -%}
- 
- 
+
+
   {%- comment -%} Check for presence of our apps {%- endcomment -%}
   {%- if bold_variant.metafields.bold_measurement.formula -%}{%- assign variant_has_btm = true -%}{%- else -%}{%- assign variant_has_btm = false -%}{%- endif -%}
   {%- if bold_variant.metafields.shappify_csp.csp_tag -%}{%- assign variant_has_csp = true -%}{%- else -%}{%- assign variant_has_csp = false -%}{%- endif -%}
@@ -167,15 +167,15 @@ FLAGS:
   {%- if bold_variant.metafields.bold_rp.rp_group_id -%}{%- assign variant_has_ro = true -%}{%- else -%}{%- assign variant_has_ro = false -%}{%- endif -%}
   {%- assign bdl_check = base_product.variants | map: 'metafields' | map: 'shappify_bundle' | map: 'bundle_parent' -%}
   {%- if bdl_check contains bold_variant.id -%}{%- assign variant_has_bdl = true -%}{%- else -%}{%- assign variant_has_bdl = false -%}{%- endif -%}
- 
- 
+
+
   {%- if bold_variant_hide_action == 'skip' and bold_hidden_variant -%}{%- continue -%}{%- endif -%}
 {% endif %}
- 
+
   {%- assign option1_clean_name = variant.option1 | remove: csp_flag_string -%}
   {%- assign option2_clean_name = variant.option2 | remove: csp_flag_string -%}
   {%- assign option3_clean_name = variant.option3 | remove: csp_flag_string -%}
- 
+
 {%- comment -%}
 ============================================================================================================
     BEGIN JSON OUTPUT
@@ -193,6 +193,7 @@ FLAGS:
   "sku":{{- bold_variant.sku | json -}},
   "requires_shipping":{{- bold_variant.requires_shipping | json -}},
   "taxable":{{- bold_variant.taxable | json -}},
+  "featured_media":{{- bold_variant.featured_media | json -}},
   "featured_image":
   {%- if bold_variant.featured_image == blank -%}
     {{bold_base_variant.featured_image | json}},
@@ -208,7 +209,7 @@ FLAGS:
     "height":{{- bold_variant.featured_image.height -}}
     },
   {%- endif -%}
- 
+
   "image_id":{{variant.featured_image.id | default: bold_base_variant.featured_image.id | json -}},
   "available":{{- bold_variant_available | json -}},
   "name":{{- bold_variant_base_product.title | append: " - " | append: bold_variant.title | remove: csp_flag_string | json -}},
@@ -225,7 +226,7 @@ FLAGS:
   "next_incoming_date":{{- bold_variant.next_incoming_date  | default: bold_base_variant.next_incoming_date | date: "%Y-%m-%d" | json -}},
   "taxable":{%- unless bold_variant_taxable == blank -%}{{- bold_variant_taxable | json -}}{%- else -%}{{- bold_variant.taxable | json -}}{%- endunless -%},
   "barcode":{{- variant.barcode | json -}}
- 
+
 {% comment %}
   {%- comment -%} SPECIAL HANDLING FOR CSP {%- endcomment -%}
   {%- if variant_has_csp -%}
@@ -250,13 +251,13 @@ FLAGS:
     }
   {%- endif -%}
   {%- comment -%} END OF CSP SPECIAL HANDLING {%- endcomment -%}
- 
+
   {%- comment -%} SPECIAL HANDLING FOR BTM {%- endcomment -%}
   {%- if variant_has_btm -%}
     ,"btm_lookup":{{- bold_variant.metafields.bold_measurement | json -}}
   {%- endif -%}
   {%- comment -%} END OF BTM SPECIAL HANDLING {%- endcomment -%}
- 
+
   {%- comment -%} SPECIAL HANDLING FOR QB {%- endcomment -%}
   {%- if variant_has_qb -%}
     ,"qb_lookup":{
@@ -280,13 +281,13 @@ FLAGS:
     }
   {%- endif -%}
   {%- comment -%} END OF QB SPECIAL HANDLING {%- endcomment -%}
- 
+
   {%- comment -%} SPECIAL HANDLING FOR RO {%- endcomment -%}
   {%- if variant_has_ro -%}
     ,"ro_lookup":{{- bold_variant.metafields.bold_rp | json | remove: 'rp_' -}}
   {%- endif -%}
   {%- comment -%} END OF RO SPECIAL HANDLING {%- endcomment -%}
- 
+
   {%- comment -%} SPECIAL HANDLING FOR BUNDLES {%- endcomment -%}
   {%- if variant_has_bdl -%}
     ,"bdl_lookup":{

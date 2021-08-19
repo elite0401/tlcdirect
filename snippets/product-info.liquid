@@ -13,21 +13,24 @@
   {% if collection_handles contains 'coming-soon' %}
     <span class="coming-soon">{{ 'collections.general.coming_soon' | t }}</span>
   {% else %}
-    <span class="price {% if product.compare_at_price_max > product.price %}sale{% endif %}">
+    <span class="price {% if bold_compare_at_price_max > bold_price %}sale{% endif %}">
       {% unless product.available == false and settings.display_price == false %}
-        {% assign variant = product.selected_or_first_available_variant %}
-        {% if variant.price < variant.compare_at_price %}
+        {% assign variant = bold_selected_or_first_available_variant %}
+	{%- include 'bold-variant' with variant, output: 'none' -%}
         <span class="was_price">
-          <span class="money"><del>{% render 'price-element', price: variant.compare_at_price %}</del></span>
+          {% if bold_variant_price < variant.compare_at_price %}
+            <span class="money">{% comment %}{% render 'price-element', product: product, price: variant.compare_at_price %}{% endcomment %}
+              {{ variant.compare_at_price | money }}
+            </span>
+          {% endif %}
         </span>
-        {% endif %}
         <span class="current_price">
           Sale : 
-          {% if product.price_varies and product.price_min > 0 %}
+          {% if bold_price_varies and bold_price_min > 0 %}
             <small><em>{{ 'products.general.from' | t }}</em></small>
           {% endif %}
-          {% if product.price_min > 0 %}
-            <span class="money">{% render 'price-element', price: product.price_min %}</span>
+          {% if bold_price_min > 0 %}
+            <span class="money">{% render 'price-element', product: product, price: bold_price_min %}</span>
           {% else %}
             {{ settings.free_price_text }}
           {% endif %}

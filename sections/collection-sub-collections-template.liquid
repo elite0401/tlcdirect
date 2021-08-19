@@ -205,7 +205,7 @@
               <div class="one-whole column">
                 {%- assign products_per_row = section.settings.products_per_row -%}
 
-                {% render 'product-loop',
+                {% include 'product-loop',
                         products: products,
                         products_per_row: products_per_row,
                         sidebar: sidebar

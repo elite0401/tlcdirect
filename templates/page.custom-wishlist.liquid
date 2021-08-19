@@ -1,0 +1,18 @@
+<div class="page-width">
+    <div class="grid">
+        <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+        <div class="section-header text-center">
+            <h1>{{ page.title }}</h1>
+        </div>
+
+        <div class="rte">
+            {{ page.content }}
+            <div id="wishlist-items-container">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ 'custom-wishlist.js' | asset_url }}" async="async"></script>
+<!-- Swym Custom Page CSS  -->
+{% include 'swym-custom-wishlist-page-css'%}

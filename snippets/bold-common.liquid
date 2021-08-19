@@ -97,9 +97,11 @@ It may be overwritten and any customizations would be lost.
     {%- comment -%} product page {%- endcomment -%}
     window.BOLD.common.Shopify.saveProduct({{ product.handle | json }}, {{ product.id | json }});
     {%- for variant in product.variants -%}{%- assign csp_metafield_namespace = variant.id | prepend: "csp" -%}window.BOLD.common.Shopify.saveVariant({{ variant.id | json }}, { product_id: {{ product.id | json }}, product_handle: {{ product.handle | json }}, price: {{ variant.price | json }}, group_id: '{{variant.metafields.bold_rp.rp_group_id}}', csp_metafield: {{ product.metafields[csp_metafield_namespace] | json }}});{%- endfor -%}
+
     {%- comment -%} BOLD APPS INSTALLED {%- endcomment -%}
     {%- assign bold_apps_installed = shop | map: 'metafields' | map: 'bold_apps_installed' | first -%}
     window.BOLD.apps_installed = {{ bold_apps_installed | json }} || {};
+
     {%- unless bold_apps_installed contains 'Customer Pricing' or bold_apps_installed contains 'Product Bundles' or bold_apps_installed contains 'Product Discount' or bold_apps_installed contains 'Quantity Breaks' or bold_apps_installed contains 'Custom Order' or bold_apps_installed contains 'Order Manager' or bold_apps_installed contains 'The Motivator'-%}
         {%- comment -%} collection page {%- endcomment -%}
         {%- for product in collection.products -%}
@@ -112,6 +114,7 @@ It may be overwritten and any customizations would be lost.
             {%- for variant in product.variants -%}{%- assign csp_metafield_namespace = variant.id | prepend: "csp" -%}window.BOLD.common.Shopify.saveVariant({{ variant.id | json }}, { product_id: {{ product.id | json }}, product_handle: {{ product.handle | json }}, price: {{ variant.price | json }}, group_id: '{{variant.metafields.bold_rp.rp_group_id}}', csp_metafield: {{ product.metafields[csp_metafield_namespace] | json }}});{%- endfor -%}
         {%- endfor -%}
     {%- endunless -%}
+
     {%- comment -%} cart page {%- endcomment -%}
     {%- for item in cart.items -%}{%- assign csp_metafield_namespace = item.variant_id | prepend: "csp" -%}window.BOLD.common.Shopify.saveVariant({{ item.variant_id | json }}, { product_id: {{ item.product.id | json }}, product_handle: {{ item.product.handle | json }}, price: {{ item.variant.price | json }}, group_id: '{{item.variant.metafields.bold_rp.rp_group_id}}', csp_metafield: {{ item.product.metafields[csp_metafield_namespace] | json }}});{%- endfor -%}
     {%- comment -%} metafields {%- endcomment -%}
@@ -121,8 +124,7 @@ It may be overwritten and any customizations would be lost.
         window.BOLD.common.Shopify.metafields[{{ namespace | json }}] = {{ shop.metafields[namespace] | json }};
     {%- endfor -%}
     window.BOLD.common.cacheParams = window.BOLD.common.cacheParams || {};
-    window.BOLD.common.cacheParams.csp = 1621285827;
- </script>
- 
- {%- comment -%} INCLUDE APP SCRIPTS BELOW {%- endcomment -%}
- 
+    window.BOLD.common.cacheParams.csp = 1628883011;
+</script>
+
+{%- comment -%} INCLUDE APP SCRIPTS BELOW {%- endcomment -%}

@@ -54,6 +54,10 @@ max_height: <number>
   {%- endcapture -%}
 {% endif %}
 
+{% if alt != blank %}
+  {% assign alt = image.alt %}
+{% endif %}
+
 {% comment %}Loading style{% endcomment %}
 {% if settings.image_loading_style == 'blur-up' %}
   {% comment %}Low quality image loads first{% endcomment %}

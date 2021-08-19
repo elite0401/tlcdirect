@@ -109,6 +109,9 @@ quickshop: <boolean>
                 </a>
               {% endif %}
             {% endif %}
+            <div class="caption">
+              <p>{{media.alt}}</p>
+            </div>
           {% when 'external_video' %}
             <div class="product-gallery__video" data-youtube-video>
               {{ media | external_video_tag }}
@@ -132,6 +135,7 @@ quickshop: <boolean>
           {% else %}
             {{ media | media_tag }}
         {% endcase %}
+        
       </div>
     {% endfor %}
   </div>
