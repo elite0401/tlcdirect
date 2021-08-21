@@ -81,7 +81,7 @@
   {% endif %}
   {% if settings.product_form_style == "swatches" and product.variants.size > 1 or settings.product_form_style == "swatches" and product.options[0] != "Title" %}
     <div class="swatch_options">
-      {% for option in product.options %}
+      {% for option in product.options %} 
         {% include 'product-swatch',
                 option: option,
                 product: product
@@ -147,10 +147,13 @@
   </div>
 {% endform %}
 </div>
+{% if template contains 'product' %}
 <div class="bottom-content">
   {% render 'popup-email' %}
 </div>
 <div class="bottom-content">
   {% render 'popup-quiz' %}
 </div>
+{% endif %}
+
 

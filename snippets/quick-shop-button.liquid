@@ -55,11 +55,11 @@
 </span>
 <div class="quickshop-forms__container js-quickshop-forms__container js-quickshop-forms--{{ product.id }}">
     {% unless collection_handles contains 'coming-soon' %}
-      {% render 'product-notify-me',
+      {% include 'product-notify-me',
               product: product
               collection_handles: collection_handles
       %}
-      {% render 'product-form',
+      {% include 'product-form', 
               product: product,
               collection_handles: collection_handles,
               show_payment_button_quickshop: settings.show_payment_button

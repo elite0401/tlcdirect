@@ -179,7 +179,7 @@
         {% endif %}
   
         {% unless collection_handles contains 'coming-soon' %}
-          {% render 'product-form',
+          {% include 'product-form',
                   context: 'product',
                   collection_handles: collection_handles
           %}

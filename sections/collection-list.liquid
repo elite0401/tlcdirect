@@ -17,7 +17,7 @@
 
 {% comment %} Section specific CSS {% endcomment %}
 {% style %}
-  {% render 'css-loop',
+  {% include 'css-loop',
           css: custom_css,
           id: id
   %}
@@ -53,11 +53,11 @@
                 {%- assign collection_image_alt = collection.products.first.featured_image.alt | escape -%}
               {% endif %}
 
-              <div class="{% render 'column-width', value: section.settings.frontpage_collections_per_row %} column {% if section.settings.collection_count == blank and section.settings.frontpage_collections_title == blank %}blank{% endif %} thumbnail {% if settings.mobile_products_per_row == '1' %} medium-down--one-half small-down--one-whole {% else %} medium-down--one-half small-down--one-half {% endif %}" {{ block.shopify_attributes }}>
+              <div class="{% include 'column-width', value: section.settings.frontpage_collections_per_row %} column {% if section.settings.collection_count == blank and section.settings.frontpage_collections_title == blank %}blank{% endif %} thumbnail {% if settings.mobile_products_per_row == '1' %} medium-down--one-half small-down--one-whole {% else %} medium-down--one-half small-down--one-half {% endif %}" {{ block.shopify_attributes }}>
                 <div class="product-wrap">
                   {% if collection_image != blank %}
                     <div class="image__container">
-                      {% render 'image-element',
+                      {% include 'image-element',
                               image: collection_image.src,
                               alt: collection_image_alt,
                               object_fit: section.settings.align_height,

@@ -94,7 +94,7 @@
               </div>
 
               {% if block.settings.show_social %}
-                {% render 'social-icons' %}
+                {% include 'social-icons' %}
               {% endif %}
             </div>
           {% elsif block.type == 'link_list' %}
@@ -161,14 +161,14 @@
             {%- assign social_icons = true -%}
 
             <div class="footer-social-icons {% if block.type == 'logo' %}text-align--{{ block.settings.text_align }}{% endif %}">
-              {% render 'social-icons' %}
+              {% include 'social-icons' %}
             </div>
           {% endif %}
         </div>
 
         {% if forloop.last and social_icons %}
           <div class="footer-social-icons--mobile sixteen columns">
-            {% render 'social-icons' %}
+            {% include 'social-icons' %}
           </div>
         {% endif %}
       {% endfor %}
@@ -176,7 +176,7 @@
       <div class="one-whole column footer_credits">
         {% if locale_selector or currency_selector or settings.show_multiple_currencies == true %}
           <div class="localization-wrap">
-            {% render 'localization-switcher',
+            {% include 'localization-switcher',
                     additional_classes: 'footer-menu__disclosure',
                     id: 'footer__selector-form',
                     currency_selector: currency_selector,

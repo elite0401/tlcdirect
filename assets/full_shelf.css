@@ -1,7 +1,62 @@
+@font-face {
+  font-family: 'Amazone BT';
+  src: url('AmazoneBT-Regular.eot');
+  src: url('AmazoneBT-Regular.eot') format('embedded-opentype'),
+      url('AmazoneBT-Regular.woff2') format('woff2'),
+      url('AmazoneBT-Regular.woff') format('woff'),
+      url('AmazoneBT-Regular.ttf') format('truetype'),
+      url('AmazoneBT-Regular.svg') format('svg');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
 .fs-in-stock {
  color: #7DB782;
 }
 
 .fs-expected-arrival {
   color: #9C4584;
+}
+
+.banner {
+  padding: 10px 0;
+}
+
+.logo h2{
+  margin: 0;
+  font-family: "Amazone BT";
+  font-size: 48px;
+  text-transform: none;
+  line-height: 1;
+  color: #c0218d;
+}
+
+aside .order-summary-toggle{
+  background: #122F54;
+}
+
+aside .order-summary-toggle__icon{
+  fill: white;
+}
+
+aside .order-summary-toggle__text span{
+  color: white;
+}
+
+aside .order-summary-toggle__text svg{
+  fill: white;
+}
+
+aside .order-summary-toggle__total-recap dd .order-summary__emphasis{
+  color: white;
+}
+.step__footer .step__footer__continue-btn{
+  border-radius: 0;
+  padding: 15px;
+}
+.step__footer .step__footer__continue-btn .btn__content{
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.78px;
 }

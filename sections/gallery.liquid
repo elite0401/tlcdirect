@@ -17,7 +17,7 @@
 
 {% comment %} Section specific CSS {% endcomment %}
 {% style %}
-  {% render 'css-loop',
+  {% include 'css-loop',
           css: custom_css,
           id: id
   %}
@@ -44,7 +44,7 @@
         {% comment %} End content settings {% endcomment %}
 
         {% if image != blank %}
-          <div class="gallery-image-wrapper {% unless section.settings.gallery_type == 'horizontal' or section.settings.gallery_type == 'masonry' %}{% render 'column-width', value: section.settings.grid-size %} column medium-down--one-whole{% endunless %} {% unless section.settings.wide_display %}add-padding{% endunless %}" {{ block.shopify_attributes }}>
+          <div class="gallery-image-wrapper {% unless section.settings.gallery_type == 'horizontal' or section.settings.gallery_type == 'masonry' %}{% include 'column-width', value: section.settings.grid-size %} column medium-down--one-whole{% endunless %} {% unless section.settings.wide_display %}add-padding{% endunless %}" {{ block.shopify_attributes }}>
             <div class="gallery-cell">
               {% if section.settings.enable_lightbox %}
                 <a href="javascript:;" class="gallery gallery-{{ section.id }}" data-fancybox="{{ section.id }}" data-src="{{ image |  img_url: '2000x' }}" rel="gallery">
@@ -52,7 +52,7 @@
 
               <i class="image-{{ block.id }}"></i>
 
-              {% render 'image-element',
+              {% include 'image-element',
                       image: image,
                       alt: image.alt
               %}
@@ -82,7 +82,7 @@
             {% capture placeholder_sizing %}{% cycle 'style="height:150px"', 'style="height:200px"', 'style="height:200px"', 'style="height:150px"', 'style="height:200px"', 'style="height:150px"', 'style="height:150px"', 'style="height:200px"' %}{% endcapture %}
           {% endif %}
 
-          <div class="gallery-empty-wrapper {% unless section.settings.gallery_type == 'horizontal' or section.settings.gallery_type == 'masonry' %}{% render 'column-width', value: section.settings.grid-size %} column medium-down--one-whole{% endunless %} {% unless section.settings.wide_display %}add-padding{% endunless %}" {{ block.shopify_attributes }} {{ placeholder_sizing }}>
+          <div class="gallery-empty-wrapper {% unless section.settings.gallery_type == 'horizontal' or section.settings.gallery_type == 'masonry' %}{% include 'column-width', value: section.settings.grid-size %} column medium-down--one-whole{% endunless %} {% unless section.settings.wide_display %}add-padding{% endunless %}" {{ block.shopify_attributes }} {{ placeholder_sizing }}>
             {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
           </div>
         {% endif %}

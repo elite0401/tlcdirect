@@ -32,13 +32,13 @@
       <div class="one-whole column">
         <div id="banner-{{ section.id }}" class="banner page-banner dark-overlay-{{ section.settings.image_darken }} full-width--{{ section.settings.wide_display }}">
           {% if section.settings.image != blank %}
-            {% render 'image-element',
+            {% include 'image-element',
                     image: section.settings.image,
                     alt: section.settings.image.alt,
                     stretch_width: true,
                     additional_classes: 'medium-down--hide'
             %}
-            {% render 'image-element',
+            {% include 'image-element',
                     image: section.settings.mobile_image,
                     alt: section.settings.mobile_image.alt,
                     stretch_width: true,
@@ -81,7 +81,7 @@
         <div class="feature_divider"></div>
       {% endunless %}
 
-      {% render 'page-multi-column', content: page.content %}
+      {% include 'page-multi-column', content: page.content %}
     </div>
     {% if section.settings.subtitle != blank %}
     <div class="alert one-whole medium-down--one-whole column flex is-justify-center is-align-center gap has-padding">
@@ -98,6 +98,9 @@
     {% endif %}
 
     <div class="two-thirds column medium-down--one-whole faq faq__column-1">
+      <div class="bottom-content">
+        {% render 'popup-email' %}
+      </div>
       {% if section.blocks.size > 0 %}
         <dl class="faqAccordion">
           {% for block in section.blocks %}
@@ -127,7 +130,7 @@
       {% if block.type == 'image' %}
         <div class="one-half column medium-down--one-whole faq faq--image faq__column-2">
           {% if block.settings.image != blank %}
-            {% render 'image-element',
+            {% include 'image-element',
                     image: block.settings.image,
                     alt: block.settings.image.alt,
                     stretch_width: true

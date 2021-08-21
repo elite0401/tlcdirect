@@ -19,12 +19,12 @@
       {% if settings.quick_shop_enabled and settings.quick_shop_style == 'popup' %}
         {% if by_this_look_status == true%}
           {% unless template contains 'product'  %}
-            {% render 'buy-this-look-button', product: product %}
+            {% include 'buy-this-look-button', product: product %}
           {% else %}
-            {% render 'quick-shop-button', product: product %}
+            {% include 'quick-shop-button', product: product %}
           {% endunless %}
         {% else %}
-          {% render 'quick-shop-button', product: product %}
+          {% include 'quick-shop-button', product: product %}
         {% endif %}
       {% endif %}
     </div>

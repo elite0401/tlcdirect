@@ -200,12 +200,12 @@
       {% endif %}
 
       {% unless collection_handles contains 'coming-soon' %}
-        {% render 'product-form',
+        {% include 'product-form',
                 context: 'product',
                 product: r_product,
                 collection_handles: collection_handles
         %}
-        {% render 'product-notify-me', product: r_product %}
+        {% include 'product-notify-me', product: r_product %}
       {% endunless %}
 
 

@@ -287,7 +287,7 @@
                       {% endif %}
                     {% endfor %}
                     
-                    {% render 'sidebar-product-thumbnail',
+                    {% include 'sidebar-product-thumbnail',
                       product: r_product,
                       variant: selected_or_first_available_variant,
                       products_per_row: 1,

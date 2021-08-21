@@ -12,7 +12,7 @@
         <div class="team-page__content--{{ section.settings.image_position }} {% if section.settings.image != blank and section.settings.text != blank %}teamPage__content--multiple{% endif %}">
           {% if section.settings.image != blank %}
             <div class="team-page__image">
-              {% render 'image-element',
+              {% include 'image-element',
                       image: section.settings.image,
                       alt: section.settings.image.alt,
                       progressive: true
@@ -53,10 +53,10 @@
       {% capture title %}{{ block.settings.job_title }}{% endcapture %}
       {% capture description %}{{ block.settings.description }}{% endcapture %}
 
-      <div class="{% render 'column-width', value: section.settings.employee_per_row %} column medium-down--one-whole team-member__profile">
+      <div class="{% include 'column-width', value: section.settings.employee_per_row %} column medium-down--one-whole team-member__profile">
         <figure class="team-member__wrap">
           {% if block.settings.image %}
-            {% render 'image-element',
+            {% include 'image-element',
                     image: block.settings.image,
                     alt: block.settings.image.alt,
                     stretch_width: true

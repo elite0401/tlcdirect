@@ -44,7 +44,7 @@
     {% if section.settings.product_recommendations_style == 'slider' %}
       {% comment %} Recommended Products Slider {% endcomment %}
       <div class="recommended-products--slider js-recommended-products-slider">
-        {% render 'product-slider',
+        {% include 'product-slider',
                 limit: section.settings.recommended_products_limit,
                 products: products,
                 per_slide: section.settings.products_per_row,

@@ -114,9 +114,9 @@
   <div class="dropdown_container" data-dropdown="mobile_menu">
     <div class="dropdown">
       <ul class="menu" id="mobile_menu">
-        {% render 'mobile-menu', menu: section.settings.main_linklist %}
-        {% render 'mobile-menu', menu: section.settings.main_linklist2 %}
-        {% render 'mobile-menu', menu: section.settings.top_bar_menu, context: 'top_bar_menu' %}
+        {% include 'mobile-menu', menu: section.settings.main_linklist %}
+        {% include 'mobile-menu', menu: section.settings.main_linklist2 %}
+        {% include 'mobile-menu', menu: section.settings.top_bar_menu, context: 'top_bar_menu' %}
 
         {% if section.settings.phone_number != blank %}
           <li>
@@ -141,7 +141,7 @@
         {% endif %}
 
         {% if locale_selector or currency_selector or settings.show_multiple_currencies == true %}
-          {% render 'localization-switcher-mobile',
+          {% include 'localization-switcher-mobile',
                   additional_classes: 'mobile-menu__disclosure',
                   currency_selector: currency_selector,
                   locale_selector: locale_selector,
@@ -196,7 +196,7 @@
 
     <div class="top-bar">
       {% if section.settings.social_icons_header %}
-        {% render 'social-icons' %}
+        {% include 'social-icons' %}
       {% endif %}
 
       <ul class="menu">
@@ -221,7 +221,7 @@
           </li>
           {% if locale_selector or currency_selector %}
             <li class="localization-wrap">
-              {% render 'localization-switcher',
+              {% include 'localization-switcher',
                       additional_classes: 'header-menu__disclosure',
                       id: 'header__selector-form',
                       currency_selector: currency_selector,
@@ -269,17 +269,17 @@
 
         {% capture menu_left %}
           {% if vertical_menu %}
-            {% render 'vertical-menu', linklist: section.settings.main_linklist %}
+            {% include 'vertical-menu', linklist: section.settings.main_linklist %}
           {% else %}
-            {% render 'menu', linklist: section.settings.main_linklist %}
+            {% include 'menu', linklist: section.settings.main_linklist %}
           {% endif %}
         {% endcapture %}
 
         {% capture menu_right %}
           {% if vertical_menu %}
-            {% render 'vertical-menu', linklist: section.settings.main_linklist2 %}
+            {% include 'vertical-menu', linklist: section.settings.main_linklist2 %}
           {% else %}
-            {% render 'menu', linklist: section.settings.main_linklist2 %}
+            {% include 'menu', linklist: section.settings.main_linklist2 %}
           {% endif %}
         {% endcapture %}
 
@@ -353,8 +353,8 @@
           </div>
         </div>
 
-        {% render 'sub-menu', linklist: section.settings.main_linklist %}
-        {% render 'sub-menu', linklist: section.settings.main_linklist2 %}
+        {% include 'sub-menu', linklist: section.settings.main_linklist %}
+        {% include 'sub-menu', linklist: section.settings.main_linklist2 %}
       </div>
     </div>
   </div>
@@ -424,12 +424,12 @@
               <strong class="left price">
                 {% if item.price > 0 %}
                   <span class="money {% if item.price < item.variant.compare_at_price or item.line_level_discount_allocations.size > 0 %}sale{% endif %}">
-                    {% render 'price-element', price: item.final_price %}
+                    {% include 'price-element', price: item.final_price %}
                   </span>
 
                   {% if item.price < item.variant.compare_at_price or item.line_level_discount_allocations.size > 0 %}
                     <span class="money was_price">
-                      {% render 'price-element', price: item.variant.compare_at_price %}
+                      {% include 'price-element', price: item.variant.compare_at_price %}
                     </span>
                   {% endif %}
                 {% else %}
@@ -470,7 +470,7 @@
               <span class="cart_discounts--title">{{ discount_application.title }}</span>
 
               <span class="cart_discounts--price">
-                -<span class="money">{% render 'price-element', price: discount_application.total_allocated_amount %}</span>
+                -<span class="money">{% include 'price-element', price: discount_application.total_allocated_amount %}</span>
               </span>
             {% endfor %}
           {% endif %}
@@ -478,7 +478,7 @@
 
         <li class="cart_subtotal js-cart_subtotal">
           <span class="right">
-            <span class="money">{% render 'price-element', price: cart.total_price %}</span>
+            <span class="money">{% include 'price-element', price: cart.total_price %}</span>
           </span>
 
           <span>{{ 'layout.general.subtotal' | t }}</span>
@@ -487,7 +487,7 @@
         <li class="cart_savings sale js-cart_savings">
           {% if settings.display_savings and total_saving > 0 or settings.display_savings and cart.total_discount > 0 %}
             <span class="right">
-              <span class="money">{% assign total_savings = total_saving | plus: cart.total_discount %}{% render 'price-element', price: total_savings %}</span>
+              <span class="money">{% assign total_savings = total_saving | plus: cart.total_discount %}{% include 'price-element', price: total_savings %}</span>
             </span>
 
             <span>{{ 'layout.general.savings' | t }}</span>

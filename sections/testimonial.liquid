@@ -16,7 +16,7 @@
 
 {% comment %} Section specific CSS {% endcomment %}
 {% style %}
-  {% render 'css-loop',
+  {% include 'css-loop',
           css: custom_css,
           id: id
   %}
@@ -36,7 +36,7 @@
               {%- assign image = block.settings.image -%}
 
               {% if image != blank %}
-                {% render 'image-element',
+                {% include 'image-element',
                         image: image,
                         alt: image.alt,
                         stretch_width: true,

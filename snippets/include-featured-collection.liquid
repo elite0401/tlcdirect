@@ -23,7 +23,7 @@
 
 {% comment %} Section specific CSS {% endcomment %}
 {% style %}
-  {% render 'css-loop',
+  {% include 'css-loop',
           css: custom_css,
           id: id
   %}
@@ -61,7 +61,7 @@
     <div class="js-product-slider homepage-product-slider full-width--true {% if object.settings.products_per  == 2 or object.settings.products_per  == 4 or object.settings.products_per  == 6 %}even-num-slides{% endif %} featured-collection__products">
       {% if section_onboarding == false %}
         {% if collection.products.size > 0 %}
-          {% render 'product-slider',
+          {% include 'product-slider',
                   limit: object.settings.products_limit,
                   products: collection.products,
                   per_slide: object.settings.products_per,
@@ -97,7 +97,7 @@
       <section class="section">
         <div class="container">
           <div class="one-whole column">
-            {% render 'product-loop',
+            {% include 'product-loop',
                     limit: object.settings.products_limit | plus: 1,
                     products: collection.products,
                     products_per_row: object.settings.products_per
@@ -114,7 +114,7 @@
               {%- assign collection_group_thumb = collection_group | append : 'thumb' -%}
               {%- assign collection_group_mobile = collection_group | append : 'mobile' -%}
 
-              <div class="{% render 'column-width', value: object.settings.products_per %} column {% if settings.collection_secondary_image != blank and product.media[1] != blank %}has-secondary-media-swap{% endif %} thumbnail {% if settings.mobile_products_per_row == '1' %}medium-down--one-half small-down--one-whole{% else %}medium-down--one-half small-down--one-half{% endif %}">
+              <div class="{% include 'column-width', value: object.settings.products_per %} column {% if settings.collection_secondary_image != blank and product.media[1] != blank %}has-secondary-media-swap{% endif %} thumbnail {% if settings.mobile_products_per_row == '1' %}medium-down--one-half small-down--one-whole{% else %}medium-down--one-half small-down--one-half{% endif %}">
                 <div class="product-wrap {% if settings.collection_secondary_image != blank and product.media[1] != blank %}has-secondary-media-swap{% endif %}">
                   <div class="relative product_image">
                     <a href="#">

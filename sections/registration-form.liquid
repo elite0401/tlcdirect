@@ -5,9 +5,15 @@
       <div class="featured-link--wrap">
         <a>
           {% if section.settings.image != blank %}
-            {% render 'image-element',
+            {% include 'image-element',
                     image: section.settings.image,
-                    alt: section.settings.image.alt
+                    alt: section.settings.image.alt,
+                    additional_classes: "medium-down--hide"
+            %}
+            {% include 'image-element',
+                    image: section.settings.mobile_image,
+                    alt: section.settings.mobile_image.alt,
+                    additional_classes: "hide medium-down--show"
             %}
           {% else %}
             {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
@@ -27,7 +33,7 @@
             <div id="create-customer">
               {% form 'create_customer' %}
                 {{ form.errors | default_errors }}
-    
+                <span class="require">*Required</span>
                 <div id="first_name">
                   <label for="first_name" class="login">{{ 'customer.register.first_name' | t }}</label>
                   <input type="text" value="" name="customer[first_name]" id="first_name" size="30" />
@@ -86,6 +92,11 @@
         "id": "image",
         "label": "Image",
         "info": "1024 x 1024px recommended"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "Mobile image"
       },
       {
         "type": "select",

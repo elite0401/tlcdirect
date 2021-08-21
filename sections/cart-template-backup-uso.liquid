@@ -41,7 +41,7 @@
               <div class="cart__item" data-cart-item data-line-id="{{ forloop.index }}" data-variant-id="{{ item.id }}">
                 <div class="one-third column medium-down--one-whole cart__item--image">
                   <a href="{{ item.url }}" title="{{ item.title | escape }}" class="cart_page_image">
-                    {% render 'image-element',
+                    {% include 'image-element',
                             image: item.image,
                             alt: item.title,
                             object_fit: settings.align_height,
@@ -103,7 +103,7 @@
 
                     {% if item.price < item.variant.compare_at_price or item.line_level_discount_allocations.size > 0 %}
                       <span class="money was_price">
-                        {% render 'price-element', price: item.variant.compare_at_price %}
+                        {% include 'price-element', price: item.variant.compare_at_price %}
                       </span>
                     {% endif %}
                   {% else %}
@@ -115,13 +115,13 @@
                   {% for discount_allocation in item.line_level_discount_allocations %}
                     <p class="meta cart__item--discount">
                       <span class="label">{{ 'cart.general.discount' | t }}:</span>
-                      {{ discount_allocation.discount_application.title }} (-<span class="">{% render 'price-element', price: discount_allocation.amount %}</span>)
+                      {{ discount_allocation.discount_application.title }} (-<span class="">{% include 'price-element', price: discount_allocation.amount %}</span>)
                     </p>
                   {% endfor %}
                 {% endif %}
                 
                 {% comment %}Full Shelf app{% endcomment %}
-                {% render 'full_shelf_stock_indicator', product: item.product, variant: item.variant, line_item_quantity: item.quantity %}
+                {% include 'full_shelf_stock_indicator', product: item.product, variant: item.variant, line_item_quantity: item.quantity %}
                 {% comment %}END - Full Shelf app{% endcomment %}
                 
                 <div class="product-quantity-box left">
@@ -165,7 +165,7 @@
                 {% for discount_application in cart.cart_level_discount_applications %}
                   <span class="cart_discounts--title">{{ discount_application.title }}</span>
                   <span class="cart_discounts--price">
-                    -<span class="">{% render 'price-element', price: discount_application.total_allocated_amount %}</span>
+                    -<span class="">{% include 'price-element', price: discount_application.total_allocated_amount %}</span>
                   </span>
                 {% endfor %}
               </p>
@@ -183,7 +183,7 @@
             {% if section.settings.display_savings and total_saving > 0 or section.settings.display_savings and cart.total_discount > 0 %}
               <p class="cart_savings js-cart_savings sale">
                 <span class="right">
-                  <span class="">{% assign total_savings = total_saving | plus: cart.total_discount %}{% render 'price-element', price: total_savings %}</span>
+                  <span class="">{% assign total_savings = total_saving | plus: cart.total_discount %}{% include 'price-element', price: total_savings %}</span>
                 </span>
                 <span>{{ 'layout.general.savings' | t }}</span>
               </p>
@@ -242,7 +242,7 @@
   </div>
 </section>
 
-{% render 'cart-shipping-calculator' %}
+{% include 'cart-shipping-calculator' %}
 
 <div class="cart__blocks">
   {% for block in section.blocks %}

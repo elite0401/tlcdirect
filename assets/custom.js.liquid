@@ -62,6 +62,13 @@ $(document).ready(function() {
     });
   }
 
+  $('.shopify-section--search-template .tabs li a').on('click', function (e) {
+    e.preventDefault();
+    var index = $(this).data('active_case');
+    $('.shopify-section--search-template .search-matrix').removeClass('page-show').removeClass('product-show');
+    $('.shopify-section--search-template .search-matrix').addClass(index);
+  });
+
   $('.checkbox').click(function () {
     var checkBoxes = $(this).find('input');
     checkBoxes.prop("checked", !checkBoxes.prop("checked"));

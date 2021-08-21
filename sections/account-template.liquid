@@ -32,7 +32,7 @@
                   <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
                   <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
                   <td data-label="{{ 'customer.orders.total' | t }}">
-                    <span class="money">{% render 'price-element', price: order.total_price %}</span>
+                    <span class="money">{% include 'price-element', price: order.total_price %}</span>
                   </td>
                 </tr>
               {% endfor %}
@@ -42,7 +42,7 @@
           <p>{{ 'customer.orders.none' | t }}</p>
         {% endif %}
 
-        {% render 'pagination', paginate: paginate %}
+        {% include 'pagination', paginate: paginate %}
       </main>
     </div>
   </section>
@@ -72,6 +72,11 @@
           "type": "image_picker",
           "id": "mobile_image",
           "label": "Mobile image"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay clor"
         },
         {
             "type": "text",

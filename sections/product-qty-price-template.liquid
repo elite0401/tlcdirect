@@ -15,7 +15,7 @@
   <div class="product product-name--{{ product.handle }} product_section js-product_section is-flex media-position--{{ section.settings.product_images_position }}" data-rv-handle="{{ product.handle }}">
 
     <div class="three-fifths columns medium-down--one-whole product__images">
-      {% render 'product-images',
+      {% include 'product-images',
               product: product,
               video_looping: section.settings.video_looping,
               set_product_height: section.settings.set_product_height
@@ -70,17 +70,17 @@
               {% for variant_item in product.variants %}
                 {% include 'bold-variant' with variant, hide_action: 'skip' %}
                 {% if variant_item.id == variant.id %}
-                  {% if variant_item.metafields.retail.price != blank %}
+                  {% if variant_item.metafields.global.retailprice != blank %}
                     <p id="variant-{{variant_item.id}}" class="retail_price">
                       <span class="label">Suggested Retail:</span>
-                      <span class="retail money">{% render 'price-element', price: variant_item.metafields.retail.price %}</span>
+                      <span class="retail money">{% include 'price-element', price: variant_item.metafields.global.retailprice %}</span>
                     </p>
                   {% endif %}
                 {% else %}
-                  {% if variant_item.metafields.retail.price != blank %}
+                  {% if variant_item.metafields.global.retailprice != blank %}
                     <p id="variant-{{variant_item.id}}" class="retail_price">
                       <span class="label">Suggested Retail:</span>
-                      <span class="retail money">{% render 'price-element', price: variant_item.metafields.retail.price %}</span>
+                      <span class="retail money">{% include 'price-element', price: variant_item.metafields.global.retailprice %}</span>
                     </p>
                   {% endif %}
                 {% endif %}
@@ -91,7 +91,7 @@
               <p class="compare_price">
                 {% if bold_variant_price < variant.compare_at_price %}
                 <span class="label">Our Price:</span>
-                <span class="was_price">{{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price -%}{% render 'price-element', price: compare_at %}</span>) </span>
+                <span class="was_price">{{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price -%}{% include 'price-element', price: compare_at %}</span>) </span>
                 {% endif %}
               </p>
               
@@ -105,7 +105,7 @@
                 <span content="{{ bold_variant_price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > bold_variant_price %}sale{% endif %}">
                   <span class="current_price">
                     {% if bold_variant_price > 0 %}
-                      <span class="money">{% render 'price-element', price: variant.price %}</span>
+                      <span class="money">{% include 'price-element', price: variant.price %}</span>
                     {% else %}
                       {{ settings.free_price_text }}
                     {% endif %}
@@ -117,7 +117,7 @@
               {% if section.settings.display_savings %}
                 <span class="sale savings">
                   {% if bold_variant_price < variant.compare_at_price %}
-                    {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_variant_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% render 'price-element', price: compare_at -%}</span>)
+                    {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_variant_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% include 'price-element', price: compare_at -%}</span>)
                   {% endif %}
                 </span>
               {% endif %}
@@ -138,11 +138,11 @@
       {% endif %}
 
       {% unless collection_handles contains 'coming-soon' %}
-        {% render 'product-bold-form',
+        {% include 'product-bold-form',
                 context: 'product',
                 collection_handles: collection_handles
         %}
-        {% render 'product-notify-me', product: product %}
+        {% include 'product-notify-me', product: product %}
       {% endunless %}
 
       {% if section.settings.product_description_position == "bottom" %}
@@ -199,7 +199,7 @@
 
       <div class="meta">
         {% if section.settings.display_social_buttons %}
-          {% render 'social-buttons', context: 'product' %}
+          {% include 'social-buttons', context: 'product' %}
         {% endif %}
       </div>
     </div>

@@ -17,7 +17,7 @@
 
 {% comment %} Section specific CSS {% endcomment %}
 {% style %}
-  {% render 'css-loop',
+  {% include 'css-loop',
           css: custom_css,
           id: id
   %}
@@ -39,11 +39,11 @@
       {%- assign image = block.settings.image -%}
       {% comment %} End content settings {% endcomment %}
 
-      <div class="{% render 'column-width', value: blocks.size %} column {% if blocks.size > 3 %}medium-down--one-half{% else %}medium-down--one-whole{% endif %} text-column" {{ block.shopify_attributes }}>
+      <div class="{% include 'column-width', value: blocks.size %} column {% if blocks.size > 3 %}medium-down--one-half{% else %}medium-down--one-whole{% endif %} text-column" {{ block.shopify_attributes }}>
         <div class="border-style--{{ block.settings.border_style }} text-align--{{ block.settings.align_text }}">
         {% if block.settings.enable_image %}
           {% if image != blank %}
-            {% render 'image-element',
+            {% include 'image-element',
                     image: image.src,
                     alt: image.alt
             %}

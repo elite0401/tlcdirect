@@ -61,7 +61,7 @@
       <div class="featured-link--wrap">
         <a {% if section.settings.link != blank %}href="{{ section.settings.link }}"{% endif %} title="{{ section.settings.title }}">
           {% if section.settings.image != blank %}
-            {% render 'image-element',
+            {% include 'image-element',
                     image: section.settings.image,
                     alt: section.settings.image.alt
             %}

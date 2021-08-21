@@ -1,4 +1,3 @@
-{%- include 'bold-cart' -%}
 {% comment %}
 ** Cart page - default view **
 - Template section
@@ -13,7 +12,7 @@
     </div>
 
     {% if cart.item_count == 0 %}
-      <div class="three-eighths columns medium-down--one-whole offset-by-five is-hidden-offset-mobile-only">
+      <div class="three-eighths columns medium-down--one-whole offset-by-five is-hidden-offset-mobile-only text-center">
         <p class="quote">{{ 'cart.general.continue_browsing_html' | t }}</p>
 
         <a href="{% if cart.items.first.product.collections != blank %}{{ cart.items.first.product.collections.last.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}" class="action_button continue-button add_to_cart">{{ 'cart.general.continue_shopping_link_html' | t }}</a>
@@ -43,7 +42,7 @@
               <div class="cart__item" data-cart-item data-line-id="{{ forloop.index }}" data-variant-id="{{ item.id }}">
                 <div class="two-tenths column medium-down--one-whole cart__item--image">
                   <a href="{{ item.url }}" title="{{ item.title | escape }}" class="cart_page_image">
-                    {% render 'image-element',
+                    {% include 'image-element',
                             image: item.image,
                             alt: item.title,
                             object_fit: settings.align_height,
@@ -102,12 +101,12 @@
                   <p class="modal_price">
                     {% if item.price > 0 %}
                       <span class="money {% if item.price < item.variant.compare_at_price or item.line_level_discount_allocations.size > 0 %}sale{% endif %}">
-                        {% render 'price-element', price: item.final_price %}
+                        {% include 'price-element', price: item.final_price %}
                       </span>
   
                       {% if item.price < item.variant.compare_at_price or item.line_level_discount_allocations.size > 0 %}
                         <span class="money was_price">
-                          {% render 'price-element', price: item.variant.compare_at_price %}
+                          {% include 'price-element', price: item.variant.compare_at_price %}
                         </span>
                       {% endif %}
                     {% else %}
@@ -119,7 +118,7 @@
                     {% for discount_allocation in item.line_level_discount_allocations %}
                       <p class="meta cart__item--discount">
                         <span class="label">{{ 'cart.general.discount' | t }}:</span>
-                        {{ discount_allocation.discount_application.title }} (-<span class="money">{% render 'price-element', price: discount_allocation.amount %}</span>)
+                        {{ discount_allocation.discount_application.title }} (-<span class="money">{% include 'price-element', price: discount_allocation.amount %}</span>)
                       </p>
                     {% endfor %}
                   {% endif %}
@@ -143,7 +142,7 @@
                   {% for discount_application in cart.cart_level_discount_applications %}
                     <span class="cart_discounts--title">{{ discount_application.title }}</span>
                     <span class="cart_discounts--price">
-                      -<span class="money">{% render 'price-element', price: discount_application.total_allocated_amount %}</span>
+                      -<span class="money">{% include 'price-element', price: discount_application.total_allocated_amount %}</span>
                     </span>
                   {% endfor %}
                 </p>
@@ -158,7 +157,7 @@
               {% if section.settings.display_savings and total_saving > 0 or section.settings.display_savings and cart.total_discount > 0 %}
                 <p class="cart_savings js-cart_savings sale">
                   <span class="right">
-                    <span class="money">{% assign total_savings = total_saving | plus: cart.total_discount %}{% render 'price-element', price: total_savings %}</span>
+                    <span class="money">{% assign total_savings = total_saving | plus: cart.total_discount %}{% include 'price-element', price: total_savings %}</span>
                   </span>
                   <span>{{ 'layout.general.savings' | t }}</span>
                 </p>
@@ -219,7 +218,7 @@
   </div>
 </section>
 
-{% render 'cart-shipping-calculator' %}
+{% include 'cart-shipping-calculator' %}
 
 <div class="cart__blocks">
   {% for block in section.blocks %}

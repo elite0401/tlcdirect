@@ -32,7 +32,7 @@
             <div class="featured-link--wrap">
               <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
                 {% if block.settings.image != blank %}
-                  {% render 'image-element',
+                  {% include 'image-element',
                           image: block.settings.image,
                           alt: block.settings.image.alt
                   %}
@@ -83,7 +83,7 @@
   {% endfor %}
   <div class="container content">
     <div class="content-wrapper content-wrapper--page is-flex is-flex-wrap">
-      {% render 'blog_sidebar' %} 
+      {% include 'blog_sidebar' %} 
 
       <div class="has-sidebar-option sidebar-enabled--{{ sidebar }}">
         {% capture blogs %}

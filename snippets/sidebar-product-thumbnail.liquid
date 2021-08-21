@@ -38,7 +38,7 @@
           {% assign image = product.featured_media.preview_image %}
         {% endif %}
         <div class="image__container">
-          {% render 'image-element',
+          {% include 'image-element',
             image: image,
             alt: image.alt,
             object_fit: align_height,
@@ -46,9 +46,9 @@
           %}
         </div>
         
-      {% render 'sidebar-product-details', product: product, variant: variant %}
+      {% include 'sidebar-product-details', product: product, variant: variant %}
     </div>
-    {% render 'sidebar-product-details',
+    {% include 'sidebar-product-details',
         product: product,
         variant: variant,
         collection_handles: collection_handles

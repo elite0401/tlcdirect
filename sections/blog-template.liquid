@@ -21,7 +21,7 @@
           <div class="featured-link--wrap">
             <a title="{{ blog.title }}">
               {% if section.settings.image != blank %}
-                {% render 'image-element',
+                {% include 'image-element',
                         image: section.settings.image,
                         alt: section.settings.image.alt
                 %}
@@ -84,7 +84,7 @@
         ]
       }
     </script>
-    {% render "blog-sidebar", blog_handle: blog.handle %}
+    {% include "blog-sidebar", blog_handle: blog.handle %}
 
     <div class="has-sidebar-option sidebar-enabled--{{ sidebar }}">
         {% capture blogs %}
@@ -116,7 +116,7 @@
     </div>
 
     <div class="one-whole column">
-      {% render 'pagination', paginate: paginate %}
+      {% include 'pagination', paginate: paginate %}
     </div>
     {% endpaginate %}
   </div>

@@ -15,7 +15,7 @@
               <div class="team-page__content--{{ section.settings.image_position }} {% if collection.image != blank and section.settings.text != blank %}teamPage__content--multiple{% endif %}">
                 {% if collection.image != blank %}
                   <div class="team-page__image">
-                    {% render 'image-element',
+                    {% include 'image-element',
                             image: collection.image,
                             alt: collection.title,
                             progressive: true
@@ -175,7 +175,7 @@
 
     <div class="content-wrapper is-flex is-flex-wrap">
       {% if collection.handle contains 'wigs' %}
-      {% render 'collection-sidebar' %}
+      {% include 'collection-sidebar' %}
       {% endif %}
       
 
@@ -201,7 +201,7 @@
         </div>
 
         {% if settings.pagination_type == 'basic_pagination' %}
-          {% render 'pagination', paginate: paginate %}
+          {% include 'pagination', paginate: paginate %}
         {% endif %}
       </div>
     </div>

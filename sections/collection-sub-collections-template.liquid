@@ -21,7 +21,7 @@
             {%- assign collection_image_alt = collection.products.first.featured_image.alt -%}
           {% endif %}
 
-          {% render 'image-element',
+          {% include 'image-element',
                   image: collection_image.src,
                   alt: collection_image_alt,
                   stretch_width: true,
@@ -171,7 +171,7 @@
       {% endif %}
 
       <div class="content-wrapper is-flex is-flex-wrap">
-        {% render 'sidebar' %}
+        {% include 'sidebar' %}
 
         <div class="has-sidebar-option sidebar-enabled--{{ sidebar }}">
           {% if collection.description != blank %}
@@ -190,7 +190,7 @@
                 {% if linklist != empty %}
                   {%- assign collections_per_row = section.settings.collections_per_row -%}
 
-                  {% render 'collection-loop',
+                  {% include 'collection-loop',
                           linklist: linklist,
                           collections_per_row: collections_per_row,
                           sidebar: sidebar
@@ -215,7 +215,7 @@
           {% endif %}
 
           {% if settings.pagination_type == 'basic_pagination' %}
-            {% render 'pagination', paginate: paginate %}
+            {% include 'pagination', paginate: paginate %}
           {% endif %}
         </div>
       </div>

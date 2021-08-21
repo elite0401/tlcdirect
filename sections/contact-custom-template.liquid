@@ -9,7 +9,7 @@
     <div class="container">
       <div class="one-whole column">
         <div class="banner center page-banner dark-overlay-{{ section.settings.image_darken }} full-width--{{ section.settings.wide_display }}">
-          {% render 'image-element',
+          {% include 'image-element',
                   image: section.settings.image,
                   alt: section.settings.image.alt,
                   stretch_width: true,

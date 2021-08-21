@@ -76,7 +76,7 @@
 
         {% unless collection_handles contains 'coming-soon' %}
           <div class="js-product_section product_section">
-            {% render 'product-form',
+            {% include 'product-form',
                     context: 'product',
                     collection_handles: collection_handles
             %}

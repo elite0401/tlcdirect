@@ -16,7 +16,7 @@
 
 {% comment %} Section specific CSS {% endcomment %}
 {% style %}
-  {% render 'css-loop',
+  {% include 'css-loop',
           css: custom_css,
           id: id
   %}
@@ -24,14 +24,14 @@
 
 {% if blocks.size > 0 %}
 {% capture carousel_block %}
-  <figure class="feature-section carousel promotion-slider section-{{ forloop.index }} promo-{{ forloop.index }} {% render 'column-width', value: section.settings.featured_promos_per_row %} column medium-down--one-whole title-overlay-{{ section.settings.promo_text_on_image_enabled }} {% if section.settings.featured_links_animation != blank %}promo-animation--true{% endif %}" {{ block.shopify_attributes }}>
+  <figure class="feature-section carousel promotion-slider section-{{ forloop.index }} promo-{{ forloop.index }} {% include 'column-width', value: section.settings.featured_promos_per_row %} column medium-down--one-whole title-overlay-{{ section.settings.promo_text_on_image_enabled }} {% if section.settings.featured_links_animation != blank %}promo-animation--true{% endif %}" {{ block.shopify_attributes }}>
     {% for block in section.blocks %}
       {% if block.settings.carousel %}
       {%- assign image = block.settings.image -%}
         <div class="carousel-cell">
           <div class="feature-inner feature-style--{{ section.settings.feature_style }}">
             {% if image != blank %}
-              {% render 'image-element',
+              {% include 'image-element',
                       image: image,
                       alt: image.alt,
                       stretch_width: true
@@ -94,10 +94,10 @@
             {% assign status = false %}
           {% endif %}
         {% else %}
-        <figure class="feature-section section-{{ forloop.index }} promo-{{ forloop.index }} {% render 'column-width', value: section.settings.featured_promos_per_row %} column medium-down--one-whole title-overlay-{{ section.settings.promo_text_on_image_enabled }} {% if section.settings.featured_links_animation != blank %}promo-animation--true{% endif %}" {{ block.shopify_attributes }}>
+        <figure class="feature-section section-{{ forloop.index }} promo-{{ forloop.index }} {% include 'column-width', value: section.settings.featured_promos_per_row %} column medium-down--one-whole title-overlay-{{ section.settings.promo_text_on_image_enabled }} {% if section.settings.featured_links_animation != blank %}promo-animation--true{% endif %}" {{ block.shopify_attributes }}>
           <div class="feature-inner feature-style--{{ section.settings.feature_style }}">
             {% if image != blank %}
-              {% render 'image-element',
+              {% include 'image-element',
                       image: image,
                       alt: image.alt,
                       stretch_width: true

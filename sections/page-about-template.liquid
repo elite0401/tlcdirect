@@ -31,12 +31,12 @@
                     <div class="featured-link--wrap">
                       <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
                         {% if block.settings.image != blank %}
-                          {% render 'image-element',
+                          {% include 'image-element',
                                   image: block.settings.image,
                                   alt: block.settings.image.alt,
                                   additional_classes: "medium-down--hide"
                           %}
-                          {% render 'image-element',
+                          {% include 'image-element',
                                   image: block.settings.mobile_image,
                                   alt: block.settings.image.alt,
                                   additional_classes: "medium-down--show hide"

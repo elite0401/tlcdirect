@@ -8,9 +8,9 @@
       {% endfor %}
       {% if settings.quick_shop_enabled and settings.quick_shop_style == 'popup' %}
         {% unless template contains 'product'  %}
-          {% render 'buy-this-look-button', product: product %}
+          {% include 'buy-this-look-button', product: product %}
         {% else %}
-          {% render 'sidebar-quick-shop-button', product: product, r_variant: variant %}
+          {% include 'sidebar-quick-shop-button', product: product, r_variant: variant %}
         {% endunless %}
       {% endif %}
     </div>

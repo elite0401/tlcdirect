@@ -45,7 +45,7 @@
     <div class="js-product_content">
       <div class="quick-shop active" id="recomment-{{product.id}}">
         <div class="quick-shop__container container js-quick-shop-container media-position--{{ settings.product_images_position }}">
-          {% render 'product-content' r_product: product %}
+          {% include 'product-content' r_product: product %}
         </div>
       </div>
       {% for tag in product.tags %}
@@ -55,7 +55,7 @@
             {% assign r_product = all_products[r_product_link] %}
             <div class="quick-shop" id="recomment-{{r_product.id}}">
               <div class="quick-shop__container container js-quick-shop-container media-position--{{ settings.product_images_position }}">
-                {% render 'product-content' r_product: r_product %}
+                {% include 'product-content' r_product: r_product %}
               </div>
             </div>
           {% endif %}

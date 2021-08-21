@@ -19,7 +19,7 @@
 
 {% comment %} Section specific CSS {% endcomment %}
 {% style %}
-  {% render 'css-loop',
+  {% include 'css-loop',
           css: custom_css,
           id: id
   %}
@@ -48,13 +48,13 @@
 
             <div class="gallery-cell slide-{{ forloop.index }}" {{ block.shopify_attributes }} data-block-id="{{ block.id }}">
               {% if image != blank %}
-                {% render 'image-element',
+                {% include 'image-element',
                         image: image,
                         alt: image.alt,
                         stretch_width: true,
                         additional_classes: 'medium-down--hidden'
                 %}
-                {% render 'image-element',
+                {% include 'image-element',
                         image: mobile_image,
                         alt: mobile_image.alt,
                         stretch_width: true,

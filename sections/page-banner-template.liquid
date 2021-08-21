@@ -9,7 +9,7 @@
     <div class="one-whole column">
       <div id="banner-{{ section.id }}" class="banner page-banner dark-overlay-{{ section.settings.image_darken }} full-width--{{ section.settings.wide_display }}">
         {% if section.settings.image != blank %}
-          {% render 'image-element',
+          {% include 'image-element',
                   image: section.settings.image,
                   alt: section.settings.image.alt,
                   stretch_width: true
@@ -68,7 +68,7 @@
 <section class="section">
   <div class="container main content">
     <div class="one-whole column page">
-      {% render 'page-multi-column', content: page.content %}
+      {% include 'page-multi-column', content: page.content %}
     </div>
   </div>
 </section>

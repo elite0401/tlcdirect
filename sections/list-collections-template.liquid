@@ -11,7 +11,7 @@
     <div class="container">
       <div class="one-whole column">
         <header class="banner center page-banner dark-overlay-{{ section.settings.image_darken }} full-width--true">
-          {% render 'image-element',
+          {% include 'image-element',
                   image: section.settings.image,
                   alt: section.settings.image.alt,
                   stretch_width: true,
@@ -102,7 +102,7 @@
       {% endif %}
 
       <div class="content-wrapper is-flex is-flex-wrap">
-        {% render 'sidebar' %}
+        {% include 'sidebar' %}
 
         <div class="has-sidebar-option sidebar-enabled--{{ sidebar }}">
           <div class="container">
@@ -112,7 +112,7 @@
                   {% unless collection.handle == 'frontpage' %}
                     {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
 
-                    <div class="{% render 'column-width', value: collections_per_row %} column thumbnail {% if settings.mobile_products_per_row == '1' %}medium-down--one-half small-down--one-whole{% else %}medium-down--one-half small-down--one-half{% endif %}">
+                    <div class="{% include 'column-width', value: collections_per_row %} column thumbnail {% if settings.mobile_products_per_row == '1' %}medium-down--one-half small-down--one-whole{% else %}medium-down--one-half small-down--one-half{% endif %}">
                       <div class="product-wrap">
                         <div class="image__container">
                           {% if collection.image %}
@@ -121,7 +121,7 @@
                             {%- assign collection_image = collection.products.first.featured_image -%}
                           {% endif %}
 
-                          {% render 'image-element',
+                          {% include 'image-element',
                                   image: collection_image,
                                   alt: collection.title,
                                   object_fit: section.settings.align_height,
