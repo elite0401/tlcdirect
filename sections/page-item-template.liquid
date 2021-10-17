@@ -52,26 +52,7 @@
       {% capture twitter_handle %}{{ block.settings.twitter }}{% endcapture %}
       {% capture title %}{{ block.settings.job_title }}{% endcapture %}
       {% capture description %}{{ block.settings.description }}{% endcapture %}
-
-      <div class="{% include 'column-width', value: section.settings.employee_per_row %} column medium-down--one-whole team-member__profile">
-        <figure class="team-member__wrap">
-          {% if block.settings.image %}
-            {% include 'image-element',
-                    image: block.settings.image,
-                    alt: block.settings.image.alt,
-                    stretch_width: true
-            %}
-            
-          {% else %}
-            {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
-            {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
-          {% endif %}
-
-        <h3 class="team-member__name no_border"><a href="{{block.settings.link}}">{{ name }}</a></h3>
-        {% if description != blank %}
-          <p>{{ description }}</p>
-        {% endif %}
-      </div>
+      {% include 'item-block' %}
     {% endfor %}
   </div>
 </section>
@@ -101,7 +82,8 @@
       {
         "type": "image_picker",
         "id": "image",
-        "label": "Image"
+        "label": "Image",
+        "info": "800x430 recommended"
       },
       {
         "type": "select",

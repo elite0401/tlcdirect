@@ -15,7 +15,7 @@
 <div class="one-whole column product-{{ product.id }}">
   <div class="product product-name--{{ product.handle }} product_section js-product_section is-flex media-position--{{ section.settings.product_images_position }}" data-rv-handle="{{ product.handle }}">
 
-    <div class="one-half columns medium-down--one-whole product__images">
+    <div class="one-half columns large-down--one-whole product__images">
       {% include 'product-images',
               product: product,
               video_looping: section.settings.video_looping,
@@ -23,14 +23,14 @@
       %}
     </div>
 
-    <div class="one-half columns medium-down--one-whole product__info">
+    <div class="one-half columns large-down--one-whole product__info">
       {%- assign collection_handles = product.collections | map: 'handle' -%}
       {%- assign variant = bold_selected_or_first_available_variant -%}
       {%- include 'bold-variant' with variant, output: 'none' -%}
 
 
       {% if product.available %}
-        {% if settings.sale_banner_enabled and product.compare_at_price > product.price %}
+        {% if settings.sale_banner_enabled and bold_compare_at_price > bold_price %}
           <div class="sale_banner_product">{{ 'collections.general.sale' | t }}</div>
         {% endif %}
       {% endif %}
@@ -48,152 +48,173 @@
         </p>
       {% endif %}
 
-      {% if variant.sku != blank and section.settings.display_sku %}
+      
+      <div class="top">
+        {% if variant.sku != blank and section.settings.display_sku %}
         <p class="sku">
-          <span>{{ variant.sku | split: " " | first }}</span>
+          #<span>{{ variant.sku | split: " " | first }}</span>
         </p>
-      {% endif %}
-      <h1 class="product_name">{{ product.title }}</h1>
-      {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
-        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
-      {% endif %}
-      <div class="feature_divider"></div>
-        
-      {% if collection_handles contains 'coming-soon' %}
-        <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
-      {% else %}
-        <div class="modal_price">
-          {% unless product.available == false and settings.display_price == false %}
-            <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
-              {% for variant_item in product.variants %}
-
-                {% if variant_item.id == variant.id %}
-                  {% if variant_item.metafields.global.retailprice != blank %}
-                  
-                    <p id="variant-{{variant_item.id}}" class="retail_price">
-                      <span class="label">Suggested Retail:</span>
-                      <span class="retail money">{% include 'price-element', price: variant_item.metafields.global.retailprice %}</span>
-                    </p>
-                  {% endif %}
-                {% else %}
-                  {% if variant_item.metafields.global.retailprice != blank %}
-                    <p id="variant-{{variant_item.id}}" class="retail_price">
-                      <span class="label">Suggested Retail:</span>
-                      <span class="retail money">{% include 'price-element', price: variant_item.metafields.global.retailprice %}</span>
-                    </p>
-                  {% endif %}
-                {% endif %}
-              {% endfor %}
-              
-
-              {% if bold_price < variant.compare_at_price %}
-                <p class="compare_price">
-                  <span class="label">Our Price:</span>
-                  <span class="was_price"><span class="money">{{ variant.compare_at_price | money }}</span></span>
-                </p>
+        {% endif %}
+        <div class="info">
+          <h1 class="product_name">{{ product.title }}</h1>
+          {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
+            <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+          {% endif %}
+        <div class="feature_divider"></div>
+          
+        {% if collection_handles contains 'coming-soon' %}
+          <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
+        {% else %}
+          <div class="modal_price">
+            {% unless product.available == false and settings.display_price == false %}
+              {% assign cls = '' %}
+              {% if product.metafields.global.suggested_retail_price != blank %}
+              {% assign cls = 'retail-price-container' %}
               {% endif %}
-              <p class="sale_price">
-                <span class="label">Sale Price: </span>
-                <span content="{{ bold_price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > bold_price %}sale{% endif %}">
-                  <span class="current_price">
-                    {% if bold_price > 0 %}
-                      <span class="money">{{ bold_price | money }}</span>
-                    {% else %}
-                      {{ settings.free_price_text }}
+              <div class="price__container {{cls}} {% if variant.compare_at_price > bold_price %}sale{% endif %} price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
+                {% if product.metafields.global.suggested_retail_price != blank %}
+                    
+                  <p class="retail_price">
+                    <span class="label">Suggested Retail:</span>
+                    <span class="retail money">{% include 'price-element', price: product.metafields.global.suggested_retail_price %}</span>
+                  </p>
+                {% endif %}
+                
+  
+                
+                <p class="compare_price">
+                  <span class="was_price">
+                    {% if bold_variant_price < variant.compare_at_price %}
+                    <span class="money">{{ variant.compare_at_price | money }}</span>
                     {% endif %}
                   </span>
+                </p>
+                
+                <p content="{{ bold_price | money_without_currency | remove: "," }}" class="current_price">
+                  {% if bold_price > 0 %}
+                    <span class="money">{{ bold_price | money }}</span>
+                  {% else %}
+                    {{ settings.free_price_text }}
+                  {% endif %}
+                </p>
+                
+                
+                {% if section.settings.display_savings %}
+                  <span class="sale savings">
+                    {% if bold_price < variant.compare_at_price %}
+                      {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% include 'price-element', price: compare_at -%}</span>)
+                    {% endif %}
+                  </span>
+                {% endif %}
+              </div>
+            {% endunless %}
+            <div class="sold-out__container">
+              <span class="sold_out">{% if variant.available == false %}{{ settings.sold_out_text }}{% endif %}</span>
+            </div>
+          </div>
+        {% endif %}
+        {% if product.metafields.global.custom_message != blank %}
+        <p class="custom-message">{{product.metafields.global.custom_message}}</p>
+        {% else %}
+          {% for block in section.blocks %}
+            {% if block.type == 'promotion' %}
+              {% if block.settings.collection != blank %}
+                {% for collection in product.collections %}
+                  {% if collection.handle == block.settings.collection %}
+                    {% assign collection_wide_message = block.settings.promotion %}
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                {% assign side_wide_message = block.settings.promotion %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          {% if collection_wide_message != blank %}
+            <p class="custom-message">{{collection_wide_message}}</p>
+          {% elsif side_wide_message != blank %}
+            <p class="custom-message">{{side_wide_message}}</p>
+          {% endif %}
+        {% endif %}
+        </div>
+        
+        {% if section.settings.product_description_position == "top" %}
+          {% if product.description != blank %}
+            <div class="description">
+              {{ product.description | split: '<!-- split -->' | first }}
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% unless collection_handles contains 'coming-soon' %}
+          {% include 'product-form',
+                  context: 'product',
+                  collection_handles: collection_handles
+          %}
+          {% include 'product-notify-me', product: product %}
+        {% endunless %}
+        {% if template contains 'product' %}
+        <div class="bottom-content">
+          {% render 'popup-email' %}
+        </div>
+        {% endif %}
+        {% if section.settings.product_description_position == "bottom" %}
+          {% if product.description != blank %}
+            <div class="description bottom">
+              {% assign content_top = product.description | split: '<!-- split -->' | first | replace: '<h2>', '</div><h2>' | replace: '</h2>', '</h2><div class="toggle-content">' | remove_first: '</div>' %}
+              {{ content_top }}
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if section.settings.review_position == "next_to_gallery" %}
+          <div class="shopify-reviews reviewsVisibility--{{ settings.enable_shopify_review_comments }}">
+            <div id="shopify-product-reviews" data-id="{{ product.id }}">{{ product.metafields.spr.reviews }}</div>
+          </div>
+        {% endif %}
+
+        {% if section.settings.display_collections or section.settings.display_tags or section.settings.display_type %}
+          <div class="product_links">
+            {% if section.settings.display_collections %}
+              <p>
+                <span class="label">{{ 'products.product.collections' | t }}:</span>
+                <span>
+                  {% for col in product.collections %}
+                    <a href="{{ col.url }}" title="{{ col.title }}">{{ col.title }}</a>{% unless forloop.last %},{% endunless %}
+                  {% endfor %}
                 </span>
               </p>
-              
-              
-              {% if section.settings.display_savings %}
-                <span class="sale savings">
-                  {% if bold_price < variant.compare_at_price %}
-                    {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price %}{% include 'price-element', price: compare_at -%}</span>)
+            {% endif %}
+
+            {% if section.settings.display_type %}
+              <p>
+                <span class="label">{{ 'products.product.product_types' | t }}:</span>
+                <span>{{ product.type | link_to_type }}</span>
+              </p>
+            {% endif %}
+
+            {% if section.settings.display_tags %}
+              <p>
+                {% for tag in product.tags %}
+                  {% if forloop.first %}
+                    <span class="label">{{ 'products.product.tags' | t }}:</span>
                   {% endif %}
-                </span>
-              {% endif %}
-            </div>
-          {% endunless %}
-          <div class="sold-out__container">
-            <span class="sold_out">{% if variant.available == false %}{{ settings.sold_out_text }}{% endif %}</span>
-          </div>
-        </div>
-      {% endif %}
 
-      {% if section.settings.product_description_position == "top" %}
-        {% if product.description != blank %}
-          <div class="description">
-            {{ product.description | split: '<!-- split -->' | first }}
-          </div>
-        {% endif %}
-      {% endif %}
-
-      {% unless collection_handles contains 'coming-soon' %}
-        {% include 'product-form',
-                context: 'product',
-                collection_handles: collection_handles
-        %}
-        {% include 'product-notify-me', product: product %}
-      {% endunless %}
-
-      {% if section.settings.product_description_position == "bottom" %}
-        {% if product.description != blank %}
-          <div class="description bottom">
-            {% assign content_top = product.description | split: '<!-- split -->' | first | replace: '<h2>', '</div><h2>' | replace: '</h2>', '</h2><div class="toggle-content">' | remove_first: '</div>' %}
-            {{ content_top }}
-          </div>
-        {% endif %}
-      {% endif %}
-
-      {% if section.settings.review_position == "next_to_gallery" %}
-        <div class="shopify-reviews reviewsVisibility--{{ settings.enable_shopify_review_comments }}">
-          <div id="shopify-product-reviews" data-id="{{ product.id }}">{{ product.metafields.spr.reviews }}</div>
-        </div>
-      {% endif %}
-
-      {% if section.settings.display_collections or section.settings.display_tags or section.settings.display_type %}
-        <div class="product_links">
-          {% if section.settings.display_collections %}
-            <p>
-              <span class="label">{{ 'products.product.collections' | t }}:</span>
-              <span>
-                {% for col in product.collections %}
-                  <a href="{{ col.url }}" title="{{ col.title }}">{{ col.title }}</a>{% unless forloop.last %},{% endunless %}
+                  {% unless tag contains 'meta-' %}
+                    <span>
+                      <a href="{{ routes.collections_url }}/{% if collection %}{{ collection.handle }}{% else %}all{% endif %}/{{ tag | handle }}" title="{{ 'products.product.products_tagged' | t: tag: tag }}">{{ tag }}</a>{% unless forloop.last %},{% endunless %}
+                      </span>
+                  {% endunless %}
                 {% endfor %}
-              </span>
-            </p>
-          {% endif %}
+              </p>
+            {% endif %}
+          </div>
+        {% endif %}
 
-          {% if section.settings.display_type %}
-            <p>
-              <span class="label">{{ 'products.product.product_types' | t }}:</span>
-              <span>{{ product.type | link_to_type }}</span>
-            </p>
-          {% endif %}
-
-          {% if section.settings.display_tags %}
-            <p>
-              {% for tag in product.tags %}
-                {% if forloop.first %}
-                  <span class="label">{{ 'products.product.tags' | t }}:</span>
-                {% endif %}
-
-                {% unless tag contains 'meta-' %}
-                  <span>
-                    <a href="{{ routes.collections_url }}/{% if collection %}{{ collection.handle }}{% else %}all{% endif %}/{{ tag | handle }}" title="{{ 'products.product.products_tagged' | t: tag: tag }}">{{ tag }}</a>{% unless forloop.last %},{% endunless %}
-                    </span>
-                {% endunless %}
-              {% endfor %}
-            </p>
+        <div class="meta">
+          {% if section.settings.display_social_buttons %}
+            {% include 'social-buttons', context: 'product' %}
           {% endif %}
         </div>
-      {% endif %}
-
-      <div class="meta">
-        {% if section.settings.display_social_buttons %}
-          {% include 'social-buttons', context: 'product' %}
-        {% endif %}
       </div>
     </div>
   </div>
@@ -218,7 +239,6 @@
   {% include 'include-recently-viewed' %}
 {% endif %}
 
-<div data-product-recommendations-container></div>
 
 {% if section.settings.set_product_height %}
   {% style %}
@@ -525,6 +545,25 @@
         "max": 5,
         "step": 1,
         "default": 4
+      }
+    ],
+    "blocks" : [
+      {
+        "name": "Promotion text",
+        "type": "promotion",
+        "settings": [   
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection",
+            "info": "This promotion text will display this collection page"
+          },     
+          {
+            "type": "html",
+            "id": "promotion",
+            "label": "Promotion text"
+          }
+        ]
       }
     ],
     "default": {

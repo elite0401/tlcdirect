@@ -96,7 +96,7 @@
 
           <div class="contact__form-message">
             <label for="contactFormMessage">
-            {{ 'contact.form.message' | t }} <span class="red">*</span>
+              How can we help you? <span class="red">*</span>
             </label>
             <textarea rows="5"
                     id="contactFormMessage"
@@ -108,7 +108,7 @@
               {% endif %}
             </textarea>
             <input type="submit" class="submit full action_button" value="{{ 'contact.form.send' | t }}" />
-            <div class="contact-form__bottom-content flex gap is-align-start">
+            <div class="contact-form__bottom-content flex is-align-start">
               {% render 'icon-pack' with icon: 'exclamation' %}
               {{ bottom_form_content }}
             </div>

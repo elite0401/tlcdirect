@@ -91,7 +91,7 @@
 
                     {% if item.price < item.variant.compare_at_price or item.line_level_discount_allocations.size > 0 %}
                       <span class="money was_price">
-                        {% include 'price-element', price: item.variant.compare_at_price %}
+                        <s>{% include 'price-element', price: item.variant.compare_at_price %}</s>
                       </span>
                     {% endif %}
                   {% else %}

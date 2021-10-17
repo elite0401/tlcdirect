@@ -220,12 +220,7 @@ $(function() {
       $('[data-initial-modal-price]').attr('data-initial-modal-price', '');
   });
 
-  $('body').on('change', '.js-quick-shop select', function(e) {
-      var currentVariant = $('.js-quick-shop select[name="id"]').val();
-      if (currentVariant && globalQuickShopProduct){
-        quickShop.updateVariant(currentVariant);
-      }
-  });
+  
 
   if (Shopify.theme_settings.quick_shop_enabled){
     quickShop.init();
@@ -308,7 +303,7 @@ $(function() {
   createAccordion('.product__info .description', 'h2', 'div.toggle-content');
   utils.createAccordion('.product_section .accordion-tabs', '.tabs li > a', '.tabs-content li');
 
-  utils.mobileParentActiveAccordion('#mobile_menu', 'li.sublink > a.parent-link--true span', 'li.sublink ul');
+  utils.mobileParentActiveAccordion('#mobile_menu', 'li.sublink > a.parent-link--true', 'li.sublink ul');
   utils.mobileAccordion('#mobile_menu', 'li.sublink > a.parent-link--false', 'li.sublink ul');
 
   utils.initializeTabs();
@@ -474,57 +469,16 @@ $(function() {
         var apiQuantityTotal = 0;
         var apiLineItemQuantity = typeof data.items[lineIDIndex] !== 'undefined' ? data.items[lineIDIndex].quantity : 0;
 
-        // Check if item has a "Buy X get Y" deal
-        if ($quantityInputs.length > 1) {
-          // Multiple inputs
 
-          // Get all the quantities of same variants in the cart (including BOGO) in HTML
-          $.each($quantityInputs, function (i, input) {
-            initialQuantityTotal += parseInt($(input).val());
-          });
 
-          // Get quantities from cart object returned from API
-          cartItemsArray.forEach(function (item) {
-            if (item.variant_id === cartItem.variantID) {
-              apiQuantityTotal += item.quantity;
-            }
-          })
-        } else {
-          // Single input
-          initialQuantityTotal = parseInt($quantityInputs.val());
-          apiQuantityTotal = typeof data.items[lineIDIndex] !== 'undefined' ? data.items[lineIDIndex].quantity : 0;
-        }
+        $('.warning--quantity').remove();
 
-        //Checks to see if there is enough inventory to update to an increased amount
-        if (initialQuantityTotal > 0 && initialQuantityTotal > apiQuantityTotal) {
-          if (apiQuantityTotal == 1) {
-            items_left_text = Shopify.translation.one_item_left;
-          } else {
-            items_left_text = Shopify.translation.items_left_text;
-          }
-
-          $('.warning--quantity').remove();
-
-          //Check if Buy one get one product
-          if (totalCartItems < cartItemsArray.length) {
-
-            if (cartItem.parentCartForm.data('cart-form') === 'cart-template') {
-              // Refreshes cart if inventory is available
-              cartItem.parentCartForm.submit();
-            } else {
-              refreshCart(data);
-            }
-          } else {
-            var warning = '<p class="warning warning--quantity animated bounceIn">' + apiQuantityTotal + ' ' + items_left_text + '</p>';
-            cartItem.parentCartForm.find("[data-line-id='" + cartItem.lineID + "'] input").parent().after(warning);
-            cartItem.parentCartForm.find("[data-line-id='" + cartItem.lineID + "'] input").val(apiLineItemQuantity);
-          }
-
-        } else if (cartItem.parentCartForm.data('cart-form') === 'cart-template') {
-          // Refreshes cart if inventory is available
-          cartItem.parentCartForm.submit();
-        } else {
-          refreshCart(data);
+        var warning = '<p class="warning warning--quantity animated bounceIn">Updated</p>';
+        cartItem.parentCartForm.find("[data-line-id='" + cartItem.lineID + "'] input").parent().after(warning);
+        cartItem.parentCartForm.find("[data-line-id='" + cartItem.lineID + "'] input").val(apiLineItemQuantity);
+        refreshCart(data);
+        if ($('.cart__wrapper').data('cart-form') === 'cart-template') {
+          $('.js-cart_subtotal [data-cart-total]').html(Shopify.formatMoney(data.total_price, $('body').data('money-format')))
         }
         
         if(typeof BOLD === 'object' && BOLD.common && BOLD.common.eventEmitter && typeof BOLD.common.eventEmitter.emit === 'function') {
@@ -548,176 +502,137 @@ $(function() {
   }
 
   function refreshCart(cart) {
-    // Bold:PRE
-    if (typeof window.BOLD !== 'undefined'
-    && typeof window.BOLD.common !== 'undefined'
-    && typeof window.BOLD.common.cartDoctor !== 'undefined') {
-    // NOTE: "cart" should be the variable containing the cart JSON data
-    cart = window.BOLD.common.cartDoctor.fix(cart);
-    }
-    // Bold:PRE
-    $(".cart_count").empty();
-    $cartBtn = $(".cart_count");
-    var value = $cartBtn.text() || '0';
-    var cart_items_html = "";
-    var cart_discounts_html = "";
-    var cart_action_html = "";
-    var cart_savings_html = "";
-    var $cart_form = $('[data-cart-form]');
-    var productHasSale = false;
-    var productCompareAtPrice = 0;
-    var productFinalPrice = 0;
+    $('.show_loading').addClass('active');
+    var bold_qb_ajax = function (cart) {
+      $(".cart_count").empty();
+      $cartBtn = $(".cart_count");
+      var value = $cartBtn.text() || '0';
+      var cart_items_html = "";
+      var cart_discounts_html = "";
+      var cart_action_html = "";
+      var cart_savings_html = "";
+      var $cart_form = $('[data-cart-form]');
+      var productHasSale = false;
+      var productCompareAtPrice = 0;
+      var productFinalPrice = 0;
 
-    $cart_form.data('total-discount', cart.total_discount);
+      $cart_form.data('total-discount', cart.total_discount);
 
-    $cartBtn.text(value.replace(/[0-9]+/,cart.item_count));
+      $cartBtn.text(value.replace(/[0-9]+/,cart.item_count));
 
-    if (cart.item_count == 0) {
-      $('.js-empty-cart__message').removeClass('hidden');
-      $cart_form.addClass('hidden');
-    } else {
-      $('.js-empty-cart__message').addClass('hidden');
-      $cart_form.removeClass('hidden');
+      if (cart.item_count == 0) {
+        $('.js-empty-cart__message').removeClass('hidden');
+        $cart_form.addClass('hidden');
+      } else {
+        $('.js-empty-cart__message').addClass('hidden');
+        $cart_form.removeClass('hidden');
 
-      var total_saving = 0; // adding counter variables for total cart savings
-      var saving = 0;
+        var total_saving = 0; // adding counter variables for total cart savings
+        var saving = 0;
 
-      $.each(cart.items, function(index, item) {
-        var itemDiscounts = item.discounts;
-        var discountMessage = "";
+        $.each(cart.items, function(index, item) {
+          var itemDiscounts = item.discounts;
+          var discountMessage = "";
 
-        for (i=0; i < itemDiscounts.length; i++) {
-          var amount = Shopify.formatMoney(itemDiscounts[i].amount, $('body').data('money-format'));
-          var title = itemDiscounts[i].title;
-          discountMessage = '<p class="notification-discount meta">' + title + '</p>';
-        }
-        var line_id = index + 1;
-
-        cart_items_html += '<li class="mini-cart__item clearfix" data-cart-item data-line-id="' + line_id + '" data-variant-id="' + item.id + '">' +
-          '<a href="' + item.url +'">';
-        if (item.image) {
-          cart_items_html += '<div class="cart_image">' +
-              '<img src="' + item.image.replace(/(\.[^.]*)$/, "_compact$1").replace('http:', '') + '" alt="' + htmlEncode(item.title) + '" />' +
-            '</div></a>';
-        }
-
-        cart_items_html += '<div class="mini-cart__item--content"><div class="mini-cart__item__title"><div class="item_title"><a href="' + item.url + '">' + item.title + '</a></div>';
-
-        if(item.properties) {
-          $.each(item.properties, function(title, value) {
-            if (value) {
-              cart_items_html += '<div class="line-item">' + title +': ' + value + ' </div>';
-            }
-          });
-        }
-
-        cart_items_html += '<strong class="right price">';
-
-        $.ajax({
-          dataType: "json",
-          async: false,
-          cache: false,
-          url: "/products/" + item.handle + ".js",
-          success: function(data) {
-            // If item has more than one variant, need to make sure we are pulling data from the correct variant
-            if (data.variants) {
-              var itemVariants = data.variants;
-              if (itemVariants.length > 1) {
-                for (v = 0; v < itemVariants.length; v++) {
-                  if (itemVariants[v].id == item.id) {
-                    var data = itemVariants[v];
-                  }
-                }
-              }
-            }
-
-            // If compare at price exists then item is on sale
-            if (data.compare_at_price) {
-              if(data.compare_at_price > data.price) {
-                productHasSale = true;
-                productCompareAtPrice = data.compare_at_price;
-                productFinalPrice = data.price;
-              }
-            } else {
-              // Check required for non-sale items
-              productHasSale = false;
-            }
+          for (i=0; i < itemDiscounts.length; i++) {
+            var amount = Shopify.formatMoney(itemDiscounts[i].amount, $('body').data('money-format'));
+            var title = itemDiscounts[i].title;
+            discountMessage = '<p class="notification-discount meta">' + title + '</p>';
           }
+          var line_id = index + 1;
+
+          cart_items_html += '<li class="mini-cart__item clearfix" data-cart-item data-line-id="' + line_id + '" data-variant-id="' + item.id + '">' +
+            '<a href="' + item.url +'">';
+          if (item.image) {
+            cart_items_html += '<div class="cart_image">' +
+                '<img src="' + item.image.replace(/(\.[^.]*)$/, "_compact$1").replace('http:', '') + '" alt="' + htmlEncode(item.title) + '" />' +
+              '</div></a>';
+          }
+          var boldTitleFix = item.title;
+          if(item.title.includes("(default)")){
+            var index = item.title.indexOf("(default)");
+            var index2 = item.title.indexOf("/ ");
+            var index3 = item.title.indexOf("(default)", item.title.indexOf("(default)") + 1);
+            boldTitleFix = item.title.substring(0, index) + item.title.substring(index2, index3);
+            
+          }
+          
+          cart_items_html += '<div class="mini-cart__item--content"><div class="mini-cart__item__title"><div class="item_title"><a href="' + item.url + '">' + boldTitleFix + '</a></div>';
+          // if(item.properties) {
+          //   $.each(item.properties, function(title, value) {
+          //     if (value) {
+          //       cart_items_html += '<div class="line-item">' + title +': ' + value + ' </div>';
+          //     }
+          //   });
+          // }
+          
+          cart_items_html += '<div class="price_content"><span class="quantity">'+item.quantity+'</span> X <strong class="right price">';
+          var stock_status = 'In Stock';
+
+          var itemPrice = Shopify.formatMoney(item.final_price, $('body').data('money-format')) + ' </span>';
+          cart_items_html += '<span class="mone">' + itemPrice + '</strong></div>';
+
+          /*if (item.price > item.final_price) {
+            cart_items_html += discountMessage;
+          }*/
+          if (itemDiscounts.length > 0) {
+            cart_items_html += discountMessage;
+          }
+          if (item.sku != "") {
+            cart_items_html += '<div class="property_content"> <span class="sku">Item: '+item.sku.split(" ")[0]+'</span> <span class="in_stock">'+stock_status+'</span></div>';
+          } else {
+            cart_items_html += '<div class="property_content"> <span class="in_stock">'+stock_status+'</span></div>';
+          }
+
+          cart_items_html += '<div class="quantity_content"><div class="left product-quantity-box">';
+          cart_items_html += '<span class="ss-icon product-minus js-change-quantity" data-func="minus"><span class="icon-minus"></span></span>';
+          cart_items_html += '<input type="number" min="0" class="quantity" name="updates[]" id="updates_' + item.id + '" value="' + item.quantity + '" data-cart-quantity-input="mini-cart" />';
+          cart_items_html += '<span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>';
+          cart_items_html += '</div><a class="quantity_update cart__edit-btn">Update</a></div></div></div>';
+          cart_items_html += '<a href="/cart/change?line=' + line_id + '&amp;quantity=0" class="js-cart-remove-btn cart__remove-btn" data-line-id="' + line_id + '" data-remove-item="mini-cart"><span class="remove-icon"></span></a>';
+
         });
 
-        if(productHasSale == true) {
-          //puts the slash through the old item price
-          var itemPrice = Shopify.formatMoney(productFinalPrice, $('body').data('money-format')) + ' </span><span class="money was_price">' + Shopify.formatMoney(productCompareAtPrice, $('body').data('money-format')) + '</span>';
-          cart_items_html += '<span class="money sale">' + itemPrice + '</strong>';
+        var cartDiscounts = cart.cart_level_discount_applications;
+        var cartDiscountMessage = "";
 
-          // Total savings
-          saving = (productCompareAtPrice - productFinalPrice) * item.quantity;
-          total_saving = saving + total_saving;
+        for (i=0; i < cartDiscounts.length; i++) {
+          var amount = Shopify.formatMoney(cartDiscounts[i].total_allocated_amount, $('body').data('money-format'));
+          var title = cartDiscounts[i].title;
+
+          cart_discounts_html += '<span class="cart_discounts--title">' + title + '</span>';
+          cart_discounts_html += '<span class="cart_discounts--price">';
+          cart_discounts_html += '-<span class="money">' + amount + '</span></span>';
+        }
+
+        cart_action_html += '<span class="right"><span class="money">' + Shopify.formatMoney(cart.total_price, $('body').data('money-format')) + '</span></span>' + '<span>' + Shopify.translation.cart_subtotal_text + '</span>';
+        total_saving = total_saving + cart.total_discount;
+        if(Shopify.theme_settings.display_savings && total_saving > 0) {
+          cart_savings_html = '<span class="right"><span class="money">' + Shopify.formatMoney(total_saving, $('body').data('money-format')) + '</span></span>' +
+              '<span>' + Shopify.translation.cart_savings_text + '</span>';
         } else {
-          if (item.price > item.final_price) {
-            //puts the slash through the old item price
-            var itemPrice = Shopify.formatMoney(item.final_price, $('body').data('money-format')) + ' </span><span class="money was_price">' + Shopify.formatMoney(item.price, $('body').data('money-format')) + '</span>';
-            cart_items_html += '<span class="money sale">' + itemPrice + '</strong>';
-          } else {
-            if (itemDiscounts.length > 0) {
-              var itemPrice = Shopify.formatMoney(item.final_price - item.total_discount, $('body').data('money-format')) + ' </span><span class="money was_price">' + Shopify.formatMoney(item.price, $('body').data('money-format')) + '</span>';
-              cart_items_html += '<span class="money sale">' + itemPrice + '</strong>';
-            } else {
-              var itemPrice = Shopify.formatMoney(item.price, $('body').data('money-format'));
-              cart_items_html += '<span class="money">' + itemPrice + '</span></strong>';
-            }
-          }
+          cart_savings_html = "";
         }
-
-        /*if (item.price > item.final_price) {
-          cart_items_html += discountMessage;
-        }*/
-        if (itemDiscounts.length > 0) {
-          cart_items_html += discountMessage;
-        }
-
-        cart_items_html += '<div class="left product-quantity-box">';
-        cart_items_html += '<span class="ss-icon product-minus js-change-quantity" data-func="minus"><span class="icon-minus"></span></span>';
-        cart_items_html += '<input type="number" min="0" class="quantity" name="updates[]" id="updates_' + item.id + '" value="' + item.quantity + '" data-cart-quantity-input="mini-cart" />';
-        cart_items_html += '<span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>';
-        cart_items_html += '</div></div></div>';
-        cart_items_html += '<a href="/cart/change?line=' + line_id + '&amp;quantity=0" class="js-cart-remove-btn cart__remove-btn" data-line-id="' + line_id + '" data-remove-item="mini-cart"><span class="remove-icon"></span></a>';
-
-      });
-
-      var cartDiscounts = cart.cart_level_discount_applications;
-      var cartDiscountMessage = "";
-
-      for (i=0; i < cartDiscounts.length; i++) {
-        var amount = Shopify.formatMoney(cartDiscounts[i].total_allocated_amount, $('body').data('money-format'));
-        var title = cartDiscounts[i].title;
-
-        cart_discounts_html += '<span class="cart_discounts--title">' + title + '</span>';
-        cart_discounts_html += '<span class="cart_discounts--price">';
-        cart_discounts_html += '-<span class="money">' + amount + '</span></span>';
       }
 
-      cart_action_html += '<span class="right"><span class="money">' + Shopify.formatMoney(cart.total_price, $('body').data('money-format')) + '</span></span>' + '<span>' + Shopify.translation.cart_subtotal_text + '</span>';
-      total_saving = total_saving + cart.total_discount;
-      if(Shopify.theme_settings.display_savings && total_saving > 0) {
-        cart_savings_html = '<span class="right"><span class="money">' + Shopify.formatMoney(total_saving, $('body').data('money-format')) + '</span></span>' +
-            '<span>' + Shopify.translation.cart_savings_text + '</span>';
-      } else {
-        cart_savings_html = "";
+      $('.js-cart_items').html(cart_items_html);
+      $('.js-cart_discounts').html(cart_discounts_html);
+      $('.js-cart_subtotal').html(cart_action_html);
+      $('.js-cart_savings').html(cart_savings_html);
+      $('.show_loading').removeClass('active');
+      // Converting the currencies
+      if (Currency.show_multiple_currencies) {
+        currencyConverter.convertCurrencies();
       }
     }
-
-    $('.js-cart_items').html(cart_items_html);
-    $('.js-cart_discounts').html(cart_discounts_html);
-    $('.js-cart_subtotal').html(cart_action_html);
-    $('.js-cart_savings').html(cart_savings_html);
-
-    // Converting the currencies
-    if (Currency.show_multiple_currencies) {
-      currencyConverter.convertCurrencies();
+    if (typeof shappify_csp_got_cart == 'function') {
+      shappify_csp_got_cart(cart,bold_qb_ajax)
     }
 
-  }
+    else {
+      bold_qb_ajax(cart);
+    }
+}
 
   function createAccordion(container, tab, content) {
     $container = $(container);
@@ -734,11 +649,17 @@ $(function() {
     })
   }
 
-  $('body').on('change', '[data-cart-quantity-input]', function() {
+  $('body').on('click', '.cart__edit-btn', function() {
+    var quantity =  $(this).parents('[data-cart-item]').find('[data-cart-quantity-input]').val();
+    if ($(window).width() < 1023 & $(this).parents('[data-cart-item]').find('.cart__bottom_content.medium-down--show [data-cart-quantity-input]').length > 0) {
+        quantity =  $(this).parents('[data-cart-item]').find('.cart__bottom_content.medium-down--show [data-cart-quantity-input]').val();
+    } else if ($(this).parents('[data-cart-item]').find('.cart_content_info [data-cart-quantity-input]').length > 0) {
+      quantity =  $(this).parents('[data-cart-item]').find('.cart_content_info [data-cart-quantity-input]').val();
+    }
     var cartItem = {
       lineID: $(this).parents('[data-cart-item]').data('line-id'),
       variantID: $(this).parents('[data-cart-item]').data('variant-id'),
-      quantity: $(this).val(),
+      quantity:quantity,
       parentCartForm: $(this).parents('[data-cart-form]'),
       totalDiscount: $(this).parents('[data-cart-form]').data('total-discount'),
       $element : $(this).parents('[data-cart-item]')
@@ -759,23 +680,17 @@ $(function() {
       $element : $(this).parents('[data-cart-item]')
     }
     cartItem.$element.addClass('animated fadeOutLeft');
-
-    updateCartItemQuantity(cartItem);
-
-    if (cartItem.parentCartForm.data('cart-form') === 'cart-template') {
-      cartItem.$element.find('input').val('0');
-      cartItem.parentCartForm.submit();
-    }
-
     if (cartItem.parentCartForm.data('cart-form') === 'mini-cart') {
-      cartItem.$element.find('input').val('0');
+      updateCartItemQuantity(cartItem);
+    } else {
+      location = $(this).attr('href');
     }
   });
 
   if (Shopify.theme_settings.cart_action == 'ajax'){
     $(document).on('click', '.ajax-submit', function(e) {
       e.preventDefault();
-      var $addToCartForm = $(this).closest('form');
+      var $addToCartForm = $(this).parents('form');
       var $addToCartBtn = $addToCartForm.find('.add_to_cart');
 
       //Refresh page on quick shop add to cart if on cart page
@@ -805,8 +720,8 @@ $(function() {
 
           window.setTimeout(function(){
             $addToCartBtn.removeAttr('disabled').removeClass('disabled');
-            $addToCartBtn.find('.checkmark').removeClass('checkmark-active');
-            $addToCartBtn.find('span').removeClass('zoomOut').addClass('fadeInDown');
+            $('.checkmark').removeClass('checkmark-active');
+            $('span').removeClass('zoomOut').addClass('fadeInDown');
           }, 1000);
 
           $.ajax({
@@ -819,14 +734,8 @@ $(function() {
                 if($('body').hasClass('fancybox-active')) {
                   $.fancybox.close();
                 }
-
-                if($('#header').is(':visible')) {
-                  $('#header .cart-container').addClass('active_link');
-                } else if ($('.sticky_nav--stick').length) {
-                  $('.sticky_nav .cart-container').addClass('active_link');
-                } else {
-                  $('.top-bar .cart-container').addClass('active_link');
-                }
+                $('body').addClass('blocked-scroll');
+                $('#shopify-section-header .cart_content').addClass('active');
 
                 //block scrolling on mobile
                 if (Shopify.media_queries.medium.matches) {

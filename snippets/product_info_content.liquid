@@ -132,17 +132,13 @@
   
                 {% if variant.price < variant.compare_at_price %}
                   <p class="compare_price">
-                    <span class="label">Our Price:</span>
                     <span class="was_price">
-                      
                         {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price -%}{% render 'price-element', price: compare_at %}</span>)
-                      
                     </span>
                   </p>
                 {% endif %}
   
                 <p class="sale_price">
-                  <span class="label">Sale Price: </span>
                   <span content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
                     <span class="current_price">
                       {% if variant.price > 0 %}

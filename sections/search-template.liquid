@@ -112,17 +112,16 @@
                   </div>
                 </div>
               {% else %}
-                {% if settings.search_option != 'product'%}
-                  <ul class="tabs">
-                    <li><a data-active_case="product-show" class="active" href="#product">Products</a></li>
-                    <li><a data-active_case="page-show" href="#pages">Pages</a></li>
+                  <ul class="search_tabs">
+                    <li><a href="/search?type=product&q={{ search.terms}}" {% if search.types contains 'product' %}class="active"{% endif %} href="#product">Products</a></li>
+                    <li><a href="/search?type=page,article&q={{ search.terms}}" {% if search.types contains 'page' %}class="active"{% endif %} href="#pages">Pages</a></li>
                   </ul>
                   <div class="one-whole column">
-                    <div class="search-matrix product-show" {% if settings.search_pagination_type == 'load_more_button' %}data-load-more--grid{% endif %}>
+                    <div class="search-matrix {% if search.types contains 'product' %}product-list product-show{% else %}page-show{% endif %}" {% if settings.search_pagination_type == 'load_more_button' %}data-load-more--grid{% endif %}>
                       {% for item in search.results %}
                         
                           {%- assign featured_image = false -%}
-                          {% if item.price %}
+                          {% if search.types contains 'product' %}
                             <script type="application/json" class="bold-product-json">{%- include 'bold-product', output: 'json' -%}</script>
                             {% include 'product-thumbnail',
                               product: item,
@@ -241,19 +240,6 @@
                     <div class="load-more__icon"></div>
                   </div>
                 </div>
-              {% else %}
-                <div class="one-whole column">
-                  {%- assign products = search.results -%}
-                  {%- assign products_per_row = section.settings.products_per_row -%}
-
-                  {% include 'product-loop',
-                          products: products,
-                          products_per_row: products_per_row,
-                          sidebar: sidebar,
-                          paginate: paginate
-                  %}
-                </div>
-              {% endif %}
             {% endif %}
           {% else %}
             <div class="one-whole column">

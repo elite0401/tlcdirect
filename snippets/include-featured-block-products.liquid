@@ -45,7 +45,7 @@
 
   {% if object.settings.collection_style == 'slider' %}
     <div class="js-product-slider homepage-product-slider full-width--true {% if object.settings.products_per  == 2 or object.settings.products_per  == 4 or object.settings.products_per  == 6 %}even-num-slides{% endif %} featured-collection__products">
-      {% render 'product-block-slider',
+      {% include 'product-block-slider',
               per_slide: object.settings.products_per
       %}
     </div>
@@ -53,7 +53,7 @@
     <section class="section">
       <div class="container">
         <div class="one-whole column">
-          {% render 'product-block-loop',
+          {% include 'product-block-loop',
                   products_per_row: object.settings.products_per
           %}
         </div>

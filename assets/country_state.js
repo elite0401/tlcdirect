@@ -194,7 +194,12 @@ function locationInfo() {
                                     option.attr('selected', 'selected');
                                 }
                             }
-                            jQuery(country_cls).append(option);
+                            if (val == 'United States') {
+                                jQuery(country_cls).find("option:eq(0)").after(option);
+                            } else {
+                                jQuery(country_cls).append(option);
+                            }
+                            
                         
                         }
                         

@@ -1,5 +1,5 @@
 {% if section.blocks.size > 0 %}
-<div class="sidebar toggle-all--{{ section.settings.toggle }}" {% if context == 'product' %}data-product-sidebar{% endif %}>
+<div class="sidebar no-print toggle-all--{{ section.settings.toggle }}" {% if context == 'product' %}data-product-sidebar{% endif %}>
     <div class="sidebar-wrap">
       <div class="sidebar-block" {{ block.shopify_attributes }}>
         <h4 class="uppercase">Categories</h4>

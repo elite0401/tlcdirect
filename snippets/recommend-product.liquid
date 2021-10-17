@@ -1,0 +1,71 @@
+
+{%- assign id = block.id -%}
+
+{% for cart_item in cart.items %}
+    {% assign item_pro_id = item_pro_id | append: ',' | append: cart_item.product.id %}
+    {% if forloop.index == 1 %}
+        {% assign r_collections = cart_item.product.collections%}
+    {% endif %}
+{% endfor %}
+{% for r_collection in r_collections %}
+    {% for product_item in r_collection.products  %}
+        {% assign product_id = product_item.id | strip %}
+        {% unless item_pro_id contains product_id %}
+            {% assign r_product = product_item %}
+            {% break %}
+        {% endunless %}
+    {% endfor %}
+{% endfor %}
+
+{% if r_product != blank %}
+{% assign product = r_product %}
+<section class="section">
+    {% if product != blank %}
+        {% include 'product__structured-data', product: product %}
+    {% endif %}
+    
+    {%- assign collection_handles = product.collections | map: 'handle' -%}
+    
+    {% if product.empty? %}
+        {%- assign section_onboarding = true -%}
+    {% else %}
+        {%- assign section_onboarding = false -%}
+    {% endif %}
+    
+    <div class="product-{{ product.id }} product_section recommend_product_section js-product_section" data-block-id="{{ id }}" {{ block.shopify_attributes }}>
+        <h2 class="title hide medium-down--show">{{block.settings.title}}</h2>
+        <a class="close"></a>
+        <div class="container has-no-side-gutter">
+            <div class="one-half column medium-down--one-whole product-image">
+                {% include 'image-element' with
+                    image: product.featured_image,
+                    alt: product.featured_image.alt,
+                    stretch_width: true
+                %}
+                <a href="{{product.url}}">View Details</a>
+            </div>
+    
+            <div class="one-half column medium-down--one-whole product-details">
+                <div class="info">
+                    <h2 class="title medium-down--hide">{{block.settings.title}}</h2>
+                    <h1 class="product_name">
+                        <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h1>
+                    {% if product.first_available_variant.sku != blank %}
+                    <p>#{{ product.first_available_variant.sku | split: " " | first }}</p>
+                    {% endif %}
+                    <p class="shipping_date">Estimated Shipping Date 10/8/20</p>
+                </div>
+                
+                {% unless collection_handles contains 'coming-soon' %}
+                    <div class="js-product_section product_section">
+                        {% include 'product-form',
+                                product: product,
+                                context: 'product'
+                        %}
+                    </div>
+                {% endunless %}
+            </div>
+        </div>
+    </div>
+{% endif %}

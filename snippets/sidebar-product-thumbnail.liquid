@@ -1,10 +1,10 @@
-{%- assign secondaryImage = product.media[1] -%}
-{%- assign collection_handles = product.collections | map: 'handle' -%}
+{%- assign secondaryImage = BTL_product.media[1] -%}
+{%- assign collection_handles = BTL_product.collections | map: 'handle' -%}
 
-{% if product.featured_media.preview_image.alt contains 'youtube' or image.alt contains 'vimeo' %}
-  {%- assign alt_text = product.title -%}
+{% if BTL_product.featured_media.preview_image.alt contains 'youtube' or image.alt contains 'vimeo' %}
+  {%- assign alt_text = BTL_product.title -%}
 {% else %}
-  {%- assign alt_text = product.featured_image.alt -%}
+  {%- assign alt_text = BTL_product.featured_image.alt -%}
 {% endif %}
 
 {% style %}
@@ -26,31 +26,32 @@
     {% if settings.quick_shop_enabled %}
       quick-shop-style--{{ settings.quick_shop_style }}
     {% endif %}
-    product-{{ product.id }}"
+    product-{{ BTL_product.id }}"
     {% if settings.pagination_type == 'load_more_button' %}data-load-more--grid-item{% endif %}>
   <div class="product-wrap">
     <div class="relative product_image">
-      <a class="product-link" href="{{ product.url | within: collection }}"></a>
+      <a class="product-link" href="{{ BTL_product.url | within: collection }}"></a>
         
-        {% if variant.featured_image != blank %}
-          {% assign image = variant.featured_image %}
+        {% if BtL_variant.featured_image != blank %}
+          {% assign BTL_image = BtL_variant.featured_image %}
         {% else %}
-          {% assign image = product.featured_media.preview_image %}
+          {% assign BTL_image = BTL_product.featured_media.preview_image %}
         {% endif %}
+        <script>console.log({{BTL_product | json }})</script>
         <div class="image__container">
           {% include 'image-element',
-            image: image,
-            alt: image.alt,
+            image: BTL_image,
+            alt: BTL_image.alt,
             object_fit: align_height,
             max_height: collection_height
           %}
         </div>
         
-      {% include 'sidebar-product-details', product: product, variant: variant %}
+      {% include 'sidebar-product-details', product: BTL_product, variant: BtL_variant %}
     </div>
     {% include 'sidebar-product-details',
-        product: product,
-        variant: variant,
+        product: BTL_product,
+        variant: BtL_variant,
         collection_handles: collection_handles
     %}
   </div>

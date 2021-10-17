@@ -46,6 +46,9 @@
                           {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
                         {% endif %}
                       </a>
+                      <p class="caption_text hide medium-down--show">
+                        “tlc”
+                      </p>
                     </div>
                   </div>
                   <div class="featured-link--half one-half column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
@@ -61,6 +64,7 @@
                           {{ block.settings.button_label }}
                         </a>
                       {% endif %}
+                      <img class="medium-down--show hide" src="{{block.settings.caption_image | img_url: '2048x'}}">
                     </div>
                   </div>
                 </div>
@@ -99,14 +103,14 @@
                           {{ block.settings.icon_1 }}
                         </div>
                         <div class="detail">
-                          <a {% if block.settings.link != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="collection_title">
+                          <a {% if block.settings.link_1 != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="collection_title">
                             {{ block.settings.title_1 | escape }}
                           </a>
                           {% if block.settings.text_1 != blank %}
                             <div class="description">{{ block.settings.text_1 }}</div>
                           {% endif %}
                           {% if block.settings.button_label_1 != blank %}
-                            <a {% if block.settings.link != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="button blue">
+                            <a {% if block.settings.link_1 != blank %}href="{{ block.settings.link_1 }}"{% endif %} class="button blue">
                               {{ block.settings.button_label_1 }}
                             </a>
                           {% endif %}
@@ -121,14 +125,14 @@
                           {{ block.settings.icon_2 }}
                         </div>
                         <div class="detail">
-                          <a {% if block.settings.link != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="collection_title">
+                          <a {% if block.settings.link_2 != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="collection_title">
                             {{ block.settings.title_2 | escape }}
                           </a>
                           {% if block.settings.text_2 != blank %}
                             <div class="description">{{ block.settings.text_2 }}</div>
                           {% endif %}
                           {% if block.settings.button_label_2 != blank %}
-                            <a {% if block.settings.link != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="button pink">
+                            <a {% if block.settings.link_2 != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="button pink">
                               {{ block.settings.button_label_2 }}
                             </a>
                           {% endif %}
@@ -297,6 +301,11 @@
             "id": "button_label",
             "label": "Button label",
             "default": "View all"
+          },
+          {
+            "type": "image_picker",
+            "id": "caption_image",
+            "label": "Caption image"
           }
         ]
       },

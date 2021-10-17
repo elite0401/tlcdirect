@@ -5,12 +5,12 @@
     </header>
     <div class="container has-margin-top">
         <div class="section content one-whole column">
+            {% assign contents = page.content | split: '<!-- split -->'%}
+            {% for content in contents %}
             <div class="column">
-                {{page.content | split: '<!-- split -->' | first}}
+                {{content}}
             </div>
-            <div class="column">
-                {{page.content | split: '<!-- split -->' | last}}
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>

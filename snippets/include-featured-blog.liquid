@@ -35,7 +35,7 @@
     <div class="heading one-whole column">
       {% if title != blank %}
         <div class="one-whole column">
-          <h1 class="title center blog">{{ title }}</h1>
+          <h1 class="title extra-title center blog">{{ title }}</h1>
           <div class="feature_divider"></div>
         </div>
       {% endif %}
@@ -118,6 +118,38 @@
             <a href="{{ article.url }}" {% if settings.read_more_style == 'button' %}class="action_button continue-button"{% else %}class="continue-link"{% endif %}>{{ 'blogs.general.continue_reading_html' | t }}</a>
           {% endif %}
         </div>
+      {% endfor %}
+    {% elsif section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+        {% if block.type == 'image' %}
+        <div class="{% render 'column-width', value: object.settings.home_page_articles %} column article medium-down--one-half small-down--one-whole">
+
+          <a {% if block.settings.blank_tab %}target="_blank"{% endif %} href="{{ block.settings.link }}" class="blog-post-image-wrapper">
+            {% render 'image-element',
+                    image: block.settings..image,
+                    alt: block.settings.image.alt
+            %}
+          </a>
+
+          <h3 class="sub_title">
+            <a {% if block.settings.blank_tab %}target="_blank"{% endif %} href="{{ block.settings.link }}">{{ block.settings.title}}</a>
+          </h3>
+
+          {% if object.settings.excerpt_display == 'full_excerpt' %}
+            <div class="excerpt">
+              {{ block.settings.text | strip_html }}
+            </div>
+          {% elsif object.settings.excerpt_display == 'truncated_excerpt' %}
+            <div class="excerpt">
+              {{ block.settings.text | strip_html | truncate: 100 }}
+            </div>
+          {% endif %}
+
+          {% if object.settings.read_more_link %}
+            <a {% if block.settings.blank_tab %}target="_blank"{% endif %} href="{{ block.settings.link }}" {% if settings.read_more_style == 'button' %}class="action_button continue-button"{% endif %}>{{ 'blogs.general.continue_reading_html' | t }}</a>
+          {% endif %}
+        </div>
+        {% endif %}
       {% endfor %}
     {% else %}
       {% for i in (1..object.settings.home_page_articles) %}

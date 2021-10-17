@@ -7,6 +7,7 @@ $(document).ready(function() {
     wrapAround: true
   });
 
+
   $(document).on('click', '.email_friend .content .form .globo-form-app form .footer .description p', function (e) {
     e.preventDefault();
     $.fancybox.close();
@@ -22,7 +23,22 @@ $(document).ready(function() {
       adaptiveHeight: true
   });
 
-  $('.shopify-section--product-sidebar .recommend_link').flickity({
+  $('.report-popup-button').click(function (e) {
+    e.preventDefault();
+    $('.report-popup-content').addClass('active');
+    $('.report-container').addClass('active');
+    $('body').toggleClass('blocked-scroll');
+  })
+
+  $('.report-popup-content .cancel').click(function (e) {
+    e.preventDefault();
+    $('.report-container').removeClass('active');
+    $('.report-popup-content').removeClass('active');
+    $('body').removeClass('blocked-scroll');
+  })
+  
+
+  $('.shopify-section--product-sidebar .js-product_sidebar .content').flickity({
     draggable: false,
     percentPosition: false,
     groupCells: "100%",
@@ -36,14 +52,49 @@ $(document).ready(function() {
     location = $(this).attr('href');
   })
 
+ 
+  $('[data-src="#quiz-popup"]').fancybox({
+    afterClose : function(instance, current) {
+        $('#quiz-popup').html(`
+          <div class="heading">
+          <h2 class="text-center">${Shopify.theme_settings.quiz_title}</h2>
+          </div>
+          <div class="content">
+              <div class="octane-ai-quiz " data-quiz-id="LetmtTH2nLejJ7he" data-embed-type="fullpage" data-mobile-height="match_browser" data-desktop-height="match_browser"></div><script src="https://app.octaneai.com/s5jlsfej3twdpbh8/quiz.js" async defer></script>
+          </div>
+        `);
+    }
+  });
 
+  $(document).on('click','[data-element="oct-quiz-btn oct-quiz-media"]', function (e) {
+    e.preventDefault();
+    $('.fancybox-slide #quiz-popup').html(`
+      <div class="heading">
+      <h2 class="text-center">${Shopify.theme_settings.quiz_title}</h2>
+      </div>
+      <div class="content">
+          <div class="octane-ai-quiz " data-quiz-id="LetmtTH2nLejJ7he" data-embed-type="fullpage" data-mobile-height="match_browser" data-desktop-height="match_browser"></div><script src="https://app.octaneai.com/s5jlsfej3twdpbh8/quiz.js" async defer></script>
+      </div>
+      <button type="button" data-fancybox-close="" class="fancybox-button fancybox-close-small" title="Close"><svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 24 24"><path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path></svg></button>
+    `);
+    console.log("asdfasdf")
+  })
 
-  if ($(window).width() < 768) {
+  if ($(window).width() < 1024) {
     $('.sidebar-toggle-btn').on('click', function(e){
       e.preventDefault();
       $('.sidebar').toggleClass('active');
     })
     $('.featured-collection-slider').flickity({
+      pageDots: true,
+      imagesLoaded: true,
+      arrowShape: arrowSize,
+      lazyLoad: 2,
+      cellAlign: 'left',
+      wrapAround: true
+    });
+
+    $('#shopify-section-featured-product .product-list').flickity({
       pageDots: true,
       imagesLoaded: true,
       arrowShape: arrowSize,
@@ -61,6 +112,13 @@ $(document).ready(function() {
       wrapAround: true
     });
   }
+
+  $('.dropdown_container .dropdown--header .close').on('click', function (e) {
+    e.preventDefault();
+    $(this).parent().parent().removeClass('active');
+    $('body').removeClass('is-active');
+    $('.mobile_nav div').removeClass('open')
+  })
 
   $('.shopify-section--search-template .tabs li a').on('click', function (e) {
     e.preventDefault();
@@ -104,6 +162,38 @@ $(document).ready(function() {
       touch: false
     }) 
   })
+
+  $(document).on('click', '.sidebar-filter-heading .close', function (e) {
+    e.preventDefault();
+    $('.sidebar').removeClass('active');
+  })
+
+  $(document).on('click', '.recommend_product_section .close', function (e) {
+    e.preventDefault();
+    $('.recommend_product_section').hide();
+  })
   
 });
 
+function printDiv(divName) {
+  var printContents = document.getElementById(divName).innerHTML;
+  var originalContents = document.body.innerHTML;
+  var mywindow = window.open('', 'PRINT', 'height=660,width=1000');
+  mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+  mywindow.document.write('</head><body >');
+  mywindow.document.write('<h1>' + document.title  + '</h1>');
+  mywindow.document.write(printContents);
+  mywindow.document.write('</body></html>');
+  mywindow.document.close();
+  mywindow.focus();
+  mywindow.print();
+  mywindow.onafterprint = function(){
+    console.log("Printing completed...");
+    mywindow.close();
+ }
+}
+
+function doneyet() { 
+  document.body.onfocus = ""; 
+  alert("after print dialog"); 
+} 

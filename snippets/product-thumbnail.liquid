@@ -7,12 +7,7 @@
   {%- assign alt_text = product.featured_image.alt -%}
 {% endif %}
 
-{% style %}
-  .shopify-model-viewer-ui model-viewer {
-    --progress-bar-height: 2px;
-    --progress-bar-color: $product-media-fill-color;
-  }
-{% endstyle %}
+
 
 <div class="
     {% render 'column-width', value: products_per_row %}
@@ -28,6 +23,12 @@
     {% endif %}
     product-{{ product.id }}"
     {% if settings.pagination_type == 'load_more_button' %}data-load-more--grid-item{% endif %}>
+  {% style %}
+    .shopify-model-viewer-ui model-viewer {
+      --progress-bar-height: 2px;
+      --progress-bar-color: $product-media-fill-color;
+    }
+  {% endstyle %}
   <div class="product-wrap {% if settings.collection_secondary_image != blank and secondaryImage != blank %}has-secondary-media-swap{% endif %}">
     <div class="relative product_image">
       <a href="{{ product.url | within: collection }}">
@@ -73,7 +74,6 @@
           {% endif %}
         {% endif %}
         </a>
-      {% include 'product-details', product: product %}
     </div>
 
     {% include 'product-details',

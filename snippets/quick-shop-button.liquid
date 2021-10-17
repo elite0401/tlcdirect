@@ -1,64 +1,13 @@
-{% capture product_media_loop %}
-  {% for media in product.media %}
-    {% case media.media_type %}
-      {% when 'image' %}
-        {{ media | img_url: "master" }}^{{ media.alt | escape }}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
-      {% when 'video' %}
-        {% capture video_code %}
-        <div class="product-gallery__video" data-html5-video data-media-type="{{ media.media_type }}">
-          {{ media | video_tag: controls: true }}
-        </div>
-        {% endcapture %}
-        {{ video_code | url_escape }}^{{ media.media_type}}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
-      {% when 'external_video' %}
-        {% capture external_video_code %}
-        <div class="product-gallery__video" data-youtube-video data-media-type="{{ media.media_type }}">
-          {{ media | external_video_tag }}
-        </div>
-        {% endcapture %}
-        {{ external_video_code | url_escape }}^{{ media.media_type}}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
-      {% when 'model' %}
-        {% capture model_code %}
-        <div class="product-gallery__model is-relative" data-media-type="{{ media.media_type }}">
-          {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true,  image_size: '800x800' }}
-        {% endcapture %}
-        {{ model_code | url_escape }}^{{ media.media_type}}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
-      {% else %}
-        {{ media | img_url: "master" }}^{{ media.alt | escape }}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
-    {% endcase %}
-  {% unless forloop.last %}
-  ~{% endunless %}
-  {% endfor %}
-{% endcapture %}
-
-{% assign collection_handles = product.collections | map: 'handle' %}
 {% assign variant = product.selected_or_first_available_variant %}
-{% capture thumbnail_paths_alts %}{% if product.media %}{% for media in product.media %}{{ media | img_url: "master" }}^{{ media.media_type | escape }}^{{ media.id }}^{{ media.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% else %}{% for image in product.images %}{{ image | img_url: "master" }}^{{ image.alt | escape }}^{{ image.id }}^{{ image.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% endif %}{% endcapture %}
-{% capture image_paths_alts %}{% if product.media %}{{ product_media_loop }}{% else %}{% for image in product.images %}{{ image | img_url: "master" }}^{{ image.alt | escape }}^{{ image.id }}^{{ image.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% endif %}{% endcapture %}
-
+{% assign collection_handles = product.collections | map: 'handle' %}
 <span class="quick_shop ss-icon js-quick-shop-link"
-      data-id="{{ product.id }}"
-      data-handle="{{ product.handle }}"
-      data-single-variant="{% if product.has_only_default_variant %}true{% else %}false{% endif %}"
-      data-url="{{ product.url | within: collection }}"
-      data-title="{{ product.title | escape }}"
-      data-vendor="{{ product.vendor | escape }}"
-      data-details-text="{{ 'collections.general.view_product_details_html' | t | escape}}"
-      data-full-description="{{ product.description | split: '<!-- split -->' | first | escape }}"
-      data-feat-img="{{ product.featured_image | product_img_url: 'large' }}"
-      data-regular-description="{{ product.description | strip_html | truncatewords: settings.description_words | replace: 'Description', '' | replace: 'Dimensions', '' | replace: 'Details', '' | replace: 'Specs', '' | replace: 'Shipping', '' | replace: 'Size', '' | escape }}"
-      data-images="{{ image_paths_alts }}"
-      data-thumbnail-images="{{ thumbnail_paths_alts }}"
-      data-collection-handles="{{ collection_handles | join: ','}}"
->
+      data-id="{{ product.id }}" 
+      data-custom-message="{{product.metafields.global.custom_message}}"
+      data-handle="{{ product.handle }}">
   {{ 'collections.general.quick_shop' | t }}
 </span>
 <div class="quickshop-forms__container js-quickshop-forms__container js-quickshop-forms--{{ product.id }}">
     {% unless collection_handles contains 'coming-soon' %}
-      {% include 'product-notify-me',
-              product: product
-              collection_handles: collection_handles
-      %}
       {% include 'product-form', 
               product: product,
               collection_handles: collection_handles,
@@ -66,3 +15,202 @@
       %}
     {% endunless %}
 </div>
+
+<div class="js-quickshop-sidebar__container js-quickshop-sidebar--{{ product.id }}">
+  {% assign btl_status = false %}
+  {% for tag in product.tags %}
+    {% if tag contains 'BTL:' %}
+      {% assign btl_status = true %}
+    {% endif %}
+  {% endfor %}
+
+  {% if btl_status %}
+  <div class="js-product_sidebar">
+    <div class="heading">
+      <h2>Shop the look</h2>
+    </div>
+    <div class="content">
+        {% assign r_product = product %}
+        {% assign selected_or_first_available_variant = r_product.selected_or_first_available_variant %}
+        
+        {% if selected_or_first_available_variant.featured_image != blank %}
+          {% assign image = selected_or_first_available_variant.featured_image %}
+        {% else %}
+          {% assign image = r_product.featured_media.preview_image %}
+        {% endif %}
+
+        {% capture product_media_loop %}
+          {% for media in r_product.media %}
+            {% case media.media_type %}
+              {% when 'image' %}
+                {{ media | img_url: "master" }}^{{ media.alt | escape }}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
+              {% when 'video' %}
+                {% capture video_code %}
+                <div class="product-gallery__video" data-html5-video data-media-type="{{ media.media_type }}">
+                  {{ media | video_tag: controls: true }}
+                </div>
+                {% endcapture %}
+                {{ video_code | url_escape }}^{{ media.media_type}}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
+              {% when 'external_video' %}
+                {% capture external_video_code %}
+                <div class="product-gallery__video" data-youtube-video data-media-type="{{ media.media_type }}">
+                  {{ media | external_video_tag }}
+                </div>
+                {% endcapture %}
+                {{ external_video_code | url_escape }}^{{ media.media_type}}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
+              {% when 'model' %}
+                {% capture model_code %}
+                <div class="product-gallery__model is-relative" data-media-type="{{ media.media_type }}">
+                  {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true,  image_size: '800x800' }}
+                {% endcapture %}
+                {{ model_code | url_escape }}^{{ media.media_type}}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
+              {% else %}
+                {{ media | img_url: "master" }}^{{ media.alt | escape }}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
+            {% endcase %}
+          {% unless forloop.last %}
+          ~{% endunless %}
+          {% endfor %}
+        {% endcapture %}
+
+        {% assign collection_handles = r_product.collections | map: 'handle' %}
+        {% assign variant = r_product.selected_or_first_available_variant %}
+        {% capture thumbnail_paths_alts %}{% if r_product.media %}{% for media in r_product.media %}{{ media | img_url: "master" }}^{{ media.media_type | escape }}^{{ media.id }}^{{ media.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% else %}{% for image in r_product.images %}{{ image | img_url: "master" }}^{{ image.alt | escape }}^{{ image.id }}^{{ image.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% endif %}{% endcapture %}
+        {% capture image_paths_alts %}{% if r_product.media %}{{ product_media_loop }}{% else %}{% for image in r_product.images %}{{ image | img_url: "master" }}^{{ image.alt | escape }}^{{ image.id }}^{{ image.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% endif %}{% endcapture %}
+
+        <div class="carousel-cell">
+          <a class="js-product-item"
+            data-id="{{ r_product.id }}"
+            data-handle="{{ r_product.handle }}"
+            data-single-variant="{% if r_product.has_only_default_variant %}true{% else %}false{% endif %}"
+            data-url="{{ r_product.url | within: collection }}"
+            data-title="{{ r_product.title | escape }}"
+            data-vendor="{{ r_product.vendor | escape }}"
+            data-feat-img="{{ r_product.featured_image | product_img_url: 'large' }}"
+            data-images="{{ image_paths_alts }}"
+            data-collection-handles="{{ collection_handles | join: ','}}" 
+            data-variant_id="{{variant.id}}",
+            data-custom-message={{r_product.metafields.global.custom_message}}
+          >
+            {% render 'image-element' with
+              image: image,
+              alt: image.alt
+            %}
+          </a>
+          <div class="quickshop-forms__container js-quickshop-forms__container sidebar-form js-quickshop-forms--{{ r_product.id }}">
+            {% unless collection_handles contains 'coming-soon' %}
+              {% include 'product-notify-me',
+                      product: r_product
+                      collection_handles: collection_handles
+              %}
+              {% include 'product-form', 
+                      product: r_product,
+                      collection_handles: collection_handles,
+                      show_payment_button_quickshop: settings.show_payment_button
+              %}
+            {% endunless %}
+          </div>
+        </div>
+      {% for tag in product.tags %}
+        {% if tag contains 'BTL:' %}
+          {% assign btl_array = tag | remove: 'BTL:' | split: ':' %}
+          {% if btl_array.size > 2 %}
+            {% assign r_product_order = btl_array[0] %}
+            {% assign r_product_link = btl_array[1] %}
+          {% else %}
+            {% assign r_product_link = tag | remove: 'BTL:' | split: ':' | first %}
+          {% endif %}
+          {% assign r_variant_id = tag | remove: 'BTL:' | split: ':' | last | abs %}
+
+          {% assign r_product = all_products[r_product_link] %}
+          {% assign selected_or_first_available_variant = r_product.selected_or_first_available_variant %}
+          {% for r_variant in r_product.variants %}
+            {% if r_variant.id == r_variant_id %}
+              {% assign selected_or_first_available_variant = r_variant %}
+            {% endif %}
+          {% endfor %}
+          {% if selected_or_first_available_variant.featured_image != blank %}
+            {% assign image = selected_or_first_available_variant.featured_image %}
+          {% else %}
+            {% assign image = r_product.featured_media.preview_image %}
+          {% endif %}
+
+          {% capture product_media_loop %}
+            {% for media in r_product.media %}
+              {% case media.media_type %}
+                {% when 'image' %}
+                  {{ media | img_url: "master" }}^{{ media.alt | escape }}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
+                {% when 'video' %}
+                  {% capture video_code %}
+                  <div class="product-gallery__video" data-html5-video data-media-type="{{ media.media_type }}">
+                    {{ media | video_tag: controls: true }}
+                  </div>
+                  {% endcapture %}
+                  {{ video_code | url_escape }}^{{ media.media_type}}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
+                {% when 'external_video' %}
+                  {% capture external_video_code %}
+                  <div class="product-gallery__video" data-youtube-video data-media-type="{{ media.media_type }}">
+                    {{ media | external_video_tag }}
+                  </div>
+                  {% endcapture %}
+                  {{ external_video_code | url_escape }}^{{ media.media_type}}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
+                {% when 'model' %}
+                  {% capture model_code %}
+                  <div class="product-gallery__model is-relative" data-media-type="{{ media.media_type }}">
+                    {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true,  image_size: '800x800' }}
+                  {% endcapture %}
+                  {{ model_code | url_escape }}^{{ media.media_type}}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
+                {% else %}
+                  {{ media | img_url: "master" }}^{{ media.alt | escape }}^{{ media.id }}^{{ media.width }}^{{ media.media_type }}
+              {% endcase %}
+            {% unless forloop.last %}
+            ~{% endunless %}
+            {% endfor %}
+          {% endcapture %}
+
+          {% assign collection_handles = r_product.collections | map: 'handle' %}
+          {% assign variant = selected_or_first_available_variant %}
+          {% capture thumbnail_paths_alts %}{% if r_product.media %}{% for media in r_product.media %}{{ media | img_url: "master" }}^{{ media.media_type | escape }}^{{ media.id }}^{{ media.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% else %}{% for image in r_product.images %}{{ image | img_url: "master" }}^{{ image.alt | escape }}^{{ image.id }}^{{ image.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% endif %}{% endcapture %}
+          {% capture image_paths_alts %}{% if r_product.media %}{{ product_media_loop }}{% else %}{% for image in r_product.images %}{{ image | img_url: "master" }}^{{ image.alt | escape }}^{{ image.id }}^{{ image.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% endif %}{% endcapture %}
+
+        <div class="carousel-cell">
+          <a class="js-product-item"
+            data-id="{{ r_product.id }}"
+            data-handle="{{ r_product.handle }}"
+            data-single-variant="{% if r_product.has_only_default_variant %}true{% else %}false{% endif %}"
+            data-url="{{ r_product.url | within: collection }}"
+            data-title="{{ r_product.title | escape }}"
+            data-vendor="{{ r_product.vendor | escape }}"
+            data-feat-img="{{ r_product.featured_image | product_img_url: 'large' }}"
+            data-images="{{ image_paths_alts }}"
+            data-collection-handles="{{ collection_handles | join: ','}}" 
+            data-variant_id="{{variant.id}}",
+            data-custom-message={{r_product.metafields.global.custom_message}}
+          >
+            {% render 'image-element' with
+              image: image,
+              alt: image.alt
+            %}
+          </a>
+          <div class="quickshop-forms__container js-quickshop-forms__container sidebar-form js-quickshop-forms--{{ r_product.id }}">
+            {% unless collection_handles contains 'coming-soon' %}
+              {% include 'product-notify-me',
+                      product: r_product
+                      collection_handles: collection_handles
+              %}
+              {% include 'sidebar-product-form', 
+                      product: r_product,
+                      selected_variant: selected_or_first_available_variant,
+                      collection_handles: collection_handles,
+                      show_payment_button_quickshop: settings.show_payment_button
+              %}
+            {% endunless %}
+          </div>
+        </div>
+          
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+  

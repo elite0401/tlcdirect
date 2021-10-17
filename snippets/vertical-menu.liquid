@@ -1,7 +1,11 @@
 <div class="vertical-menu">
   {% for link in linklists[linklist].links %}
     {% if linklists[link.handle] == empty %}
-      <li><a href="{{ link.url }}" class="top_link {% if link.url == '#' %}url-deadlink{% endif %} {% if link.active %}active{% endif %}" data-dropdown-rel="{{ link.handle }}">{{ link.title }}</a></li>
+    {% assign link_url = link.url %}
+      {% if link.title == 'Ecatalog' %}
+        {% assign target = 'target="_blank"' %}
+      {% endif %}
+      <li><a href="{{ link_url }}" {{target}} class="top_link {% if link.url == '#' %}url-deadlink{% endif %} {% if link.active %}active{% endif %}" data-dropdown-rel="{{ link.handle }}">{{ link.title }}</a></li>
     {% else %}
       <li class="sublink"><a data-no-instant href="{{ link.url }}" class="dropdown_link--vertical {% if link.url == '#' %}url-deadlink{% endif %} {% if link.active %}active{% endif %}" data-dropdown-rel="{{ link.handle }}">{{ link.title }} <span class="icon-down-arrow"></span></a>
         <ul class="vertical-menu_submenu">

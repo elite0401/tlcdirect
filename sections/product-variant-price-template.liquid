@@ -1,3 +1,4 @@
+{%- include 'bold-product' with product, hide_action: 'break', output: 'none' -%}
 {% comment %}
 ** Product - default view **
 - Product template
@@ -14,7 +15,7 @@
 <div class="one-whole column product-{{ product.id }}">
   <div class="product product-name--{{ product.handle }} product_section js-product_section is-flex media-position--{{ section.settings.product_images_position }}" data-rv-handle="{{ product.handle }}">
 
-    <div class="one-half columns medium-down--one-whole product__images">
+    <div class="one-half columns large-down--one-whole product__images">
       {% include 'product-images',
               product: product,
               video_looping: section.settings.video_looping,
@@ -22,10 +23,11 @@
       %}
     </div>
 
-    <div class="one-half columns medium-down--one-whole product__info">
+    <div class="one-half columns large-down--one-whole product__info">
       {%- assign collection_handles = product.collections | map: 'handle' -%}
       {%- assign variant = bold_selected_or_first_available_variant -%}
-{%- include 'bold-variant' with variant, output: 'none' -%}
+      {%- include 'bold-variant' with variant, output: 'none' -%}
+
 
       {% if product.available %}
         {% if settings.sale_banner_enabled and bold_compare_at_price > bold_price %}
@@ -48,36 +50,52 @@
 
       {% if variant.sku != blank and section.settings.display_sku %}
         <p class="sku">
-          <span>{{ variant.sku }}</span>
+          #<span>{{ variant.sku | split: " " | first }}</span>
         </p>
       {% endif %}
-      <h1 class="product_name">{{ product.title }}</h1>
-      {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
-        <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
-      {% endif %}
-      <div class="feature_divider"></div>
-
-      {% if collection_handles contains 'coming-soon' %}
-        <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
-      {% elsif product.price_varies %}
-        {% for tag in product.tags %}
-          {% if tag contains 'price_variant_title' %}
-            {% assign price_option_name = tag | remove: 'price_variant_title:' %}
+      <div class="top">
+        <div class="info">
+          <h1 class="product_name">{{ product.title }}</h1>
+          {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
+            <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
           {% endif %}
-        {% endfor %}
-        {% for product_option in product.options_with_values %} 
-          {% if product_option.name == price_option_name %}
-              {% assign price_option_arr = product_option %}
-          {% endif %}
-        {% endfor %}
-        <div class="modal_price">
-          {% assign variant_price_str = '' %}
-          {% for variant in product.variants %}
-{%- include 'bold-variant' with variant, hide_action: 'skip' -%}
-            {% unless variant_price_str contains bold_variant_price %}
-              <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
-                {% if variant.compare_at_price > bold_variant_price %}
-                  <span class="was_price_variant">
+        <div class="feature_divider"></div>
+          
+        {% if collection_handles contains 'coming-soon' %}
+          <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
+          {% elsif product.price_varies %}
+          {% for tag in product.tags %}
+            {% if tag contains 'price_variant_title' %}
+              {% assign price_option_name = tag | remove: 'price_variant_title:' %}
+            {% endif %}
+          {% endfor %}
+          {% for product_option in product.options_with_values %} 
+            {% if product_option.name == price_option_name %}
+                {% assign price_option_arr = product_option %}
+            {% endif %}
+          {% endfor %}
+          <div class="modal_price">
+            {% assign variant_price_str = '' %}
+            {% for variant in product.variants %}
+  {%- include 'bold-variant' with variant, hide_action: 'skip' -%}
+              {% unless variant_price_str contains bold_variant_price %}
+                <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
+                  {% if variant.compare_at_price > bold_variant_price %}
+                    <span class="was_price_variant">
+                        <span class="label">
+                          {% for value in price_option_arr.values %}
+                            {% if variant.title contains value %}
+                              {{value}} : 
+                            {% endif %}
+                          {% endfor %}
+                        </span>
+                        <del>{% include 'price-element', price: variant.compare_at_price %}</del>
+                    </span>
+                  {% endif %}
+                  <span content="{{ bold_variant_price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > bold_variant_price %}sale{% endif %}">
+                    {% if variant.compare_at_price > bold_variant_price %}
+                      Sale Price: 
+                    {% else %}
                       <span class="label">
                         {% for value in price_option_arr.values %}
                           {% if variant.title contains value %}
@@ -85,110 +103,106 @@
                           {% endif %}
                         {% endfor %}
                       </span>
-                      <del>{% include 'price-element', price: variant.compare_at_price %}</del>
-                  </span>
-                {% endif %}
-                <span content="{{ bold_variant_price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > bold_variant_price %}sale{% endif %}">
-                  {% if variant.compare_at_price > bold_variant_price %}
-                    Sale Price: 
-                  {% else %}
-                    <span class="label">
-                      {% for value in price_option_arr.values %}
-                        {% if variant.title contains value %}
-                          {{value}} : 
-                        {% endif %}
-                      {% endfor %}
-                    </span>
-                  {% endif %}
-                  
-                  <span class="current_price_variant">
-                    {% if bold_variant_price > 0 %}
-                      <span class="money">{% include 'price-element', price: variant.price %}</span>
-                    {% else %}
-                      {{ settings.free_price_text }}
                     {% endif %}
+                    
+                    <span class="current_price_variant">
+                      {% if bold_variant_price > 0 %}
+                        <span class="money">{% include 'price-element', price: variant.price %}</span>
+                      {% else %}
+                        {{ settings.free_price_text }}
+                      {% endif %}
+                    </span>
                   </span>
-                </span>
-
+  
+                  {% if section.settings.display_savings %}
+                    <span class="sale savings">
+                      {% if bold_variant_price < variant.compare_at_price %}
+                        {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_variant_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% include 'price-element', price: compare_at -%}</span>)
+                      {% endif %}
+                    </span>
+                {% endif %}
+                </div>
+                {% assign variant_price_str = variant_price_str | append: ',' | append: variant.price %}
+              {% endunless %}
+            {% endfor %}
+          </div>       
+        {% else %}
+          <div class="modal_price">
+            {% unless product.available == false and settings.display_price == false %}
+              {% assign cls = '' %}
+              {% if product.metafields.global.suggested_retail_price != blank %}
+              {% assign cls = 'retail-price-container' %}
+              {% endif %}
+              <div class="price__container {{cls}} {% if variant.compare_at_price > bold_price %}sale{% endif %} price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
+                {% if product.metafields.global.suggested_retail_price != blank %}
+                    
+                  <p class="retail_price">
+                    <span class="label">Suggested Retail:</span>
+                    <span class="retail money">{% include 'price-element', price: product.metafields.global.suggested_retail_price %}</span>
+                  </p>
+                {% endif %}
+                
+  
+                
+                <p class="compare_price">
+                  <span class="was_price">
+                    {% if bold_variant_price < variant.compare_at_price %}
+                    <span class="money">{{ variant.compare_at_price | money }}</span></span>
+                    {% endif %}
+                </p>
+                
+                <p content="{{ bold_price | money_without_currency | remove: "," }}" class="current_price">
+                  {% if bold_price > 0 %}
+                    <span class="money">{{ bold_price | money }}</span>
+                  {% else %}
+                    {{ settings.free_price_text }}
+                  {% endif %}
+                </p>
+                
+                
                 {% if section.settings.display_savings %}
                   <span class="sale savings">
-                    {% if bold_variant_price < variant.compare_at_price %}
-                      {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_variant_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% include 'price-element', price: compare_at -%}</span>)
+                    {% if bold_price < variant.compare_at_price %}
+                      {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% include 'price-element', price: compare_at -%}</span>)
                     {% endif %}
                   </span>
-              {% endif %}
+                {% endif %}
               </div>
-              {% assign variant_price_str = variant_price_str | append: ',' | append: variant.price %}
             {% endunless %}
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="modal_price">
-          {% unless product.available == false and settings.display_price == false %}
-            <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
-              {% for variant_item in product.variants %}
-{%- include 'bold-variant' with variant_item, hide_action: 'skip' -%}
-                {% if variant_item.id == variant.id %}
-                  {% if variant_item.metafields.global.retailprice != blank %}
-                    <p id="variant-{{variant_item.id}}" class="retail_price">
-                      <span class="label">Suggested Retail:</span>
-                      <span class="retail money">{% include 'price-element', price: variant_item.metafields.global.retailprice %}</span>
-                    </p>
-                  {% endif %}
-                {% else %}
-                  {% if variant_item.metafields.global.retailprice != blank %}
-                    <p id="variant-{{variant_item.id}}" class="retail_price">
-                      <span class="label">Suggested Retail:</span>
-                      <span class="retail money">{% include 'price-element', price: variant_item.metafields.global.retailprice %}</span>
-                    </p>
-                  {% endif %}
-                {% endif %}
-              {% endfor %}
-              
-
-              {% if bold_variant_price < variant.compare_at_price %}
-                <p class="compare_price">
-                  <span class="label">Our Price:</span>
-                  <span class="was_price">
-                    
-                      {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_variant_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: bold_variant_price -%}{% include 'price-element', price: compare_at %}</span>)
-                    
-                  </span>
-                </p>
-              {% endif %}
-
-              <p class="sale_price {% if bold_variant_price < variant.compare_at_price %}sale{% endif %}">
-                {% if bold_variant_price < variant.compare_at_price %}
-                <span class="label">Sale Price: </span>
-                {% else %}
-                <span class="label"></span>
-                {% endif %}
-                <span content="{{ bold_variant_price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > bold_variant_price %}sale{% endif %}">
-                  <span class="current_price">
-                    {% if bold_variant_price > 0 %}
-                      <span class="money">{% include 'price-element', price: variant.price %}</span>
-                    {% else %}
-                      {{ settings.free_price_text }}
-                    {% endif %}
-                  </span>
-                </span>
-              </p>
-              
-              
-              {% if section.settings.display_savings %}
-                <span class="sale savings">
-                  {% if bold_variant_price < variant.compare_at_price %}
-                    {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_variant_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% include 'price-element', price: compare_at -%}</span>)
-                  {% endif %}
-                </span>
-              {% endif %}
+            <div class="sold-out__container">
+              <span class="sold_out">{% if variant.available == false %}{{ settings.sold_out_text }}{% endif %}</span>
             </div>
-          {% endunless %}
-          <div class="sold-out__container">
-            <span class="sold_out">{% if variant.available == false %}{{ settings.sold_out_text }}{% endif %}</span>
           </div>
+        {% endif %}
+        {% if product.metafields.global.custom_message != blank %}
+        <p class="custom-message">{{product.metafields.global.custom_message}}</p>
+        {% else %}
+          {% for block in section.blocks %}
+            {% if block.type == 'promotion' %}
+              {% if block.settings.collection != blank %}
+                {% for collection in product.collections %}
+                  {% if collection.handle == block.settings.collection %}
+                    {% assign collection_wide_message = block.settings.promotion %}
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                {% assign side_wide_message = block.settings.promotion %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          {% if collection_wide_message != blank %}
+            <p class="custom-message">{{collection_wide_message}}</p>
+          {% elsif side_wide_message != blank %}
+            <p class="custom-message">{{side_wide_message}}</p>
+          {% endif %}
+        {% endif %}
         </div>
-      {% endif %}
+        
+        {% include 'swym-product-view', product: product %}
+        <a data-swaction="addToWishlist" data-product-id="{{product.id | json}}" class="wishlist_btn"> {% include 'icon-wishlist' %} Add to Wishlist</a>
+      </div>
+      
+      
 
       {% if section.settings.product_description_position == "top" %}
         {% if product.description != blank %}
@@ -287,7 +301,6 @@
   {% include 'include-recently-viewed' %}
 {% endif %}
 
-<div data-product-recommendations-container></div>
 
 {% if section.settings.set_product_height %}
   {% style %}
@@ -315,7 +328,7 @@
 {% schema %}
   {
     "name": "Product",
-    "class": "shopify-section--product-template has-sidebar-option",
+    "class": "shopify-section--product-template",
     "settings": [
       {
         "type": "header",
@@ -594,6 +607,25 @@
         "max": 5,
         "step": 1,
         "default": 4
+      }
+    ],
+    "blocks" : [
+      {
+        "name": "Promotion text",
+        "type": "promotion",
+        "settings": [   
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection",
+            "info": "This promotion text will display this collection page"
+          },     
+          {
+            "type": "html",
+            "id": "promotion",
+            "label": "Promotion text"
+          }
+        ]
       }
     ],
     "default": {

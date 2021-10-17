@@ -2,11 +2,21 @@
   {% for link in linklists[menu].links %}
     <li>
       {% if link.url == 'http://' or link.url == '' or link.url == '/' or link.url == 'https://' or link.url == '#' %}
-        <a data-no-instant href="{{ link.url }}" class="parent-link--false">
+        {% assign link_url = link.url %}
+        {% if link.title == 'Ecatalog' %}
+          {% assign target = 'target="_blank"' %}
+          {% assign link_url = section.settings.ecatalog_link %}
+        {% endif %}
+        <a data-no-instant href="{{ link_url }}" class="parent-link--false">
           {{ link.title }}
         </a>
       {% else %}
-        <a data-no-instant href="{{ link.url }}" class="parent-link--true">
+        {% assign link_url = link.url %}
+        {% if link.title == 'eCatalog' %}
+          {% assign target = 'target="_blank"' %}
+          {% assign link_url = section.settings.ecatalog_link %}
+        {% endif %}
+        <a data-no-instant href="{{ link_url }}" class="parent-link--true">
           {{ link.title }}
         </a>
       {% endif %}
@@ -15,13 +25,18 @@
 {% else %}
   {% for link in linklists[menu].links %}
     {% if linklists[link.handle] == empty %}
+      {% assign link_url = link.url %}
+      {% if link.title == 'Ecatalog' %}
+        {% assign target = 'target="_blank"' %}
+        {% assign link_url = section.settings.ecatalog_link %}
+      {% endif %}
       <li data-mobile-dropdown-rel="{{ link.handle }}">
         {% if link.url == 'http://' or link.url == '' or link.url == '/' or link.url == 'https://' or link.url == '#' %}
-          <a data-no-instant href="{{ link.url }}" class="parent-link--false">
+          <a data-no-instant href="{{ link_url }}" class="parent-link--false">
             {{ link.title }}
           </a>
         {% else %}
-          <a data-no-instant href="{{ link.url }}" class="parent-link--true">
+          <a data-no-instant href="{{ link_url }}" class="parent-link--true">
             {{ link.title }}
           </a>
         {% endif %}

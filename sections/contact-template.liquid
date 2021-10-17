@@ -37,9 +37,9 @@
       </div>
       <div class="one-whole column">
         <ul class="flex is-justify-space-around none is-align-center">
-          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'email' %} <a class="bold" href="mailto:{{section.settings.email}}">Email : {{section.settings.email}}</a></li>
-          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'fax' %} <a class="bold" href="fax:{{section.settings.fax}}">Fax : {{section.settings.fax}}</a></li>
-          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'phone' %} <a class="bold" href="phone:{{section.settings.phone}}">Phone: {{section.settings.phone}}</a></li>
+          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'email' %} <a class="bold">Email : {{section.settings.email}}</a></li>
+          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'address' %} <a class="bold" >{{section.settings.fax}}</a></li>
+          <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'phone' %} <a class="bold">Phone: {{section.settings.phone}}</a></li>
         </ul>
       </div>
   </div>
@@ -94,14 +94,14 @@
          {{ section.settings.icon_1 }}
        </div>
        <div class="detail">
-         <a {% if section.settings.link != blank %}href="{{ section.settings.link_1 }}"{% endif %} class="collection_title">
+         <a {% if section.settings.link_1 != blank %}href="{{ section.settings.link_1 }}"{% endif %} class="collection_title">
            {{ section.settings.title_1 | escape }}
          </a>
          {% if section.settings.text_1 != blank %}
            <div class="description">{{ section.settings.text_1 }}</div>
          {% endif %}
          {% if section.settings.button_label_1 != blank %}
-           <a {% if section.settings.link != blank %}href="{{ section.settings.link_1 }}"{% endif %} class="button blue">
+           <a {% if section.settings.link_1 != blank %}href="{{ section.settings.link_1 }}"{% endif %} class="button blue">
              {{ section.settings.button_label_1 }}
            </a>
          {% endif %}
@@ -116,14 +116,14 @@
          {{ section.settings.icon_2 }}
        </div>
        <div class="detail">
-         <a {% if section.settings.link != blank %}href="{{ section.settings.link_2 }}"{% endif %} class="collection_title">
+         <a {% if section.settings.link_2 != blank %}href="{{ section.settings.link_2 }}"{% endif %} class="collection_title">
            {{ section.settings.title_2 | escape }}
          </a>
          {% if section.settings.text_2 != blank %}
            <div class="description">{{ section.settings.text_2 }}</div>
          {% endif %}
          {% if section.settings.button_label_2 != blank %}
-           <a {% if section.settings.link != blank %}href="{{ section.settings.link_2 }}"{% endif %} class="button pink">
+           <a {% if section.settings.link_2 != blank %}href="{{ section.settings.link_2 }}"{% endif %} class="button pink">
              {{ section.settings.button_label_2 }}
            </a>
          {% endif %}
@@ -404,7 +404,7 @@
     "blocks": [
       {
         "type": "image",
-        "name": "Image",
+        "name": "Carousel content",
         "settings": [
           {
             "type": "richtext",

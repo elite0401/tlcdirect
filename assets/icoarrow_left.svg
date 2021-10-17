@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="50px" height="32px" viewBox="0 0 50 32" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <g id="icoarrow_left" transform="matrix(-1 0 0 1 50 0)">
+    <g id="icoarrow_left" transform="translate(16.666666 6.9444447)">
+      <path d="M0 0L16.6667 0L16.6667 2.08333L0 2.08333L0 0Z" transform="translate(0 8.333333)" id="Path-2" fill="#030303" fill-rule="evenodd" stroke="none" />
+      <path d="M16.7638 0.0287463L18.1375 1.64655L9.73403 8.78217L0 1.71767L1.2466 0L9.63125 6.08518L16.7638 0.0287463Z" transform="matrix(-4.371139E-08 -1 1 -4.371139E-08 8.397316 18.748802)" id="Path-3" fill="#030303" fill-rule="evenodd" stroke="none" />
+    </g>
+  </g>
+</svg>

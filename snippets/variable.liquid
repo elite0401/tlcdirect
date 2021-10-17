@@ -1,0 +1,161 @@
+{% style %}
+
+{% if settings.nav_font_extra_status %}
+  {% assign nav__font = settings.nav_font_extra %}
+{% else %}
+  {% assign nav__font = settings.nav__font.family %}
+{% endif %}
+
+{% if settings.regular_extra_status %}
+  {% assign regular__font = settings.regular_font_extra %}
+{% else %}
+  {% assign regular__font = settings.regular__font.family %}
+{% endif %}
+
+{% if settings.logo_font_extra_status %}
+  {% assign logo__font = settings.logo_font_extra %}
+{% else %}
+  {% assign logo__font = settings.logo__font.family %}
+{% endif %}
+
+{% if settings.headline_font_extra_status %}
+  {% assign headline__font = settings.headline_font_extra %}
+{% else %}
+  {% assign headline__font = settings.headline__font.family %}
+{% endif %}
+
+{% if settings.slideshow_font_extra_status %}
+  {% assign slideshow_headline__font = settings.slideshow_font_extra %}
+{% else %}
+  {% assign slideshow_headline__font = settings.slideshow_headline__font.family %}
+{% endif %}
+
+{% if settings.page_font_extra_status %}
+  {% assign page_headline__font = settings.page_font_extra %}
+{% else %}
+  {% assign page_headline__font = settings.page_headline__font.family %}
+{% endif %}
+
+{% if settings.slideshow_subtitle_font_extra_status %}
+  {% assign slideshow_subtitle__font = settings.slideshow_subtitle_font_extra %}
+{% else %}
+  {% assign slideshow_subtitle__font = settings.slideshow_subtitle__font.family %}
+{% endif %}
+
+{% assign font_size_header = settings.headline_font_size %}
+{% assign font_size_column = settings.headline_font_size %}
+
+
+{% assign secondary_button_color = settings.btn_color | color_extract: 'lightness' %}
+{% if secondary_button_color > 80 %}
+  {% assign button_color = settings.regular_color %}
+{% else %}
+  {% assign button_color = '#ffffff' %}
+{% endif %}
+{% assign quick_shop_text_color = settings.product_hover_text_color | color_extract: 'lightness' %}
+{% if quick_shop_text_color > 50 %}
+  {% assign text_color = settings.regular_color %}
+{% else %}
+  {% assign text_color = '#ffffff' %}
+{% endif %}
+{% assign featured_links_text_color = settings.featured_links_background | color_extract: 'lightness' %}
+{% if featured_links_text_color > 50 %}
+  {% assign featured_text_color = settings.regular_color %}
+{% else %}
+  {% assign featured_text_color = '#ffffff' %}
+{% endif %}
+{% assign top_bar_background_color_lightness = settings.top_bar_bg_color | color_extract: 'lightness' %}
+{% if top_bar_background_color_lightness > 50 %}
+  {% assign top_bar_background_color = 'select.png' | asset_url %}
+{% else %}
+  {% assign top_bar_background_color = 'select_light.png' | asset_url %}
+{% endif %}
+{% assign banner_color_lightness = settings.banner_color | color_extract: 'lightness' %}
+{% if banner_color_lightness > 50 %}
+  {% assign banner_color = '#333333' %}
+{% else %}
+  {% assign banner_color = '#ffffff' %}
+{% endif %}
+{% assign banner_button_color_lightness = settings.banner_button_color | color_extract: 'lightness' %}
+{% if banner_button_color_lightness > 50 %}
+  {% assign banner_button_color = '#333333' %}
+{% else %}
+  {% assign banner_button_color = '#ffffff' %}
+{% endif %}
+{% assign regular_color_lightness = settings.regular_color | color_extract: 'lightness' %}
+{% if regular_color_lightness > 50 %}
+  {% assign regular_color = '#333333' %}
+{% else %}
+  {% assign regular_color = '#ffffff' %}
+{% endif %}
+{%- if settings.caption_background -%}
+  {% assign banner_hightlight_color = settings.banner_background_color %}
+{%- else -%}
+  {% assign banner_hightlight_color = settings.banner_button_color %}
+{%- endif -%}
+
+{%- if settings.slideshow_shadow != blank -%}
+  {% assign shadow = '1px 1px 3px rgba(155, 93, 93, 0.3)' %}
+{% else %}
+  {% assign shadow = none %}
+{%- endif -%}
+:root {
+    --regular-color: {{settings.regular_color}};
+    --page_headline_size: {{settings.page_headline_size}};
+    --page_headline_font_style: {{settings.page_headline_font_style}};
+    --page_headline__font: {{page_headline__font}};
+    --headline__font: {{headline__font}};
+    --headline__font_weight: {{ settings.headline__font.weight }};
+    --headline__font_style: {{ settings.headline__font.style }};
+    --headline__text_style: {{ settings.headline_font_style }};
+    --headline__color: {{ settings.headline_color }};
+    --headline_letter_spacing: {{ settings.headline_letter_spacing }};
+
+    --slideshow_headline_size: {{settings.slideshow_headline_size}};
+
+    --slideshow_subtitle__font: {{slideshow_subtitle__font}};
+    --slideshow_subtitle__font_weight: {{slideshow_subtitle__font.weight}};
+    --slideshow_subtitle__font_style: {{slideshow_subtitle__font.style}};
+    --regular__font: {{regular__font}};
+    --h1_size: {{ font_size_header | floor }};
+    --h3_size: {{ font_size_header | times: 0.8 | floor }};
+    --h4_size: {{ font_size_header | times: 0.7 | floor }};
+    --h5_size: {{ font_size_header | times: 0.65 | floor }};
+    --h6_size:  {{ font-size_header | times: 0.6 | floor }};
+    --logo__font: {{logo__font}};
+    --nav__font: {{nav__font}};
+    --nav__font_size:  {{ settings.nav_font_size }};
+    --nav__font_style: {{ settings.nav__font.style }};
+    --nav__text_style: {{ settings.nav_font_style }};
+    --nav__font_color: {{ settings.nav_color }};
+    --nav__font_weight: {{ settings.nav__font.weight }};
+    --link_color: {{settings.link_color}};
+    --regular_font_size: {{settings.regular_font_size}};
+    --btn_color: {{settings.btn_color}};
+    --btn_hover_color: {{settings.btn_hover_color}};
+    --banner_button_color: {{settings.banner_button_color}};
+    --banner_hightlight_color: {{banner_hightlight_color}};
+    --banner_background_color : {{settings.banner_background_color}};
+    --banner_btn_hover_color: {{settings.banner_btn_hover_color}};
+    --border_color: {{ settings.border_color }};
+    --link_color: {{ settings.link_color }};
+    --headline_border_color: {{ settings.headline_border_color }};
+    --sale_color: {{settings.sale_color}};
+    --logo_font_size: {{settings.logo_font_size}};
+    --logo_font_style: {{settings.logo_font_style}};
+    --top_bar_color: {{ settings.top_bar_color }};
+    --header_bg_color: {{ settings.header_bg_color }};
+    --nav_color_hover: {{ settings.nav_color_hover }};
+    --menu_bg_color: {{settings.menu_bg_color}};
+    --banner_color: {{settings.banner_color}};
+
+    --button_color_extra: {{button_color}};
+    --text_color" {{text_color}};
+    --featured_text_color: {{featured_text_color}};
+    --top_bar_background_color: {{top_bar_background_color}};
+    --banner_color: {{banner_color}};
+    --banner_button_color_extra: {{banner_button_color}};
+    --regular_color_extra: {{regular_color}};
+    --shadow: {{shadow}};
+}
+{% endstyle %}

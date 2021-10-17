@@ -1,4 +1,4 @@
-<div class="js-buy-this-look">
+<div class="js-buy-this-look js-product_section">
   <div class="js-product-content">
     {% assign btl_status = false %}
     {% for tag in product.tags %}
@@ -43,25 +43,7 @@
     {% endif %}
 
     <div class="js-product_content">
-      <div class="quick-shop active" id="recomment-{{product.id}}">
-        <div class="quick-shop__container container js-quick-shop-container media-position--{{ settings.product_images_position }}">
-          {% include 'product-content' r_product: product %}
-        </div>
-      </div>
-      {% for tag in product.tags %}
-        {% if tag contains 'BTL:' %}
-          {% assign r_product_link = tag | remove: 'BTL:' | split: ':' | first  %}
-          {% if r_product_link != product.handle %}
-            {% assign r_product = all_products[r_product_link] %}
-            <div class="quick-shop" id="recomment-{{r_product.id}}">
-              <div class="quick-shop__container container js-quick-shop-container media-position--{{ settings.product_images_position }}">
-                {% include 'product-content' r_product: r_product %}
-              </div>
-            </div>
-          {% endif %}
-          
-        {% endif %}
-      {% endfor %}
+      
     </div>
   </div>
   

@@ -35,7 +35,7 @@
     <div class="blog-article__main sidebar-enabled--{{ sidebar }} container content">
       {% include "blog-sidebar", blog_handle: blog.handle %}
       <div class="has-sidebar-option">
-        <div class="container">
+        <div id="printable-content" class="container">
 
           <div class="breadcrumb breadcrumb-pagination-wrapper is-flex {% if section.settings.blog_breadcrumb and section.settings.blog_pagination == blank %}is-justify-left{% elsif section.settings.blog_breadcrumb == blank and section.settings.blog_pagination %}is-justify-right{% else %}is-justify-space-between{% endif %} one-whole column">
             <script type="application/ld+json">
@@ -129,14 +129,14 @@
             </p>
           </div>
 
-          <div class="one-whole column">
+          <div class="one-whole column no-print">
             <ul class="contact_content">
-              <li><a href="#">{% include 'icon-pack' with icon: 'fax' %}Print</a></li>
-              <li><a href="#">{% include 'icon-pack' with icon: 'email' %}Email to a Friend</a></li>
+              <li><a onclick="printDiv('printable-content')" >{% include 'icon-pack' with icon: 'fax' %}Print</a></li>
+              <li>{% render 'popup-email' %}</li>
             </ul>
           </div>
 
-          <div class="article_content one-whole column">
+          <div class="article_content one-whole column" id="printableArea">
             {% if article.image and section.settings.featured_image == 'content' %}
               {% include 'image-element',
                       image: article.image,

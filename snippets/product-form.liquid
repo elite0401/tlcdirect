@@ -35,11 +35,10 @@
       data-product-id="{{ product.id }}"
       >
   {% form 'product', product %}
-
-  {% if product.metafields.global.qty_break_msg != blank %}
-  <p><strong style="color: #BA0C2F;">{{ product.metafields.global.qty_break_msg }}</strong></p>
-  {% endif %}
-
+  <div class="wishlist">
+    {% include 'swym-product-view', product: product %}
+    <a data-swaction="addToWishlist" data-product-id="{{product.id | json}}" class="wishlist_btn"> {% include 'icon-wishlist' %} <span>Add to Wishlist</span></a>
+  </div>
   {% if product.metafields.global.color_product != blank %}
   <div class="color_links">
     <div class="option_title">
@@ -108,10 +107,7 @@
       </div>
     {% endif %}
   {% endif %}
-{%- unless qb_loaded == 'true' -%}
-<div class='shappify-qty-msg'>{{bold_selected_or_first_available_variant.metafields.shappify_csp.pricing_html}}</div>
-{%- assign qb_loaded = 'true' -%}
-{%- endunless -%}
+
   <div class="purchase-details">
     {% if settings.display_product_quantity %}
       <div class="purchase-details__quantity product-quantity-box">
@@ -121,18 +117,74 @@
         <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
       </div>
     {% endif %}
-    {% if product.metafields.global.qty_break_msg != blank %}
-      <p class="qty_break_message">{% render 'qty_break' %}{{ product.metafields.global.qty_break_msg }}</p>
+    {% if template contains 'cart' %}
+      {% if collection_handles contains 'coming-soon' %}
+        <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
+      {% else %}
+          {%- assign variant = bold_selected_or_first_available_variant -%}
+
+          <div class="modal_price">
+          {% unless product.available == false and settings.display_price == false %}
+              <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
+              <span content="{{ bold_variant_price | money_without_currency }}" class="{% if variant.compare_at_price > bold_variant_price %}sale{% endif %}">
+                  <span class="current_price">
+                  {% if bold_variant_price > 0 %}
+                      <span class="money">{% include 'price-element', price: variant.price %}</span>
+                  {% else %}
+                      {{ settings.free_price_text }}
+                  {% endif %}
+                  </span>
+              </span>
+
+              <span class="was_price">
+                  {% if bold_variant_price < variant.compare_at_price %}
+                  <span class="money">{% include 'price-element', price: variant.compare_at_price %}</span>
+                  {% endif %}
+              </span>
+
+              {% if block.settings.display_savings %}
+                  <span class="sale savings">
+                  {% if bold_variant_price < variant.compare_at_price %}
+                      {{ 'products.product.savings' | t }} {{ variant.compare_at_price | minus: bold_variant_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{% assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% include 'price-element', price: compare_at %}</span>)
+                  {% endif %}
+                  </span>
+              {% endif %}
+              </div>
+          {% endunless %}
+
+          <div class="sold-out__container">
+              <span class="sold_out">{% if variant.available == false %}{{ settings.sold_out_text }}{% endif %}</span>
+          </div>
+          </div>
+      {% endif %}
+    {% else %}
+      {% if product.metafields.global.qty_break_msg != blank %}
+        <p class="qty_break_message">{% render 'qty_break' %}{{ product.metafields.global.qty_break_msg }}</p>
+      {% endif %}
     {% endif %}
+    
     <div class="purchase-details__buttons purchase-details__spb--{{ show_payment_button }} {% if product.available == false %}product-is-unavailable{% endif %}">
       {% if settings.cart_action == 'reload_page' %}
         <input type="hidden" name="return_to" value="back" />
       {% elsif settings.cart_action == 'redirect_checkout' %}
         <input type="hidden" name="return_to" value="{{ checkout_url }}" />
       {% endif %}
-
+      {% assign tag_string = '' %}
+      {% assign cls = 'one-whole' %}
+      {% for tag in product.tags %}
+        {% assign tag_string = tag | downcase %}
+        {% assign tag_string = tag_string | append: tag_string %}
+      {% endfor %}
+      
+      {% unless template contains 'cart' %}
+        {% if tag_string contains 'wigs' %}
+          {% assign cls = 'one-half' %}
+          <a data-fancybox href="javascript:;" class="button blue modal-btn {{cls}} medium-down--one-whole" data-src="#quiz-popup">Help me choose</a>
+        {% endif %}
+      {% endunless %}
+      
       {% capture add_to_cart_label %}{% if collection_handles contains 'pre-order' %}{{ 'collections.general.pre_order' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}{% endcapture %}
-      <button type="{% if settings.cart_action == 'ajax' %}button{% else %}submit{% endif %}" name="add" class="{% if settings.cart_action == 'ajax' %} ajax-submit {% endif %}action_button add_to_cart {% if show_payment_button %} action_button--secondary {% endif %} {% if product.available == false %}disabled{% endif %}" data-label={{ add_to_cart_label | json }}>
+      <button type="{% if settings.cart_action == 'ajax' %}button{% else %}submit{% endif %}" name="add" class="{% if settings.cart_action == 'ajax' %} ajax-submit {% endif %}action_button add_to_cart button pink {{cls}} medium-down--one-whole {% if product.available == false %}disabled{% endif %}" data-label={{ add_to_cart_label | json }}>
         <span class="text">
           {% if product.available %}{{ add_to_cart_label }}{% else %}{{ settings.sold_out_text }}{% endif %}
         </span>
@@ -140,20 +192,24 @@
           <path fill="none" stroke-width="2" stroke-linecap="square" stroke-miterlimit="10" d="M9,17l3.9,3.9c0.1,0.1,0.2,0.1,0.3,0L23,11"/>
         </svg>
       </button>
-      {% if show_payment_button %}
-        {{ form | payment_button }}
-      {% endif %}
+      {% unless template contains 'cart' %}
+        {% if show_payment_button %}
+          {{ form | payment_button }}
+        {% endif %}
+      {% endunless %}
+      
     </div>
+    <p class="shipping_message">
+      {% if product.tags contains 'GROUND ONLY' %}
+      This item may only be shipped via Ground Shipping.
+      {% elsif product.tags contains 'GROUND/STANDARD' %}
+      This item may only be shipped via International Shipping.
+      {% endif %}
+    </p>
   </div>
+  
 {% endform %}
 </div>
-{% if template contains 'product' %}
-<div class="bottom-content">
-  {% render 'popup-email' %}
-</div>
-<div class="bottom-content">
-  {% render 'popup-quiz' %}
-</div>
-{% endif %}
+
 
 

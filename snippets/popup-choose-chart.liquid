@@ -5,31 +5,31 @@
       {% for tag in product.tags %}
         {% if tag contains 'meta-choose-chart-' %}
           <div class="js-sizechart-lightbox" id="choose-chart{{ product.id }}" style="display: none">
-            <div class="size-chart-wrap">
+            <div id="choose-chart"  class="size-chart-wrap">
               {%- assign size_chart = tag | handle | remove: 'meta-choose-chart-' -%}
-              {{ pages[size_chart].content }}
-              <div class="bottom">
-                <div class="actions">
-                  <a class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
-                  <a class="capitalize"> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
-                </div>
-                <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
+              {{ pages[size_chart].content | replace: 'src', 'data-src' | replace: 'img', 'img height="500" data-sizes="auto" width="500"  class="lazyload" srcset=""' }}
+            </div>
+            <div class="bottom">
+              <div class="actions">
+                <a  onclick="printDiv('choose-chart')" class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
+                {% render 'popup-email' %}
               </div>
+              <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
             </div>
           </div>
         {% endif %}
       {% endfor %}
     {% elsif settings.choose_chart != blank %}
-      <div class="js-sizechart-lightbox" id="choose-chart" style="display: none">
-        <div class="size-chart-wrap">
-          {{ pages[settings.choose_chart].content }}
-          <div class="bottom">
-            <div class="actions">
-              <a class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
-              <a class="capitalize"> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
-            </div>
-            <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
+      <div class="js-sizechart-lightbox" style="display: none">
+        <div id="choose-chart"  class="size-chart-wrap">
+          {{ pages[settings.choose_chart].content | replace: 'src', 'data-src' | replace: 'img', 'img height="500" data-sizes="auto" width="500"  class="lazyload" srcset=""' }}
+        </div>
+        <div class="bottom">
+          <div class="actions">
+            <a  onclick="printDiv('choose-chart')" class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
+            {% render 'popup-email' %}
           </div>
+          <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
         </div>
       </div>
     {% endif %}

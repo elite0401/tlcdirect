@@ -39,7 +39,7 @@
       "subscriber_first_name": "First Name",
       "subscriber_last_name": "Last Name",
       "success_text": "Thank you for joining our mailing list!",
-      "placeholder": "Enter your email address...",
+      "placeholder": "Enter your email address here",
       "submit": "Sign Up"
     },
     "breadcrumbs": {
@@ -310,7 +310,7 @@
       "quantity": "Quantity",
       "total": "Total",
       "fulfilled_at": "Fulfilled {{ date }}",
-      "subtotal": "Subtotal"
+      "subtotal": "Sub total"
     },
     "register": {
       "title": "Create Account",
@@ -362,7 +362,7 @@
   },
   "cart": {
     "general": {
-      "title": "Your Shopping Bag",
+      "title": "Your Shopping Cart",
       "products": "Products",
       "remove": "Remove",
       "price": "Price",
@@ -382,7 +382,7 @@
       "or": "or",
       "subtotal": "SUB TOTAL",
       "discount": "Discount",
-      "update": "Update Subtotal",
+      "update": "Update Sub total",
       "checkout": "begin secure checkout"
     },
     "shipping_calculator": {
@@ -411,7 +411,7 @@
       "continue_shopping": "Continue",
       "empty_cart": "Your Cart is Empty",
       "cart_note": "Order Notes",
-      "subtotal": "Subtotal",
+      "subtotal": "Sub total",
       "savings": "Total Savings",
       "pick_a_currency": "Pick a currency",
       "social": "Follow",

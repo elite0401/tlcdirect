@@ -14,6 +14,9 @@
 {%- if section.settings.show_locale_selector and shop.published_locales.size > 1 -%}
   {%- assign locale_selector = true -%}
 {%- endif -%}
+{%- comment -%}
+{% include 'report_popup.liquid' %}
+{%- endcomment -%}
 
 <footer class="footer">
   <section>
@@ -107,10 +110,28 @@
                     {% for link in linklists[block.settings.menu].links %}
                       <li>
                         <p>
-                          <a href="{{ link.url }}">{{ link.title }}</a>
+                          {% assign target = '' %}
+                          {% if linklists[block.settings.menu].title == 'ACS Programs & Services' %}
+                            {% assign target = 'target="_blank"' %}
+                          {% endif %}
+                          {% assign link_url = link.url %}
+                          {% if link.title == 'eCatalog' %}
+                            {% assign target = 'target="_blank"' %}
+                          {% endif %}
+                          <a {{target}} href="{{ link_url }}">{{ link.title }}</a>
                         </p>
                       </li>
                     {% endfor %}
+                    {% if block.settings.title != blank %}
+                      <li class="text-content">
+                        <div class="heading">
+                          {{block.settings.icon}}
+                          <h5>{{block.settings.title}}</h5>
+                        </div>
+                        {{block.settings.text}}
+                      </li>
+                    {% endif %}
+                    
                   </ul>
                 </div>
               {% else %}
@@ -133,6 +154,11 @@
 
               {% if block.settings.content %}
                 <div class="toggle_content">
+                  <ul class="none">
+                    <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'phone' %} <span>Phone: {{block.settings.phone}}</span></li>
+                    <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'email' %} <span>Email : {{block.settings.email}}</span></li>
+                    <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'address' %} <span>{{block.settings.address | newline_to_br}}</span></li>
+                  </ul>
                   {{ block.settings.content }}
                 </div>
               {% endif %}
@@ -187,15 +213,7 @@
         {% endif %}
 
         <p class="credits">
-          &copy; {{ "now" | date: "%Y" }} {{ shop.name | link_to: '/' }}.
-
           {{ section.settings.copyright_text }}
-
-          {% if section.settings.display_designed_by %}
-            {{ 'layout.general.designer_credits_html' | t }}
-          {% endif %}
-
-          {{ powered_by_link }}
         </p>
 
         {% if section.settings.display_payment_methods %}
@@ -258,6 +276,11 @@
         "id": "show_currency_selector",
         "label": "Show currency selector",
         "default": true
+      },
+      {
+        "type": "text",
+        "id": "ecatalog_link",
+        "label": "Ecatalog link"
       }
     ],
     "blocks": [
@@ -345,6 +368,25 @@
             "id": "social_icons_footer",
             "label": "Show social media footer icons",
             "default": false
+          },
+          {
+            "type": "header",
+            "content": "bottom content"
+          },
+          {
+            "type": "html",
+            "id": "icon",
+            "label": "Heading icon"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
           }
         ]
       },
@@ -375,6 +417,21 @@
             "id": "title",
             "label": "Heading",
             "default": "Title"
+          },
+          {
+            "type": "text",
+            "id": "phone",
+            "label": "Phone"
+          },
+          {
+            "type": "text",
+            "id": "email",
+            "label": "Email"
+          },
+          {
+            "type": "textarea",
+            "id": "address",
+            "label": "Address"
           },
           {
             "type": "richtext",

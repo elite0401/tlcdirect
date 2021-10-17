@@ -3,7 +3,7 @@
 {% schema %}
   {
     "name": "Blog posts",
-    "class": "shopify-section--blog-posts collection-blog-posts",
+    "class": "shopify-section--blog-posts",
     "settings": [
       {
         "type": "text",
@@ -103,6 +103,34 @@
         "type": "textarea",
         "id": "custom_css",
         "label": "Custom CSS"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Image text item",
+        "type": "image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
       }
     ],
     "presets": [{

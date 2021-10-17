@@ -1,0 +1,184 @@
+
+<a name="pagecontent" id="pagecontent"></a>
+<header>
+    {% include 'page-banner' %}
+</header>
+<section class="section">
+    <div class="container has-padding-top medium-down--has-no-padding-top has-padding-bottom">
+        {% include 'account-sidebar' type: "wishlist" %}
+
+        <main class="three-fourths columns medium-down--one-whole account-main">
+            <div id="swym-wishlist-render-container"></div>
+            <script type="text/javascript">// <![CDATA[
+            window.SwymCallbacks = window.SwymCallbacks || [];
+            window.SwymCallbacks.push(function(swat) {
+            var wishlistContainerElement = document.querySelector("#swym-wishlist-render-container");
+            swat.ui.renderWishlistInContainer(wishlistContainerElement);
+            });
+            // ]]></script>
+        </main>
+    </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": "Account section",
+    "class": "shopify-section--account-template",
+    "settings": [
+        {
+            "type": "header",
+            "content": "banner"
+        },
+        {
+            "type": "checkbox",
+            "id": "wide_display",
+            "label": "Wide display",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Banner image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay clor"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Shipping Information"
+        },
+        {
+            "type": "checkbox",
+            "id": "uppercase",
+            "label": "Uppercase"
+        },
+        {
+            "type": "checkbox",
+            "id": "caption_background",
+            "label": "Display solid text background",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "caption_background_transparency",
+            "label": "Enable background transparency"
+        },
+        {
+            "type": "text",
+            "id": "button1",
+            "label": "First button label"
+        },
+        {
+            "type": "url",
+            "id": "button1_link",
+            "label": "First button link"
+        },
+        {
+            "type": "checkbox",
+            "id": "button1_highlight",
+            "label": "Highlight first button"
+        },
+        {
+            "type": "text",
+            "id": "button2",
+            "label": "Second button label"
+        },
+        {
+            "type": "url",
+            "id": "button2_link",
+            "label": "Second button link"
+        },
+        {
+            "type": "checkbox",
+            "id": "button2_highlight",
+            "label": "Highlight second button"
+        },
+        {
+            "type": "select",
+            "id": "text_position",
+            "label": "Text position",
+            "options": [
+                {
+                "value": "left",
+                "label": "Left"
+                },
+                {
+                "value": "center",
+                "label": "Center"
+                },
+                {
+                "value": "right",
+                "label": "Right"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text alignment",
+            "options": [
+                {
+                "value": "left",
+                "label": "Left"
+                },
+                {
+                "value": "center",
+                "label": "Center"
+                },
+                {
+                "value": "right",
+                "label": "Right"
+                }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "Mobile"
+            },
+            {
+            "type": "select",
+            "id": "mobile_image_crop",
+            "label": "Image cropping",
+            "options": [
+                {
+                "value": "none",
+                "label": "None"
+                },
+                {
+                "value": "left",
+                "label": "Left"
+                },
+                {
+                "value": "center",
+                "label": "Center"
+                },
+                {
+                "value": "right",
+                "label": "Right"
+                }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "id": "mobile_text_below_image",
+            "label": "Show text below image",
+            "default": true
+        },
+        {
+            "type": "color",
+            "id": "mobile_text_color",
+            "label": "Text"
+        }
+    ]
+}
+{% endschema %}

@@ -107,7 +107,7 @@
             <a href="{{ collection.url }}" title="{{ collection.title | escape }}" class="breadcrumb_link">
               <span>{{ collection.title }}</span>
             </a>
-
+            {%- comment -%}
             {% if current_tags %}
               {% for tag in current_tags %}
                 {% unless tag contains 'meta-' %}
@@ -119,6 +119,8 @@
                 {% endunless %}
               {% endfor %}
             {% endif %}
+            {%- endcomment -%}
+            
 
             {% if paginate.pages != 0 and settings.pagination_type != 'load_more' and settings.pagination_type != 'infinite_scroll' %}
               <span class="breadcrumb-divider">/</span> {{ 'general.breadcrumbs.page' | t: current_page: paginate.current_page, pages: paginate.pages }}
@@ -174,10 +176,6 @@
     {% endif %}
 
     <div class="content-wrapper is-flex is-flex-wrap">
-      {% if collection.handle contains 'wigs' %}
-      {% include 'collection-sidebar' %}
-      {% endif %}
-      
 
       <div class="has-sidebar-option sidebar-enabled--{{ sidebar }}">
     

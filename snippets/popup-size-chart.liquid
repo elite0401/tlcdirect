@@ -5,14 +5,14 @@
       {% for tag in product.tags %}
         {% if tag contains 'meta-size-chart-' %}
           <div class="js-sizechart-lightbox" id="size-chart{{ product.id }}" style="display: none">
-            <div class="size-chart-wrap">
+            <div id="printable-content" class="size-chart-wrap">
               {%- assign size_chart = tag | handle | remove: 'meta-size-chart-' -%}
-              {{ pages[size_chart].content }}
+              {{ pages[size_chart].content | replace: 'src', 'data-src' | replace: 'img', 'img height="500" data-sizes="auto" width="500"  class="lazyload" srcset="data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='{{ image.width }}'%20height='500'></svg>"' }}
             </div>
             <div class="bottom">
               <div class="actions">
-                <a class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
-                <a class="capitalize"> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
+                <a  onclick="printDiv('printable-content')" class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
+                {% render 'popup-email' %}
               </div>
               <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
             </div>
@@ -21,12 +21,13 @@
       {% endfor %}
     {% elsif settings.size_chart != blank %}
       <div class="js-sizechart-lightbox" id="size-chart" style="display: none">
-        <div class="size-chart-wrap">
-        {{ pages[settings.size_chart].content }}
+        <div id="printable-content" class="size-chart-wrap">
+        {{ pages[settings.size_chart].content | replace: 'src', 'data-src' | replace: 'img', 'img height="500" data-sizes="auto" width="500"  class="lazyload" srcset=""' }}
+        </div>
         <div class="bottom">
           <div class="actions">
-            <a class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
-            <a class="capitalize"> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
+            <a  onclick="printDiv('printable-content')" class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
+            {% render 'popup-email' %}
           </div>
           <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
         </div>

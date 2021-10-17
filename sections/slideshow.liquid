@@ -52,13 +52,15 @@
                         image: image,
                         alt: image.alt,
                         stretch_width: true,
-                        additional_classes: 'medium-down--hidden'
+                        additional_classes: 'small-down--hidden'
                 %}
                 {% include 'image-element',
                         image: mobile_image,
                         alt: mobile_image.alt,
                         stretch_width: true,
-                        additional_classes: 'hide medium-down--visible'
+                        max-height: 500,
+                        mobile_status: true,
+                        additional_classes: 'hide small-down--visible'
                 %}
               {% else %}
                 {% capture i %}{% cycle "1", "2" %}{% endcapture %}

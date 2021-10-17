@@ -11,21 +11,8 @@
                 collection_handles: collection_handles
         %}
       {% endif %}
-      {% for tag in product.tags %}
-        {% if tag contains 'BTL:' %}
-          {% assign by_this_look_status = true  %}
-        {% endif %}
-      {% endfor %}
       {% if settings.quick_shop_enabled and settings.quick_shop_style == 'popup' %}
-        {% if by_this_look_status == true%}
-          {% unless template contains 'product'  %}
-            {% include 'buy-this-look-button', product: product %}
-          {% else %}
-            {% include 'quick-shop-button', product: product %}
-          {% endunless %}
-        {% else %}
-          {% include 'quick-shop-button', product: product %}
-        {% endif %}
+        {% include 'quick-shop-button', product: product %}
       {% endif %}
     </div>
   </div>

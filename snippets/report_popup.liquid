@@ -1,0 +1,84 @@
+<div class="report-container">
+    <div class="report-popup-content fadeIn animated">
+        <h2 class="text-center text-uppercase">Report an error</h2>
+        {% form 'contact', id: "form-contact", class: 'is-flex is-flex-wrap' %}
+            {% if form.posted_successfully? %}
+                <p class="success-message">{{ 'contact.form.post_success' | t }}</p>
+            {% endif %}
+
+            {% if form.errors %}
+            {%- assign message = 'contact.form.message' | t -%}
+            {% for field in form.errors %}
+                {% if field == 'form' %}
+                <p class="error-message">{{ form.errors.messages[field] }}</p>
+                {% else %}
+                <p class="error-message">
+                    {%- assign field_name = field | replace: 'body', message -%}
+                    {{ 'general.forms.post_field_error' | t: field: field_name, error: form.errors.messages[field] }}
+                </p>
+                {% endif %}
+            {% endfor %}
+            {% endif %}
+            <div class="contact__form-name">
+                {%- assign name_attr = 'contact.form.name' | handle -%}
+                <label for="contactFormName">
+                    Your Name <span class="red">*</span>
+                </label>
+                <input type="text"
+                      id="contactFormName"
+                      name="contact[{{ name_attr }}]"
+                      placeholder="{{ 'contact.form.name' | t }}"
+                      autocapitalize="words"
+                      value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                      required="required">
+            </div>
+      
+            <div class="contact__form-email">
+                <label for="contactFormEmail">
+                    Your Email <span class="red">*</span>
+                </label>
+                <input type="email"
+                      id="contactFormEmail"
+                      name="contact[email]"
+                      placeholder="{{ 'contact.form.email' | t }}"
+                      autocorrect="off"
+                      autocapitalize="off"
+                      value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+            </div>
+            {% assign current_url = '' %}
+
+            {% case template %}
+            {% when 'page' %}
+            {% assign current_url = page.url %}
+            {% when 'blog' %}
+            {% assign current_url = blog.url %}
+            {% when 'article' %}
+            {% assign current_url = article.url %}
+            {% when 'collection' %}
+            {% assign current_url = collection.url %}
+            {% when 'product' %}
+            {% assign current_url = product.url %}
+            {% endcase %}
+            <input type="hidden" name="contact[page_url]" value="{{shop.url}}{{current_url}}">
+            <div class="contact__form-message">
+                <label for="contactFormMessage">
+                    Add a Personalized Message <span class="red">*</span>
+                </label>
+                <textarea rows="5"
+                        id="contactFormMessage"
+                        name="contact[body]"
+                        placeholder="{{ 'contact.form.message' | t }}"
+                        required="required">
+                {% if form.body %}
+                    {{ form.body }}
+                {% endif %}
+                </textarea>
+            </div>
+            <div class="contact__form-bottom">
+                <a class="button border cancel">Cancel</a>
+                <input type="submit" class="submit button action_button blue" value="Send report" />
+            </div>
+        {% endform %}
+    </div>
+    <a class="report-popup-button"> {% include 'icon-pack' with icon: 'error_icon' %} Report Error</a>    
+</div>

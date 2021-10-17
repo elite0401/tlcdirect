@@ -1,0 +1,217 @@
+{% comment %}
+** Team page - custom view **
+- Page template
+- Uses blocks
+{% endcomment %}
+
+<section class="section">
+  <a name="pagecontent" id="pagecontent"></a>
+  <div class="container content medium-down--has-no-side-gutter">
+    {% if section.settings.image != blank or section.settings.text != blank or section.settings.title != blank %}
+      <div class="one-whole medium-down--one-whole column" style="background: {{section.settings.bg_color}};">
+        <div class="team-page__content--{{ section.settings.image_position }} {% if section.settings.image != blank and section.settings.text != blank %}teamPage__content--multiple{% endif %}">
+          {% if section.settings.image != blank %}
+            <div class="team-page__image">
+              {% include 'image-element',
+                      image: section.settings.image,
+                      alt: section.settings.image.alt,
+                      progressive: true
+              %}
+            </div>
+          {% endif %}
+
+          {% if section.settings.text != blank or section.settings.title != blank %}
+            <div class="team-page__text text-align--{{ section.settings.text_position }}">
+              <span class="team-page__container">
+                {% if section.settings.pre_heading != blank %}
+                  <p class="pre">{{section.settings.pre_heading}}</p>
+                {% endif %}
+                
+                {% if section.settings.title %}
+                  <h2>{{ section.settings.title }}</h2>
+                {% endif %}
+
+                {% if section.settings.text %}
+                  {{ section.settings.text }}
+                {% endif %}
+              </span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if section.settings.image != blank or section.settings.text != blank or section.settings.title != blank %}
+      <div class="one-whole column">
+        <hr class="feature_divider">
+      </div>
+    {% endif %}
+
+    {% for block in section.blocks %}
+      {% capture name %}{{ block.settings.title }}{% endcapture %}
+      {% capture twitter_handle %}{{ block.settings.twitter }}{% endcapture %}
+      {% capture title %}{{ block.settings.job_title }}{% endcapture %}
+      {% capture description %}{{ block.settings.description }}{% endcapture %}
+
+      {% include 'item-block' %}
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+  .team-member__details h4,
+  .team-member__details p {
+    color: {{ section.settings.member_color }};
+  }
+
+  .team-member__details h4::after { background-color: {{ section.settings.member_accent_color }}; }
+
+  {%- assign hover_bg = section.settings.member_overlay_color | color_extract: 'alpha' -%}
+
+  {% if hover_bg != 0 %}
+    .team-member__overlay {
+      background-color: {{ section.settings.member_overlay_color | color_modify: 'alpha', 0.8 }}
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+  {
+    "name": "Page | team",
+    "class": "shopify-section--page-team-template shopify-section--page-item-template",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "select",
+        "id": "image_position",
+        "label": "Image position",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "pre_heading",
+        "label": "Pre heading",
+        "default": "Explore Categories"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Wigs & More"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "select",
+        "id": "text_position",
+        "label": "Text alignment",
+        "default": "center",
+        "options": [
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      },
+      {
+        "type": "header",
+        "content": "Employees"
+      },
+      {
+        "type": "range",
+        "id": "employee_per_row",
+        "label": "Images per row",
+        "min": 2,
+        "max": 4,
+        "step": 1,
+        "default": 3
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Employee",
+        "type": "employee",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "800 x 800px recommended"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Name",
+            "default": "Jamie Ipsum"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Title link"
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "label": "Description",
+            "default": "<p>Powered by cats and coffee.</p>"
+          }
+        ]
+      }
+    ],
+    "default": {
+      "blocks": [
+        {
+          "type": "employee",
+          "settings": {
+            "title": "Jamie Ipsum",
+            "description": "<p>Powered by cats and coffee.</p>"
+          }
+        },
+        {
+          "type": "employee",
+          "settings": {
+            "title": "Jamie Ipsum",
+            "description": "<p>Powered by cats and coffee.</p>"
+          }
+        },
+        {
+          "type": "employee",
+          "settings": {
+            "title": "Jamie Ipsum",
+            "description": "<p>Powered by cats and coffee.</p>"
+          }
+        }
+      ]
+    }
+  }
+{% endschema %}

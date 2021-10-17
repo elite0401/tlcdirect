@@ -13,7 +13,7 @@
           <div class="dropdown_column" {{ block.shopify_attributes }}>
             {% if block.type == 'column' %}
               {% comment %}Richtext{% endcomment %}
-              {% if block.settings.richtext_top %}
+              {% if block.settings.richtext_top != blank %}
                 <div class="mega-menu__richtext">
                   {{ block.settings.richtext_top }}
                 </div>
@@ -38,7 +38,7 @@
 
               {% comment %}Menu 1{% endcomment %}
               {% if block.settings.menu_1 != blank %}
-                <div class="dropdown_column__menu">
+                <div class="dropdown_column__menu {% if linklists[block.settings.menu_1].links != blank %}has_sublinks{% endif %}">
                   <ul class="dropdown_title">
                     <li>
                       <a {% if block.settings.menu_1_link %}href="{{ block.settings.menu_1_link }}"{% endif %}>{{ linklists[block.settings.menu_1].title }}</a>
@@ -150,6 +150,7 @@
           {% include 'image-element',
             image: section.settings.banner_image,
             alt: section.settings.banner_image.alt,
+            mobile_status: true,
             stretch_width: true
           %}
           <div class="caption">
@@ -163,7 +164,11 @@
             </div>
             
             {% if section.settings.button_link != blank and section.settings.button_title != blank %}
+              {% if section.settings.modal_btn %}
+              <a data-fancybox href="javascript:;" class="button highlight-button modal-btn" data-src="{{section.settings.button_link}}"> {{section.settings.button_title}}</a>
+              {% else %}
               <a href="{{section.settings.button_link}}" class="button highlight-button">{{ section.settings.button_title }}</a>
+              {% endif %}
             {% endif %}
             
           </div>
@@ -178,7 +183,7 @@
     {% for block in section.blocks %}
       <div>
       {% if block.type == 'column' %}
-        {% if block.settings.richtext_top %}
+        {% if block.settings.richtext_top != blank %}
           <li class="mobile-mega-menu_block mega-menu__richtext">
             {{ block.settings.richtext_top }}
           </li>
@@ -362,6 +367,11 @@
       "type": "url",
       "id": "button_link",
       "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "modal_btn",
+      "label": "Modal button"
     }
   ],
   "blocks": [

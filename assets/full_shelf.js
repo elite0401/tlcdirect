@@ -37,6 +37,7 @@ function stockText(fullShelfItems, inventoryQuantity, lineItemQuantity, productT
     var isDropship = productTags.indexOf('Dropship') !== -1;
     var isCustomMasBra = productTags.indexOf('Customized Mastectomy Bras') !== -1;
     var isGiftCard =  productTags.indexOf('Gift cards') !== -1;
+    console.log(inventoryQuantity)
     if (isDropship || isCustomMasBra || isGiftCard || lineItemQuantity <= inventoryQuantity) {
       return StockText.InStock;
     }
@@ -72,6 +73,7 @@ if ($) {
       var lineItemQuantity = indicator.data('line-item-quantity');
       var productTags = indicator.data('product-tags');
       var text = stockText(fullShelfItems, inventoryQuantity, lineItemQuantity, productTags);
+      
       indicator.text(text);
       indicator.addClass(classForStockText(text));
       })
@@ -82,11 +84,25 @@ if ($) {
         $('.fs-stock-indicator').remove();
     	$('.product__description__variant').each(function(index, element) {
           var element = $(this);
+          console.log(fullShelfLineItems)
           var lineItem = fullShelfLineItems[index];
-          var text = stockText(lineItem.fullShelfItems, lineItem.inventoryQuantity, lineItem.quantity, lineItem.tags);
+          
+          var boldTitleFix = element.text();
+          if(boldTitleFix.includes("(default)")){
+            var index = boldTitleFix.indexOf("(default)");
+            var index2 = boldTitleFix.indexOf("/ ");
+            var index3 = boldTitleFix.indexOf("(default)", boldTitleFix.indexOf("(default)") + 1);
+            boldTitleFix = boldTitleFix.substring(0, index) + boldTitleFix.substring(index2, index3);
+          }
+          console.log(boldTitleFix)
+          element.html(boldTitleFix)
+          //var text = stockText(lineItem.fullShelfItems, lineItem.inventoryQuantity, lineItem.quantity, lineItem.tags);
+          var text = 'In Stock';
+
           var indicator = $('<span class="fs-stock-indicator">' + text + '</span>');
           indicator.addClass(classForStockText(text));
-          element.after(indicator);                      
+          element.after(indicator); 
+                            
         })
       });
    	})(Checkout.$);

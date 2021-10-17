@@ -35,27 +35,30 @@
                 {{ form.errors | default_errors }}
                 <span class="require">*Required</span>
                 <div id="first_name">
-                  <label for="first_name" class="login">{{ 'customer.register.first_name' | t }}</label>
+                  <label for="first_name" class="login">{{ 'customer.register.first_name' | t }}*</label>
                   <input type="text" value="" name="customer[first_name]" id="first_name" size="30" />
                 </div>
     
                 <div id="last_name">
-                  <label for="last_name" class="login">{{ 'customer.register.last_name' | t }}</label>
+                  <label for="last_name" class="login">{{ 'customer.register.last_name' | t }}*</label>
                   <input type="text" value="" name="customer[last_name]" id="last_name" size="30" />
                 </div>
     
                 <div id="email">
-                  <label for="email" class="login">{{ 'customer.register.email' | t }}</label>
+                  <label for="email" class="login">{{ 'customer.register.email' | t }}*</label>
                   <input type="email" value="" name="customer[email]" id="email" size="30" />
                 </div>
     
                 <div id="password">
-                  <label for="password" class="login">{{ 'customer.register.password' | t }}</label>
+                  <label for="password" class="login">{{ 'customer.register.password' | t }}*</label>
                   <input type="password" value="" name="customer[password]" id="password" class="password" size="30" />
                 </div>
+                {%- comment -%}
                 <a class="capitalize underline">{{'customer.register.learn_more' | t}}</a>
+                {%- endcomment -%}
+                
                 <div id="confirm-password">
-                  <label for="confirm" class="login">{{ 'customer.register.confirm' | t }}</label>
+                  <label for="confirm" class="login">{{ 'customer.register.confirm' | t }}*</label>
                   <input type="password" value="" id="confirm" class="confirm" size="30" />
                 </div>
     
@@ -67,7 +70,6 @@
                 {% if section.settings.text %}
                   {{ section.settings.text }}
                 {% endif %}
-    
                 <div class="action_bottom">
                   <input class="button blue action_button full" type="submit" value="{{ 'customer.register.sign_up' | t }}" />
                   <p class="flex is-align-center is-justify-space-between" style="padding-top: 8px;">{{ 'customer.register.returning_customer_label' | t }} <a href="{{ routes.account_login_url }}" id="customer_login_link" class="capitalize underline">{{ 'customer.register.sign_in_html' | t }}</a></p>

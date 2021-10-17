@@ -36,14 +36,14 @@
 
   {% comment %} HTML markup {% endcomment %}
   {% capture product_collections_markup %}
-    <div class="recommended-products__title {% unless section.settings.product_recommendations_style == 'slider' %}one-whole column{% endunless %}" data-recommended-product-count="{% if show_dynamic_collection == true %}{{ recommendations.products_count }}{% else %}{{ collection_size }}{% endif %}">
+    <div class="section recommended-products__title {% unless section.settings.product_recommendations_style == 'slider' %}one-whole column{% endunless %}" data-recommended-product-count="{% if show_dynamic_collection == true %}{{ recommendations.products_count }}{% else %}{{ collection_size }}{% endif %}">
       <h3 class="center">{{ section.settings.product_recommendations_heading }}</h3>
       <div class="feature_divider"></div>
     </div>
 
     {% if section.settings.product_recommendations_style == 'slider' %}
       {% comment %} Recommended Products Slider {% endcomment %}
-      <div class="recommended-products--slider js-recommended-products-slider">
+      <div class="section recommended-products--slider js-recommended-products-slider">
         {% include 'product-slider',
                 limit: section.settings.recommended_products_limit,
                 products: products,
@@ -53,7 +53,7 @@
       </div>
     {% else %}
       {% comment %} Recommended Products Grid {% endcomment %}
-      <div class="recommended-products--grid medium-down--hide">
+      <div class="section recommended-products--grid medium-down--hide">
         <div class="container">
           <div class="one-whole column">
             {% include 'product-loop',
@@ -65,7 +65,7 @@
           </div>
         </div>
       </div>
-      <div class="recommended-products--slider js-recommended-products-slider hide medium-down--show">
+      <div class="section recommended-products--slider js-recommended-products-slider hide medium-down--show">
         {% include 'product-slider',
                 limit: section.settings.recommended_products_limit,
                 products: products,

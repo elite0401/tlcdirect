@@ -1,3 +1,17 @@
+{% for block in section.blocks %}
+<div class="quiz-popup js-popup" id="{{block.settings.id}}">
+    <div class="heading text-{{block.settings.heading_align}}">
+        <h2 class="text-center">{{block.settings.heading_title}}</h2>
+       <h2 class="text-center">
+        {{block.settings.sub_title}}
+       </h2>
+    </div>
+    <div class="content text-{{content_align}}">
+       {{block.settings.html_content}}
+    </div>
+</div>
+{% endfor %}
+
 {% schema %}
 {
     "name": "Modals",

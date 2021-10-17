@@ -86,7 +86,7 @@ var imageFunctions = {
         //image attributes added
         $image.attr({
           alt: alt,
-          class: 'lazyload {{ settings.image_loading_style }}',
+          class: `lazyload ${Shopify.theme_settings.image_loading_style}`,
           src: src,
           dataSizes: 'auto'
         });
@@ -281,7 +281,7 @@ var recentlyViewed = {
             var rvProduct = $(data).find('.js-recently-viewed-product');
 
             $(parent).find(' .rv-box-' + index ).append(rvProduct);
-
+            $(parent).find(' .rv-box-' + index ).removeClass('hide');
             if (Currency.show_multiple_currencies) {
               currencyConverter.convertCurrencies();
             }
@@ -816,7 +816,7 @@ var searchAutocomplete = {
 
       input.attr('autocomplete', 'off').on('input', function() {
         clearTimeout(searchAutocomplete.vars.displayTimer);
-        if ($(this).val().length > 3) {
+        if ($(this).val().length > 2) {
           searchAutocomplete.vars.term = $(this).val();
           searchAutocomplete.getResults(searchAutocomplete.vars.term, $this);
         } else {
@@ -840,7 +840,7 @@ var searchAutocomplete = {
         "limit": Shopify.theme_settings.search_items_to_display,
         "options": {
           "unavailable_products": "last",
-          "fields": "title,body,variants.title,vendor,product_type,tag"
+          "fields": "title,body,variants.title,vendor,product_type,tag,variants.sku"
         }
       }
     }).done(function(response) {
@@ -1166,7 +1166,7 @@ var utils = {
     $('body').on('click', tab, function(e){
       e.preventDefault();
       $(this).toggleClass('active');
-      $(this).parent().next().slideToggle();
+      $(this).next().slideToggle();
     });
   },
   initializeTabs: function(){
@@ -1399,135 +1399,120 @@ var sliderBlock = {
 ==============================================================================*/
 
 var globalQuickShopProduct;
-
 var quickShop = {
+  
   init: function(){
 
     //EVENT - click on quick-shop
     $('body').on('click', '.js-quick-shop-link', function(e){
       e.stopImmediatePropagation();
       e.preventDefault();
+      var $thumbnail = $(this)
+      $.ajax({
+        dataType: "json",
+        async: false,
+        cache: false,
+        url: "/products/" + $(this).data('handle') + ".js",
+        success: function(data) {
+          var data_single_variant = false;
+          if (data.variants == 1) {
+            data_single_variant = true
+          }
+          var images = [];
+          for (let i = 0; i < data.media.length; i++) {
+            var image = {
+              "path": data.media[i].src,
+              "alt": data.media[i].alt,
+              "id": data.media[i].id,
+              "mediaType": data.media[i].media_type
+            };
+            images.push(image);
+          }
+          var productData = {
+            handle: data.handle,
+            product_id: data.id,
+            single_variant: data_single_variant,
+            product_in_collection_url: data.url,
+            escaped_title: data.title.replace('"',""),
+            escaped_vendor: data.vendor.replace(/\&/g,'%26'),
+            feat_img: data.featured_image,
+            image_array: images,
+            collection_handles: "",
+            money_format: $('body').data('money-format')
+          }
+          var $sidebar = $thumbnail.parent().find('.js-quickshop-sidebar__container').find('.js-product_sidebar');
 
-      //Set productData object based on data attributes
-      var productData = {
-        handle: $(this).data('handle'),
-        product_id: $(this).data('id'),
-        single_variant: $(this).attr('data-single-variant'),
-        product_in_collection_url: $(this).data('url'),
-        escaped_title: $(this).data('title').replace('"',""),
-        escaped_vendor: $(this).data('vendor').replace(/\&/g,'%26'),
-        details_text: $(this).data('details-text'),
-        full_description: $(this).data('full-description'),
-        regular_description: $(this).data('regular-description'),
-        feat_img: $(this).data('feat-img'),
-        image_array: quickShop.createImageObjects($(this).data('images')),
-        thumbnail_array: quickShop.createImageObjects($(this).data('thumbnail-images')),
-        collection_handles: $(this).data('collection-handles').trim(',').split(','),
-        money_format: $('body').data('money-format')
-      }
-
-      //Find current product and notify forms
-      var $notifyForm = $(this).next('.js-quickshop-forms__container').find('.notify_form');
-      var $productForm = $(this).next('.js-quickshop-forms__container').find('.product_form');
-
-      $.fancybox.open($('.js-quick-shop'), {
-        baseClass: 'quick-shop__lightbox product-' + productData.product_id,
-        hash: false,
-        infobar : false,
-        toolbar: false,
-        loop: false,
-        smallBtn : true,
-        video: {
-          autoStart: false
-        },
-        touch: false,
-        mobile: {
-          preventCaptionOverlap: false,
-          toolbar: true,
-          buttons: [
-            "close"
-          ]
-        },
-        beforeLoad: function(){
-          quickShop.beforeOpen(productData);
-        },
-        afterLoad: function(){
-          quickShop.afterContent($productForm, $notifyForm, productData);
-          videoFeature.setupRecommendedVideoPlayer();
-          productMedia.setupMedia();
-        },
-        afterShow: function(){
-
-        },
-        beforeClose: function(){
-          quickShop.beforeClose(productData);
+          //Find current product and notify forms
+          var $notifyForm = $thumbnail.next('.js-quickshop-forms__container').find('.notify_form');
+          var $productForm = $thumbnail.next('.js-quickshop-forms__container').find('.product_form');
+          if (productData) {
+            $.fancybox.open($('.js-quick-shop'), {
+              baseClass: 'quick-shop__lightbox product-' + productData.product_id,
+              hash: false,
+              infobar : false,
+              toolbar: false,
+              loop: false,
+              smallBtn : true,
+              video: {
+                autoStart: false
+              },
+              touch: false,
+              mobile: {
+                preventCaptionOverlap: false,
+                toolbar: true,
+                buttons: [
+                  "close"
+                ]
+              },
+              beforeLoad: function(){
+                quickShop.beforeOpen(productData);
+              },
+              afterLoad: function(){
+                quickShop.afterContent($productForm, $notifyForm, $sidebar, productData);
+                videoFeature.setupRecommendedVideoPlayer();
+                productMedia.setupMedia();
+              },
+              afterShow: function(){
+      
+              },
+              beforeClose: function(){
+      
+                quickShop.beforeClose(productData);
+              }
+            })
+          }
+          
         }
-      })
-
+      });
     });
 
-    $('body').on('click', '.js-buy-this-look-link', function(e){
+    $('body').on('click', '.js-quick-shop .js-product_sidebar .content .js-product-item', function (e) {
       e.stopImmediatePropagation();
       e.preventDefault();
+      quickShop.beforeClearContent();
       //Set productData object based on data attributes
-      var productData = {
+      var btl_productData = {
         handle: $(this).data('handle'),
         product_id: $(this).data('id'),
         single_variant: $(this).attr('data-single-variant'),
         product_in_collection_url: $(this).data('url'),
         escaped_title: $(this).data('title').replace('"',""),
         escaped_vendor: $(this).data('vendor').replace(/\&/g,'%26'),
-        details_text: $(this).data('details-text'),
-        full_description: $(this).data('full-description'),
-        regular_description: $(this).data('regular-description'),
         feat_img: $(this).data('feat-img'),
         image_array: quickShop.createImageObjects($(this).data('images')),
-        thumbnail_array: quickShop.createImageObjects($(this).data('thumbnail-images')),
         collection_handles: $(this).data('collection-handles').trim(',').split(','),
-        money_format: $('body').data('money-format')
+        money_format: $('body').data('money-format'),
+        variant_id: $(this).data('variant_id')
       }
+      var $sidebar = null;
 
       //Find current product and notify forms
       var $notifyForm = $(this).next('.js-quickshop-forms__container').find('.notify_form');
       var $productForm = $(this).next('.js-quickshop-forms__container').find('.product_form');
-      var $buy_this_popup = $(this).parent().find('.js-buy-this-look');
-      $.fancybox.open($buy_this_popup, {
-        baseClass: 'quick-shop__lightbox product-' + productData.product_id,
-        hash: false,
-        infobar : false,
-        toolbar: false,
-        loop: false,
-        smallBtn : true,
-        video: {
-          autoStart: false
-        },
-        touch: false,
-        mobile: {
-          preventCaptionOverlap: false,
-          toolbar: true,
-          buttons: [
-            "close"
-          ]
-        },
-        beforeLoad: function(){
-          $buy_this_popup.find('.quick-shop').each(function () {
-            var $gallery = $(this).find('.quick-shop__gallery .product_gallery');
-            console.log($gallery);
-            $gallery.flickity({
-
-            });
-          })
-        }
-      })
-
-    });
-
-    $('body').on('click', '.js-buy-this-look .js-product_sidebar .content .js-product-item', function (e) {
-      e.preventDefault();
-      var id = $(this).attr('href');
-      console.log(id);
-      $(this).parent().parent().parent().find('.js-product_content .quick-shop').removeClass('active');
-      $(this).parent().parent().parent().find('.js-product_content').find(id).addClass('active');
+      quickShop.beforeOpen(btl_productData);
+      quickShop.afterContent($productForm, $notifyForm, $sidebar, btl_productData);
+      videoFeature.setupRecommendedVideoPlayer();
+      productMedia.setupMedia();
     })
 
     //Swatch toggler
@@ -1584,28 +1569,40 @@ var quickShop = {
     }
 
   },
-  afterContent: function($productForm, $notifyForm, productData) {
+  afterContent: function($productForm, $notifyForm, $sidebar, productData) {
 
     quickShop.retrieveProductInfo(productData);
 
     videoFeature.setupVideoPlayer();
 
-    var $productGallery =  $('.js-gallery-modal');
-
-    productPage.enableGallery($productGallery);
-
+    
     //Copy latest form data to modal
     $('.js-quickshop-forms--'+ productData.product_id).empty();
-    $productForm.appendTo('.quick-shop__lightbox .js-product-form');
-    $notifyForm.appendTo('.quick-shop__lightbox .js-product-form');
-
+    $('.js-quickshop-sidebar--'+ productData.product_id).empty();
+    
+    $('.js-quick-shop .quick-shop--content').attr('data-product-id', productData.product_id)
+    $productForm.appendTo('.quick-shop__lightbox .js-product_section .js-product-form');
+    $notifyForm.appendTo('.quick-shop__lightbox .js-product_section .js-product-form');
+    if ($sidebar != null) {
+      $sidebar.appendTo('.quick-shop__lightbox .quick-shop--sidebar');
+    }
+    $('.quick-shop__lightbox .quick-shop--sidebar .js-product_sidebar .content').flickity({
+      draggable: false,
+      percentPosition: false,
+      groupCells: "100%",
+      pageDots: false,
+      contain: true,
+      cellAlign: 'left'
+    });
+    
     //Initiate selectCallback
     if ($productForm.hasClass("product_form_options") && $productForm.hasClass("viewed") == false) {
       //If form hasn't been viewed previously, run OptionSelectors function
+      console.log($productForm.data("select-id"))
       new Shopify.OptionSelectors($productForm.data("select-id"),
       {
         product: $productForm.data("product"),
-        onVariantSelected: selectCallback,
+        onVariantSelected: QuickshopselectCallback,
         enableHistoryState: $productForm.data("enable-state")
       });
     } else {
@@ -1618,29 +1615,81 @@ var quickShop = {
     //Link sold out options when there is more than one option available (eg. S is selected and Yellow option appears as sold out)
     if (Shopify.theme_settings.product_form_style == 'swatches'){
       var JSONData = $productForm.data('product');
-      var productID = productData.section_id;
-      var productSection = '.product-' + productID + ' .js-product_section';
+      var productID = productData.product_id;
+      var productSection = '.fancybox-content .js-product_section';
       var swatchOptions = $productForm.find('.swatch_options .swatch');
+      console.log(productSection)
       if (swatchOptions.length > 1){
         Shopify.linkOptionSelectors(JSONData, productSection);
       }
     }
 
-    $('.js-quick-shop select[name="id"]').trigger('change');
+    $('.js-quick-shop .js-product_section select[name="id"]').trigger('change');
+
+    $('body').on('change', '.js-quick-shop .js-product_section select', function(e) {
+      var currentVariant = $('.js-quick-shop .js-product_section select[name="id"]').val();
+      if (currentVariant && globalQuickShopProduct){
+        quickShop.updateVariant(currentVariant);
+      }
+    });
 
     utils.initializeTabs();
 
-    productPage.productSwatches();
+    // productPage.productSwatches();
+
+  },
+  beforeClearContent: function() {
+
+    //Find gallery and carousel
+    var $gallery = $('.js-gallery-modal');
+    var $carousel = $('.js-gallery-carousel');
+
+    $('.js-gallery-carousel .gallery-cell').off('click');
+    $gallery.flickity('destroy');
+    //Remove image slides from gallery
+    $gallery.find('.gallery-cell').remove();
+
+    //Destroy sliders when modal closes
+    
+    if ($carousel.hasClass('flickity-enabled')){
+      $carousel.flickity( 'remove', $('.gallery-cell', $carousel) );
+      $carousel.flickity('destroy');
+    } else {
+      $carousel.find('.gallery-cell').remove();
+    }
+    var $insertedNotifyForm = $('.quick-shop__lightbox .js-product_section .js-notify-form .notify_form');
+    var $insertedProductForm = $('.quick-shop__lightbox .js-product_section .js-product-form .product_form');
+    var $sidebar_form = $(`.js-quick-shop .sidebar-form.js-quickshop-forms--${$('.js-quick-shop .quick-shop--content').attr('data-product-id')}`)
+    $sidebar_form.append($insertedProductForm);
+    $sidebar_form.append($insertedNotifyForm);
+    $('.quick-shop__lightbox .js-product_section .js-product-form').empty();
+    $('.quick-shop__lightbox .js-product_section .js-notify-form').empty();
+    $('.js-current-price, .js-was-price, .js-savings').empty();
 
   },
   beforeClose: function(productData) {
 
-    var $insertedNotifyForm = $('.quick-shop__lightbox .notify_form');
-    var $insertedProductForm = $('.quick-shop__lightbox .product_form');
+    if ($(`.js-quick-shop .sidebar-form.js-quickshop-forms--${productData.product_id} .product_form`).length > 0) {
+      var $insertedNotifyForm = $('.quick-shop__lightbox .js-product_section .js-notify-form .notify_form');
+      var $insertedProductForm = $('.quick-shop__lightbox .js-product_section .js-product-form .product_form');
+      var $sidebar_form = $(`.js-quick-shop .sidebar-form.js-quickshop-forms--${$('.js-quick-shop .quick-shop--content').attr('data-product-id')}`)
+      $sidebar_form.append($insertedProductForm);
+      $sidebar_form.append($insertedNotifyForm);
+      $('.quick-shop__lightbox .js-product_section .js-product-form').empty();
+      $('.quick-shop__lightbox .js-product_section .js-notify-form').empty();
+      var $insertedNotifyForm = $(`.js-quick-shop .sidebar-form.js-quickshop-forms--${productData.product_id} .notify_form`);
+      var $insertedProductForm = $(`.js-quick-shop .sidebar-form.js-quickshop-forms--${productData.product_id} .product_form`);
+    } else {
+      var $insertedNotifyForm = $('.quick-shop__lightbox .js-product_section .notify_form');
+      var $insertedProductForm = $('.quick-shop__lightbox .js-product_section .product_form');
+    }
+    
+    var $insertedSidebar = $('.quick-shop__lightbox .js-product_sidebar');
 
     //Copy form data back to product loop and add .viewed
     $('.js-quickshop-forms--'+ productData.product_id).append($insertedProductForm);
     $('.js-quickshop-forms--'+ productData.product_id).append($insertedNotifyForm);
+    $('.js-quickshop-sidebar--'+ productData.product_id).append($insertedSidebar);
     $('.js-quickshop-forms--'+ productData.product_id +' .product_form').addClass('viewed');
     $('.js-quickshop-forms--'+ productData.product_id +' .notify_form').addClass('viewed');
 
@@ -1677,34 +1726,40 @@ var quickShop = {
       success: function(product) {
         //Create new object combining info
         product = $.extend({}, product, productData);
-
         globalQuickShopProduct = product;
-        quickShop.updateVariant(product.variants[0].id.toString(), product);
-
+        if (productData.variant_id) {
+          quickShop.updateVariant(productData.variant_id.toString(), product);
+        } else {
+          quickShop.updateVariant(product.variants[0].id.toString(), product);
+        }
       }
     });
 
   },
   updateVariant: function(variant){
-
+    console.log(variant)
     if (globalQuickShopProduct != 'undefined'){
 
       var product = globalQuickShopProduct;
-
+      console.log(product)
       $('.js-current-price').html('');
       $('.js-was-price').html('');
       $('.js-savings').html('');
-
+      $('.js-sku').html(`#${product.variants[0].sku.split(' ')[0]}`);
       //Title and Vendor
       $('.js-product-title').html('<a href="'+ product.product_in_collection_url +'" title="'+ product.escaped_title +'">'+ product.title +'</a>');
       $('.js-product-vendor')
       .html('<a href="/collections/vendors?q=' + product.escaped_vendor +'">' + product.vendor + '</a>');
+      if (product.regular_description) {
+        //Product Description
+        $('.js-full-description').html(product.full_description);
+        $('.js-regular-description').html(product.regular_description);
+      }
+      if (product.details_text) {
+        var productDetails = '<a href="'+ product.product_in_collection_url +'" class="secondary_button" title="'+ product.escaped_title +' Details">'+ product.details_text +'</a>';
+        $('.js-product-details').html(productDetails);
+      }
 
-      //Product Description
-      $('.js-full-description').html(product.full_description);
-      $('.js-regular-description').html(product.regular_description);
-      var productDetails = '<a href="'+ product.product_in_collection_url +'" class="secondary_button" title="'+ product.escaped_title +' Details">'+ product.details_text +'</a>';
-      $('.js-product-details').html(productDetails);
 
       //Collection banners
       $.each( product.collection_handles, function( value, index ) {
@@ -1739,12 +1794,16 @@ var quickShop = {
 
         //Availability
         if (product.available == false){
+          $('.sold-out__container').show();
+          $('.price__container').hide();
           if (product.price == Shopify.translation.coming_soon_text) {
             $('.js-sold-out').html(Shopify.translation.coming_soon_text)
           } else {
             $('.js-sold-out').html(Shopify.theme_settings.sold_out_text);
           }
         } else {
+          $('.price__container').show(); 
+          $('.sold-out__container').hide();
           $('.js-sold-out').html('');
         }
 
@@ -1793,6 +1852,8 @@ var quickShop = {
 
             //Availability
             if (product.variants[i].available == false){
+              $('.sold-out__container').show();
+              $('.price__container').hide();
               if (product.price == Shopify.translation.coming_soon_text) {
                 $('.js-sold-out').html(Shopify.translation.coming_soon_text)
               } else if ($('.js-current-price').parents('.modal_price').hasClass('variant-unavailable')){
@@ -1801,6 +1862,8 @@ var quickShop = {
                 $('.js-sold-out').html(Shopify.theme_settings.sold_out_text);
               }
             } else {
+              $('.price__container').show(); 
+              $('.sold-out__container').hide();
               $('.js-sold-out').html('');
             }
 
@@ -1845,10 +1908,10 @@ var quickShop = {
 
     //Find gallery and carousel
     var $gallery = $('.js-gallery-modal');
-    var $carousel = $('.js-gallery-carousel');
+    var $navigation = $('.js-gallery-navigation');
 
     //Add gallery images based on product info from API
-    function addMainGalleryImages(){
+    function addMainGalleryImages(productData){
 
       $.each( productData.image_array, function( i, image ){
 
@@ -1876,41 +1939,11 @@ var quickShop = {
         var $cellElems = $('<div class="gallery-cell">'+ cellContent +'</div>');
         $('.js-gallery-modal').append($cellElems);
       });
-
+      var $productGallery =  $('.js-gallery-modal');
+      productPage.enableGallery($productGallery);
     }
 
-    //Add carousel images based on product info from API
-    function addCarouselGalleryImages(){
-
-      $.each( productData.thumbnail_array, function( i, image ){
-        if (image.path != '') {
-          var imgPath = image.path;
-          var carouselSizedImg = imgPath.replace(/(\.[^.]*)$/, "_grande$1").replace('http:', '');
-
-          var mediaBadge = '';
-
-          if (image.alt.indexOf("model") >= 0) {
-            mediaBadge = '<span class="icon media-badge"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M1 25H25V1H1V25Z" fill=""/><path class="media-badge__outline" d="M0.5 25V25.5H1H25H25.5V25V1V0.5H25H1H0.5V1V25Z" stroke="" stroke-opacity="0.05"/><g opacity="0.6"><path fill-rule="evenodd" clip-rule="evenodd" d="M13 6L19.0622 9.5V16.5L13 20L6.93782 16.5V9.5L13 6Z" stroke="" stroke-width="1.5"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13 20V12.6024C13.6225 12.2002 13.6225 12.2002 13.6225 12.2002L19 9V16.4082L13 20Z" fill=""/></g></svg></span>';
-          } else if(image.alt.indexOf('external_video') >= 0 || image.alt.indexOf('video') >= 0 ) {
-            mediaBadge = '<span class="icon media-badge"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M1 25H25V1H1V25Z" fill=""/><path class="media-badge__outline" d="M0.5 25V25.5H1H25H25.5V25V1V0.5H25H1H0.5V1V25Z" stroke="" stroke-opacity="0.05"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.19995 5.8V20.2L19.3999 12.5858L8.19995 5.8Z" fill="" fill-opacity="0.6"/></svg></span>';
-          }
-
-          var img = '<img src="'+ carouselSizedImg + '" alt="' + escape(image.alt) + '" />';
-          var $carouselCellElems = $('<div class="gallery-cell product-gallery__thumbnail">'+ img + mediaBadge +'</div>');
-          $carousel.append($carouselCellElems);
-        }
-      });
-
-      imageFunctions.linkGalleryAndCarousel($gallery, $carousel);
-
-    }
-
-    addMainGalleryImages();
-
-    // Adds carousel images to thumbnail slider if there is more than one slide in main gallery
-    if ($gallery.find('.gallery-cell').length > 1) {
-      addCarouselGalleryImages();
-    }
+    addMainGalleryImages(productData);
 
   }
 }

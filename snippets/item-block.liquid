@@ -1,0 +1,25 @@
+<div class="{% include 'column-width', value: section.settings.employee_per_row %} column medium-down--one-whole team-member__profile">
+    <figure class="team-member__wrap">
+        {% if block.settings.link != blank %}
+        <a href="{{block.settings.link}}">
+        {% endif %}
+            {% if block.settings.image %}
+                {% include 'image-element',
+                        image: block.settings.image,
+                        alt: block.settings.image.alt,
+                        stretch_width: true
+                %}
+                
+            {% else %}
+                {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+
+            <h3 class="team-member__name no_border">{{ name }}</h3>
+            {% if description != blank %}
+            <p>{{ description }}</p>
+            {% endif %}
+        {% if block.settings.link != blank %}
+        </a>
+        {% endif %}
+  </div>

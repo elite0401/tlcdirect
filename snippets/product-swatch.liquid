@@ -68,7 +68,18 @@ Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
         {% if is_color %}
           {% assign value_handle = value | handle %}
           {% assign color_name = product.vendor | handle | append: '-' | append: value_handle %}
-          <label {% if variant.featured_image %}data-image="{{ variant.featured_image | product_img_url: '600x' }}"{% endif %} for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" style="background-image: url({{ color_name | append: '.' | append: file_extension | file_img_url | prepend: 'https:' }}); background-color: {{ value | split: ' ' | last | handle }};">
+          <label {% if variant.featured_image %}data-image="{{ variant.featured_image | product_img_url: '600x' }}"{% endif %} for="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" style="background-color: {{ value | split: ' ' | last | handle }};">
+            {% assign image_link = color_name | append: '.' | append: file_extension | file_img_url: '100x' | prepend: 'https:' %}
+            <img 
+              class="bg_image lazyload" 
+              srcset="data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='{{ image.width }}'%20height='{{ image.height }}'></svg>" 
+              height="50"
+              width="50" 
+              data-src="{{ image_link | replace: '100x.png', '1x1.png' }}" 
+              src="{{ image_link | replace: '100x.png', '1x1.png' }}" 
+              data-srcset="{{ image_link | replace: '100x.png', '50x.png'}} 5000w"
+              onerror="this.style.display='none'"
+            >
             <img class="crossed-out" src="{{ 'soldout.png' | asset_url }}" aria-label="sold out" alt="sold out"/>
           </label>
         {% else %}

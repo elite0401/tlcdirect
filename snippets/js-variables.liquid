@@ -85,6 +85,14 @@ Shopify.theme_settings.slideshow_arrow_size = {{ settings.slideshow_arrow_size |
 {% comment %} Quickshop {% endcomment %}
 Shopify.theme_settings.quick_shop_enabled = {{ settings.quick_shop_enabled | json }};
 
+Shopify.theme_settings.quiz_title = {{ settings.quiz_title | json }};
+{% if contact != blank %}
+Shopify.theme_settings.contact_email = {{ contact.fields.email | json }};
+{% endif %}
+{% if customer != blank %}
+Shopify.thene_settings.customer_email = {{ customer.email | json }}; 
+{% endif %}
+
 {% comment %} /* # Translation
 ================================================== */ {% endcomment %}
 Shopify.translation = Shopify.translation || {};
@@ -128,12 +136,14 @@ Shopify.translation.no_results = "{{ 'general.search.no_results' | t }}";
 ================================================== */ {% endcomment %}
 Shopify.media_queries = Shopify.media_queries || {};
 Shopify.media_queries.small = window.matchMedia( "(max-width: 480px)" );
-Shopify.media_queries.medium = window.matchMedia( "(max-width: 798px)" );
-Shopify.media_queries.large = window.matchMedia( "(min-width: 799px)" );
-Shopify.media_queries.larger = window.matchMedia( "(min-width: 960px)" );
-Shopify.media_queries.xlarge = window.matchMedia( "(min-width: 1200px)" );
+Shopify.media_queries.medium = window.matchMedia( "(max-width: 1023px)" );
+Shopify.media_queries.large = window.matchMedia( "(min-width: 1300px)" );
+Shopify.media_queries.larger = window.matchMedia( "(min-width: 1400px)" );
+Shopify.media_queries.xlarge = window.matchMedia( "(min-width: 1400px)" );
 Shopify.media_queries.ie10 = window.matchMedia( "all and (-ms-high-contrast: none), (-ms-high-contrast: active)" );
 Shopify.media_queries.tablet = window.matchMedia( "only screen and (min-width: 799px) and (max-width: 1024px)" );
+
+
 
 {% endcapture %}
 {%- assign js_variables = js_variables | split: 'Shopify.' -%}

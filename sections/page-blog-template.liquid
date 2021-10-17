@@ -58,9 +58,13 @@
                 </a>
               {% endif %}
               {% if block.settings.button_label_2 != blank %}
+                {% if block.settings.button_type_modal %}
+                <a data-fancybox href="javascript:;" class="button blue modal-btn" data-src="{{block.settings.link_2}}"> <span>{{block.settings.button_label_2}}</span></a>
+                {% else %}
                 <a {% if block.settings.link_2 != blank %}href="{{ block.settings.link_2 }}"{% endif %} class="button blue">
                   {{ block.settings.button_label_2 }}
                 </a>
+                {% endif %}
               {% endif %}
             </div>
           </div>
@@ -102,7 +106,7 @@
                         <div class="info">
                           <h2 class="article_title capitalize">{{article.title}}</h2>
                           {{article.content | strip_html | truncatewords: 15, '...'}}
-                          <a class="uppercase bold" href="{{article.url}}">Read more</a>
+                          <a class="uppercase bold read_more" href="{{article.url}}">Read more</a>
                         </div>
                       </div>
                     {% endfor %}
@@ -254,6 +258,11 @@
             "id": "button_label_2",
             "label": "Button label",
             "default": "View all"
+          },
+          {
+            "type": "checkbox",
+            "id": "button_type_modal",
+            "label": "Modal button"
           }
         ]
       },

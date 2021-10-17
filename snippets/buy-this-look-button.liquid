@@ -36,7 +36,7 @@
 {% capture thumbnail_paths_alts %}{% if product.media %}{% for media in product.media %}{{ media | img_url: "master" }}^{{ media.media_type | escape }}^{{ media.id }}^{{ media.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% else %}{% for image in product.images %}{{ image | img_url: "master" }}^{{ image.alt | escape }}^{{ image.id }}^{{ image.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% endif %}{% endcapture %}
 {% capture image_paths_alts %}{% if product.media %}{{ product_media_loop }}{% else %}{% for image in product.images %}{{ image | img_url: "master" }}^{{ image.alt | escape }}^{{ image.id }}^{{ image.width }}{% unless forloop.last %}~{% endunless %}{% endfor %}{% endif %}{% endcapture %}
 
-<span class="quick_shop ss-icon js-buy-this-look-link"
+<span class="quick_shop ss-icon js-quick-shop-link"
       data-id="{{ product.id }}"
       data-handle="{{ product.handle }}"
       data-single-variant="{% if product.has_only_default_variant %}true{% else %}false{% endif %}"

@@ -23,7 +23,13 @@
               {% if section.settings.image != blank %}
                 {% include 'image-element',
                         image: section.settings.image,
-                        alt: section.settings.image.alt
+                        alt: section.settings.image.alt,
+                        additional_classes: 'medium-down--hide'
+                %}
+                {% include 'image-element',
+                  image: section.settings.mobile_image,
+                  alt: section.settings.image.alt,
+                  additional_classes: 'hide medium-down--show'
                 %}
               {% else %}
                 {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
@@ -40,6 +46,15 @@
             {% if section.settings.text != blank %}
               <div class="description">{{ section.settings.text }}</div>
             {% endif %}
+            <div class="buttons">
+              <h3>{{section.settings.button_heading}}</h3>
+              {% if section.settings.button_1_title != blank %}
+                <a class="button blue" href="{{section.settings.button_1_link}}">{{section.settings.button_1_title}}</a>
+              {% endif %}
+              {% if section.settings.button_2_title != blank %}
+                <a class="button pink {% if section.settings.button_2_link contains '#' %}modal-btn{% endif %}" {% if section.settings.button_2_link contains '#' %}data-fancybox href="javascript:;"  data-src="{{section.settings.button_2_link}}" {% else %}href="{{section.settings.button_2_link}}"{% endif %}>{{section.settings.button_2_title}}</a>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
@@ -92,20 +107,35 @@
             {% for article in blog.articles %}
               <div class="one-third medium-down--one-whole column blog-item">
                 <div class="image">
-                  {% include 'image-element' with 
-                    image: article.image,
-                    alt: article.title
-                  %}
+                  <a href="{{article.url}}">
+                    {% include 'image-element' with 
+                      image: article.image,
+                      alt: article.title
+                    %}
+                  </a>
                 </div>
                 <div class="info">
-                  <h2 class="article_title capitalize">{{article.title}}</h2>
+                  <h2><a  class="article_title capitalize" href="{{article.url}}">{{article.title}}</a></h2>
                   {{article.content | strip_html | truncatewords: 15, '...'}}
-                  <a class="uppercase bold" href="{{article.url}}">Read more</a>
+                  <a class="uppercase bold read_more" href="{{article.url}}">Read more</a>
                 </div>
               </div>
             {% endfor %}
           </div>
         {% endcapture %}
+        <div class="breadcrumb breadcrumb-pagination-wrapper is-flex {% if section.settings.blog_breadcrumb and section.settings.blog_pagination == blank %}is-justify-left{% elsif section.settings.blog_breadcrumb == blank and section.settings.blog_pagination %}is-justify-right{% else %}is-justify-space-between{% endif %} one-whole column">
+          <div class="breadcrumb_text">
+            <a href="{{ routes.root_url }}" title="{{ shop.name | escape }}">
+              <span>{{ 'general.breadcrumbs.home' | t }}</span>
+            </a>&nbsp;<span class="icon-slash">/</span>
+            <a href="/pages/blogs">
+              <span>Help Information</span>
+            </a>&nbsp;<span class="icon-slash">/</span>
+            <a href="{{ blog.url }}" title="{{ blog.title | escape }}">
+              <span>{{ blog.title }}</span>
+            </a>
+        </div>
+      </div>
       {% if section.settings.alert_message != blank %}
         <div class="alert one-whole medium-down--one-whole column flex is-justify-center is-align-center gap has-padding">
           {% include 'icon-pack' with icon:"exclamation" %}
@@ -178,6 +208,11 @@
         "info": "1024 x 1024px recommended"
       },
       {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "Mobile image"
+      },
+      {
         "type": "select",
         "id": "image_crop",
         "label": "Image cropping",
@@ -213,6 +248,31 @@
         "id": "text",
         "label": "Text",
         "default": "<p>Promotion description appears here.</p>"
+      },
+      {
+        "type": "text",
+        "id": "button_heading",
+        "label": "Text"
+      },
+      {
+        "type": "url",
+        "id": "button_1_link",
+        "label": "Button link 1"
+      },
+      {
+        "type": "text",
+        "id": "button_1_title",
+        "label": "Button title 1"
+      },
+      {
+        "type": "url",
+        "id": "button_2_link",
+        "label": "Button link 2"
+      },
+      {
+        "type": "text",
+        "id": "button_2_title",
+        "label": "Button title 2"
       },
       {
         "type": "header",

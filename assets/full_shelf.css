@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'Amazone BT';
+  font-family: "Amazone BT";
   src: url('AmazoneBT-Regular.eot');
   src: url('AmazoneBT-Regular.eot') format('embedded-opentype'),
       url('AmazoneBT-Regular.woff2') format('woff2'),
@@ -37,19 +37,23 @@ aside .order-summary-toggle{
 }
 
 aside .order-summary-toggle__icon{
-  fill: white;
+  fill: white!important;
 }
 
 aside .order-summary-toggle__text span{
-  color: white;
+  color: white!important;
 }
 
 aside .order-summary-toggle__text svg{
-  fill: white;
+  fill: white!important;
+}
+
+.product__description__property {
+  display: none!important;
 }
 
 aside .order-summary-toggle__total-recap dd .order-summary__emphasis{
-  color: white;
+  color: white!important;
 }
 .step__footer .step__footer__continue-btn{
   border-radius: 0;
@@ -59,4 +63,32 @@ aside .order-summary-toggle__total-recap dd .order-summary__emphasis{
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 1.78px;
+}
+.anyflexbox .breadcrumb__item a, .anyflexbox .breadcrumb__item span{
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.anyflexbox .breadcrumb__item.breadcrumb__item--current span, .anyflexbox .breadcrumb__item.breadcrumb__item--completed a{
+  color: #c0218d;
+}
+.step__footer__previous-link {
+  display: flex;
+  align-items: center;
+}
+.step__footer__previous-link span{
+  text-decoration: underline;
+}
+.step__footer__previous-link::before{
+  content: " ";
+  background-image: url(icoarrow_left.svg);
+  width: 50px;
+  height: 50px;
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.step__footer__previous-link svg{
+    display: none;
 }

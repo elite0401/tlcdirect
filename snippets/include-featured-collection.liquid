@@ -14,7 +14,10 @@
 
 {% comment %} Content settings {% endcomment %}
 {%- assign title = object.settings.title | escape -%}
-{%- assign collection = collections[object.settings.collection] -%}
+{% if collection == blank %}
+  {%- assign collection = collections[object.settings.collection] -%}
+{% endif %}
+
 {% comment %} End content settings {% endcomment %}
 
 {% comment %} Advanced {% endcomment %}

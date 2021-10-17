@@ -1,5 +1,16 @@
+{% if article != blank %}
+    {% assign email_product = all_products[article.metafields.global.email_product] %}
+{% elsif page.id != blank %}
+    {% assign email_product = all_products[page.metafields.global.email_product] %}
+{% elsif product != blank %}
+    {% assign email_product = product %}
+{% endif %}
+
+{% if email_product != blank %}
 <a data-fancybox href="javascript:;" class="capitalize modal-btn" data-src="#email_friend"> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
-<div class="email_friend js-popup" id="email_friend">
+{% endif %}
+
+<div class="email_friend js-popup" id="email_friend" style="display: none;">
     <div class="heading">
         <h2 class="text-center">{{settings.email_title}}</h2>
     </div>
@@ -8,7 +19,6 @@
             {formbuilder:49115}
         </div>
         <div class="image">
-            {% assign email_product = all_products[settings.email_product] %}
             {% render 'image-element' with 
                 image: email_product.featured_image,
                 alt: email_product.featured_image.alt,
@@ -16,5 +26,4 @@
             <p>{{email_product.title}}</p>
         </div>
     </div>
-
 </div>

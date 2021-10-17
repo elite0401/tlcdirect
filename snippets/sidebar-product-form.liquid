@@ -22,6 +22,7 @@
   {% endif %}
 {% endfor %}
 
+
 <div class="product_form init smart-payment-button--{{ show_payment_button }} {% if product.variants.size > 1 or product.options.size > 1 %}product_form_options{% endif %} product_form--{{ settings.product_form_style }}"
       id="product-form-{{ product.id }}"
       data-product-form
@@ -38,7 +39,12 @@
       >
   {% form 'product', product %}
 
-  
+  {% if template contains 'collection' %}
+  <div class="wishlist">
+    {% include 'swym-product-view', product: product %}
+    <a data-swaction="addToWishlist" data-product-id="{{product.id | json}}" class="wishlist_btn"> {% include 'icon-wishlist' %} #{{ variant.sku | split: " " | first }}</a>
+  </div>
+  {% endif %}
 
   {% if product.metafields.global.color_product != blank %}
   <div class="color_links">
@@ -70,6 +76,18 @@
     </div>
   {% else %}
     <input type="hidden" name="id" value="{{ variant.id }}" />
+  {% endif %}
+
+  {% if settings.product_form_style == "swatches" and product.variants.size > 1 or settings.product_form_style == "swatches" and product.options[0] != "Title" %}
+    <div class="swatch_options">
+      {% for option in product.options %} 
+        {% include 'sidebar-product-swatch',
+                option: option,
+                selected_variant: variant,
+                product: product
+        %}
+      {% endfor %}
+    </div>
   {% endif %}
 
   <div id="hulkapps_custom_options_{{ product.id }}"> </div>
@@ -110,9 +128,18 @@
       {% elsif settings.cart_action == 'redirect_checkout' %}
         <input type="hidden" name="return_to" value="{{ checkout_url }}" />
       {% endif %}
-
+      {% assign tag_string = '' %}
+      {% assign cls = 'one-whole' %}
+      {% for tag in product.tags %}
+        {% assign tag_string = tag | downcase %}
+        {% assign tag_string = tag_string | append: tag_string %}
+      {% endfor %}
+      {% if tag_string contains 'wigs' %}
+        {% assign cls = 'one-half' %}
+        <a data-fancybox href="javascript:;" class="button blue modal-btn {{cls}} medium-down--one-whole" data-src="#quiz-popup">Help me choose</a>
+      {% endif %}
       {% capture add_to_cart_label %}{% if collection_handles contains 'pre-order' %}{{ 'collections.general.pre_order' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}{% endcapture %}
-      <button type="{% if settings.cart_action == 'ajax' %}button{% else %}submit{% endif %}" name="add" class="{% if settings.cart_action == 'ajax' %} ajax-submit {% endif %}action_button add_to_cart {% if show_payment_button %} action_button--secondary {% endif %} {% if variant.available == false %}disabled{% endif %}" data-label={{ add_to_cart_label | json }}>
+      <button type="{% if settings.cart_action == 'ajax' %}button{% else %}submit{% endif %}" name="add" class="{% if settings.cart_action == 'ajax' %} ajax-submit {% endif %} {{cls}} medium-down--one-whole action_button add_to_cart button {% if variant.available == false %}disabled{% endif %}" data-label={{ add_to_cart_label | json }}>
         <span class="text">
           {% if variant.available %}{{ add_to_cart_label }}{% else %}{{ settings.sold_out_text }}{% endif %}
         </span>
