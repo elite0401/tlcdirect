@@ -8,7 +8,9 @@
             reCaptcha : {
                 siteKey : ''
             },
-            hideWaterMark : false
+            hideWaterMark : false,
+            encryptionFormId : false,
+            copyright: 'Powered by Globo <a href="https://apps.shopify.com/form-builder-contact-form" target="_blank">Form</a>'
         },
         pricing:{
             features:{
@@ -19,8 +21,9 @@
             }
         },
         configuration: {
-            money_format:  "{{ shop.money_format }}"
-        }
+            money_format:  "{{ shop.money_format | replace: '"', "'" }}"
+        },
+        encryption_form_id : false
     };
     Globo.FormBuilder.forms = [];
 

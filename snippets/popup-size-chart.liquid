@@ -33,4 +33,21 @@
         </div>
       </div>
     {% endif %}
+
+
+    {% if settings.size_wig_chart != blank %}
+      <div class="js-sizechart-lightbox" id="size-wig-chart" style="display: none">
+        <div id="printable-content" class="size-chart-wrap">
+        {{ pages[settings.size_wig_chart].content | replace: 'src', 'data-src' | replace: 'img', 'img height="500" data-sizes="auto" width="500"  class="lazyload" srcset=""' }}
+        </div>
+        <div class="bottom">
+          <div class="actions">
+            <a  onclick="printDiv('printable-content')" class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
+            {% render 'popup-email' %}
+          </div>
+          <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
+        </div>
+      </div>
+    {% endif %}
+  
   

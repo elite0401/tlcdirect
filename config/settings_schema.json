@@ -1518,6 +1518,17 @@
         "label": "Choosing Bra content"
       },
       {
+        "type": "page",
+        "id": "size_wig_chart",
+        "label": "Size Wig chart",
+        "info": "[Learn more](https:\/\/help.outofthesandbox.com\/hc\/en-us\/articles\/115006910707-Using-the-Size-Chart-Sections-themes-)"
+      },
+      {
+        "type": "page",
+        "id": "choose_wig_chart",
+        "label": "Choosing Wig content"
+      },
+      {
         "type": "header",
         "content": "Reviews"
       },

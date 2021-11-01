@@ -1438,12 +1438,14 @@ var quickShop = {
             feat_img: data.featured_image,
             image_array: images,
             collection_handles: "",
+            custom_message: $thumbnail.data("message"),
             money_format: $('body').data('money-format')
           }
+          console.log(productData);
           var $sidebar = $thumbnail.parent().find('.js-quickshop-sidebar__container').find('.js-product_sidebar');
 
           //Find current product and notify forms
-          var $notifyForm = $thumbnail.next('.js-quickshop-forms__container').find('.notify_form');
+          var $notifyForm = $thumbnail.next('.js-quickshop-forms__container').find('.notify_form .contact-form');
           var $productForm = $thumbnail.next('.js-quickshop-forms__container').find('.product_form');
           if (productData) {
             $.fancybox.open($('.js-quick-shop'), {
@@ -1502,12 +1504,13 @@ var quickShop = {
         image_array: quickShop.createImageObjects($(this).data('images')),
         collection_handles: $(this).data('collection-handles').trim(',').split(','),
         money_format: $('body').data('money-format'),
-        variant_id: $(this).data('variant_id')
+        variant_id: $(this).data('variant_id'),
+        custom_message: $(this).data('message')
       }
       var $sidebar = null;
 
       //Find current product and notify forms
-      var $notifyForm = $(this).next('.js-quickshop-forms__container').find('.notify_form');
+      var $notifyForm = $(this).next('.js-quickshop-forms__container').find('.notify_form .contact-form');
       var $productForm = $(this).next('.js-quickshop-forms__container').find('.product_form');
       quickShop.beforeOpen(btl_productData);
       quickShop.afterContent($productForm, $notifyForm, $sidebar, btl_productData);
@@ -1632,7 +1635,7 @@ var quickShop = {
         quickShop.updateVariant(currentVariant);
       }
     });
-
+    $('.js-custom_message').html(productData.custom_message);
     utils.initializeTabs();
 
     // productPage.productSwatches();
@@ -1657,7 +1660,7 @@ var quickShop = {
     } else {
       $carousel.find('.gallery-cell').remove();
     }
-    var $insertedNotifyForm = $('.quick-shop__lightbox .js-product_section .js-notify-form .notify_form');
+    var $insertedNotifyForm = $('.quick-shop__lightbox .js-product_section .js-notify-form .notify_form .contact-form');
     var $insertedProductForm = $('.quick-shop__lightbox .js-product_section .js-product-form .product_form');
     var $sidebar_form = $(`.js-quick-shop .sidebar-form.js-quickshop-forms--${$('.js-quick-shop .quick-shop--content').attr('data-product-id')}`)
     $sidebar_form.append($insertedProductForm);
@@ -1670,17 +1673,17 @@ var quickShop = {
   beforeClose: function(productData) {
 
     if ($(`.js-quick-shop .sidebar-form.js-quickshop-forms--${productData.product_id} .product_form`).length > 0) {
-      var $insertedNotifyForm = $('.quick-shop__lightbox .js-product_section .js-notify-form .notify_form');
+      var $insertedNotifyForm = $('.quick-shop__lightbox .js-product_section .js-notify-form .notify_form .contact-form');
       var $insertedProductForm = $('.quick-shop__lightbox .js-product_section .js-product-form .product_form');
       var $sidebar_form = $(`.js-quick-shop .sidebar-form.js-quickshop-forms--${$('.js-quick-shop .quick-shop--content').attr('data-product-id')}`)
       $sidebar_form.append($insertedProductForm);
       $sidebar_form.append($insertedNotifyForm);
       $('.quick-shop__lightbox .js-product_section .js-product-form').empty();
       $('.quick-shop__lightbox .js-product_section .js-notify-form').empty();
-      var $insertedNotifyForm = $(`.js-quick-shop .sidebar-form.js-quickshop-forms--${productData.product_id} .notify_form`);
+      var $insertedNotifyForm = $(`.js-quick-shop .sidebar-form.js-quickshop-forms--${productData.product_id} .notify_form .contact-form`);
       var $insertedProductForm = $(`.js-quick-shop .sidebar-form.js-quickshop-forms--${productData.product_id} .product_form`);
     } else {
-      var $insertedNotifyForm = $('.quick-shop__lightbox .js-product_section .notify_form');
+      var $insertedNotifyForm = $('.quick-shop__lightbox .js-product_section .notify_form .contact-form');
       var $insertedProductForm = $('.quick-shop__lightbox .js-product_section .product_form');
     }
     
@@ -1691,7 +1694,7 @@ var quickShop = {
     $('.js-quickshop-forms--'+ productData.product_id).append($insertedNotifyForm);
     $('.js-quickshop-sidebar--'+ productData.product_id).append($insertedSidebar);
     $('.js-quickshop-forms--'+ productData.product_id +' .product_form').addClass('viewed');
-    $('.js-quickshop-forms--'+ productData.product_id +' .notify_form').addClass('viewed');
+    $('.js-quickshop-forms--'+ productData.product_id +' .notify_form .contact-form').addClass('viewed');
 
     //Find gallery and carousel
     var $gallery = $('.js-gallery-modal');

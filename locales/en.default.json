@@ -173,6 +173,8 @@
       "tags": "Category",
       "size_chart": "Size Guide",
       "choose_chart": "Choosing a BRA",
+      "size_wig_chart": "Size Guide",
+      "choose_wig_chart": "Choosing a WIG",
       "savings": "You Save",
       "products_tagged": "Products tagged {{ tag }}",
       "items_left_count": {

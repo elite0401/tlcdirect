@@ -33,3 +33,20 @@
         </div>
       </div>
     {% endif %}
+
+
+
+    {% if settings.choose_wig_chart != blank %}
+      <div class="js-sizechart-lightbox" style="display: none">
+        <div id="choose-wig-chart"  class="size-chart-wrap">
+          {{ pages[settings.choose_wig_chart].content | replace: 'src', 'data-src' | replace: 'img', 'img height="500" data-sizes="auto" width="500"  class="lazyload" srcset=""' }}
+        </div>
+        <div class="bottom">
+          <div class="actions">
+            <a  onclick="printDiv('choose-wig-chart')" class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
+            {% render 'popup-email' %}
+          </div>
+          <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
+        </div>
+      </div>
+    {% endif %}

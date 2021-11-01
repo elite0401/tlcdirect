@@ -1,5 +1,5 @@
 {% if settings.notify_me_form %}
-  <div class="notify_form notify-form-{{ product.id }}" id="notify-form-{{ product.id }}" {% if product.available %}style="display:none"{% endif %}>
+  <div class="notify_form notify-form-{{ product.id }}" id="notify-form-{{ product.id }}">
     <p class="message"></p>
     {% form 'contact', id: "notify_me" %}
       {% if form.errors %}

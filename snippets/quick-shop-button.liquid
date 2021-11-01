@@ -2,7 +2,7 @@
 {% assign collection_handles = product.collections | map: 'handle' %}
 <span class="quick_shop ss-icon js-quick-shop-link"
       data-id="{{ product.id }}" 
-      data-custom-message="{{product.metafields.global.custom_message}}"
+      data-message="{{product.metafields.global.custom_message}}"
       data-handle="{{ product.handle }}">
   {{ 'collections.general.quick_shop' | t }}
 </span>
@@ -89,7 +89,7 @@
             data-images="{{ image_paths_alts }}"
             data-collection-handles="{{ collection_handles | join: ','}}" 
             data-variant_id="{{variant.id}}",
-            data-custom-message={{r_product.metafields.global.custom_message}}
+            data-message={{r_product.metafields.global.custom_message}}
           >
             {% render 'image-element' with
               image: image,

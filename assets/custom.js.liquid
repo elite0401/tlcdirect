@@ -7,7 +7,48 @@ $(document).ready(function() {
     wrapAround: true
   });
 
+  $(document).on('click', '.email_friend_btn', function (e) {
+    e.preventDefault();
+    var email_product_data = {
+      "image": $(this).data('product_image'),
+      "title": $(this).data('product_title'),
+      "price": $(this).data('product_price'),
+      "description": $(this).data('product_description'),
+      "link": $(this).data('product_link')
+    }
+    console.log(email_product_data)
+    $.fancybox.open($('#email_friend'), {
+      hash: false,
+      infobar : false,
+      toolbar: false,
+      loop: false,
+      smallBtn : true,
+      video: {
+        autoStart: false
+      },
+      touch: false,
+      mobile: {
+        preventCaptionOverlap: false,
+        toolbar: true,
+        buttons: [
+          "close"
+        ]
+      },
+      afterLoad: function(){
+        var html = `${email_product_data.image}//split//${email_product_data.title}//split//${email_product_data.price}//split//${email_product_data.link}//split//${email_product_data.description}`;
+        console.log(html)
+        console.log($('.fancybox-content').find('#49115-textarea-2'));
+        $(document).find('.fancybox-content textarea#49115-textarea-2.flat-input').val(html);
+        $(document).find('.fancybox-content textarea#49115-textarea-2.flat-input').parent().hide()
+      },
+      afterShow: function(){
 
+      },
+      beforeClose: function(){
+
+      }
+    })
+  })
   $(document).on('click', '.email_friend .content .form .globo-form-app form .footer .description p', function (e) {
     e.preventDefault();
     $.fancybox.close();

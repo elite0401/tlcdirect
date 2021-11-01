@@ -23,26 +23,18 @@ Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
 <div class="swatch is-flex is-flex-wrap" data-option-index="{{ option_index }}">
   <div class="option_title">{{ swatch }} 
     {%- assign product_tags = product.tags | join: ' ' -%}
-    {% if settings.size_title == swatch and product_tags contains 'size-guide' %}
-      
-      {% if product_tags contains 'meta-size-chart-' or product_tags contains 'meta-choose-chart-' %}
-        {% for tag in product.tags %}
-          {% if tag contains 'meta-size-chart-' %}
-            <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart{{product.id}}" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }}</a>
-            {% render 'popup-size-chart', product_id: product.id %}
-          {% endif %}
-          {% if tag contains 'meta-choose-chart-' %}
-            <a href="javascript:;" class="size_chart" data-fancybox data-src="#choose-chart{{product.id}}" data-type="inline" data-no-instant>{{ 'products.product.choose_chart' | t }}</a>
-            {% render 'popup-choose-chart', product_id: product.id %}
-          {% endif %}
-        {% endfor %}
-        {% else %} 
-          {%if settings.size_chart != blank %}
-            <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }}</a>
-          {% endif %}
-          {% if settings.choose_chart != blank %}
-            <a href="javascript:;" class="size_chart" data-fancybox data-src="#choose-chart" data-type="inline" data-no-instant>{{ 'products.product.choose_chart' | t }}</a>
-          {% endif %}
+    {% if settings.size_title == swatch %}
+      {%if settings.size_chart != blank and product_tags contains 'size-guide' %}
+        <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }}</a>
+      {% endif %}
+      {% if settings.choose_chart != blank and product_tags contains 'size-guide' %}
+        <a href="javascript:;" class="size_chart" data-fancybox data-src="#choose-chart" data-type="inline" data-no-instant>{{ 'products.product.choose_chart' | t }}</a>
+      {% endif %}
+      {%if settings.size_wig_chart != blank and product_tags contains 'size-wig-guide' %}
+        <a href="javascript:;" class="size_chart" data-fancybox data-src="#size_wig_chart" data-type="inline" data-no-instant>{{ 'products.product.size_wig_chart' | t }}</a>
+      {% endif %}
+      {% if settings.choose_wig_chart != blank and product_tags contains 'size-wig-guide' %}
+        <a href="javascript:;" class="size_chart" data-fancybox data-src="#choose-wig-chart" data-type="inline" data-no-instant>{{ 'products.product.choose_wig_chart' | t }}</a>
       {% endif %}
     {% endif %} 
   </div>

@@ -37,11 +37,9 @@
       <div class="giftcard__border{% if gift_card.expired or gift_card.enabled != true %} disabled{% endif %}">
         <div class="giftcard__content">
 
-          <div class="giftcard__wrap">
+          <div class="giftcard__wrap {% if section.settings.image == blank %}no-banner{% endif %}">
             {% if section.settings.image != blank %}
             <img src="{{ section.settings.image | img_url: '2048x' }}" alt="{{ 'gift_cards.issued.subtext' | t }}">
-            {% else %}
-            <img src="{{ 'gift-card/card.jpg' | shopify_asset_url }}" alt="{{ 'gift_cards.issued.subtext' | t }}">
             {% endif %}
             
 
@@ -55,23 +53,27 @@
               <strong>{{ formatted_initial_value }}</strong>
               <hr>
               <p>gift certificates</p>
-            </div>
-
-            
-            {%- comment -%}
-            {% assign code_size = gift_card.code | format_code | size %}
-            <div class="giftcard__code{% if code_size <= 25 %} giftcard__code--large{% elsif code_size > 25 and code_size <= 30 %} giftcard__code--medium{% else %} giftcard__code--small{% endif %}" onclick="selectText('GiftCardDigits');">
-              <div class="giftcard__code__inner">
-                <strong class="giftcard__code__text" id="GiftCardDigits">{{ gift_card.code | format_code }}</strong>
+              {% assign code_size = gift_card.code | format_code | size %}
+              <div class="giftcard__code{% if code_size <= 25 %} giftcard__code--large{% elsif code_size > 25 and code_size <= 30 %} giftcard__code--medium{% else %} giftcard__code--small{% endif %}" onclick="selectText('GiftCardDigits');">
+                <div class="giftcard__code__inner">
+                  <strong class="giftcard__code__text" id="GiftCardDigits">{{ gift_card.code | format_code }}</strong>
+                </div>
               </div>
             </div>
-            {%- endcomment -%}
+
           </div>
 
           <p class="giftcard__instructions">
             {{ 'gift_cards.issued.redeem' | t }}
           </p>
-
+          <div id="QrCode"></div>
+          <script>
+            new QRCode(document.getElementById('QrCode'), {
+              text: "{{ gift_card.qr_identifier }}",
+              width: 120,
+              height: 120
+            });
+          </script>
 
         </div>
       </div>

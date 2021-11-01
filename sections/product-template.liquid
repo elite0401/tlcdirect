@@ -150,7 +150,10 @@
                   context: 'product',
                   collection_handles: collection_handles
           %}
-          {% include 'product-notify-me', product: product %}
+          {%- comment -%}
+           {% include 'product-notify-me', product: product %}
+          {%- endcomment -%}
+         
         {% endunless %}
         {% if template contains 'product' %}
         <div class="bottom-content">

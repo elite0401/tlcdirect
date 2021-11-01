@@ -63,10 +63,13 @@
       <div class="promo-banner__content">
         {{ section.settings.promo_text }}
       </div>
-      <div class="promo-banner__close"></div>
     </div>
   {% endif %}
-
+  <div class="phone-number">
+    <div class="flex gap" style="height: 40px;">
+      {% include 'icon-pack' with icon: 'phone-white' %}&nbsp;We are here to help&nbsp;{{ section.settings.phone_number }}
+    </div>
+  </div>
   <div class="top-bar">
     <div class="side-icon">
       {% include 'icon-pack' with icon: 'side-logo' %}
@@ -98,11 +101,14 @@
       {% endif %}
     </div>
   </div>
+  {%- comment -%}
   <div class="top_menu--bar">
     <ul>
       {% include 'menu' linklist: section.settings.main_linklist %}
     </ul>
   </div>
+  {%- endcomment -%}
+  
   
 
   <div class="dropdown_container" data-dropdown="mobile_menu">
@@ -197,7 +203,6 @@
         <div class="promo-banner__content">
           {{ section.settings.promo_text }}
         </div>
-        <div class="promo-banner__close"></div>
       </div>
     {% endif %}
 
@@ -221,10 +226,10 @@
       <div class="top-bar--right-menu">
         <ul class="menu">
           <li>
-            <a href="/pages/catalog-request-single" class="flex gap capitalize">{% include 'icon-pack' with icon: 'request-icon' %}Request a Catalog</a>
+            <a href="/pages/catalog-request-single" class="flex capitalize">{% include 'icon-pack' with icon: 'request-icon' %}Request a Catalog</a>
           </li>
           <li>
-            <a class="flex gap capitalize" href="{{ routes.account_url }}">{% include 'icon-pack' with icon: 'account-icon' %}Account</a>
+            <a class="flex capitalize" href="{{ routes.account_url }}">{% include 'icon-pack' with icon: 'account-icon' %}Account</a>
           </li>
           {% if locale_selector or currency_selector %}
             <li class="localization-wrap">
@@ -308,6 +313,15 @@
         <div class="side-icon">
           {% include 'icon-pack' with icon: 'side-logo' %}
         </div>
+        
+        {% if section.settings.phone_number != blank %}
+          <div class="phone">
+            <div class="flex gap" style="height: 40px;">
+              {% include 'icon-pack' with icon: 'phone-blue' %} We are here to help {{ section.settings.phone_number }}
+            </div>
+          </div>
+        {% endif %}
+        
         {% if section.settings.menu_position == 'inline' %}
           {% if section.settings.logo_position == 'left' %}
             {{ logo }}

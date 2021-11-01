@@ -7,7 +7,13 @@
 {% endif %}
 
 {% if email_product != blank %}
-<a data-fancybox href="javascript:;" class="capitalize modal-btn" data-src="#email_friend"> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
+<a class="capitalize modal-btn email_friend_btn" data-src="#email_friend"
+    data-product_image="{{email_product.featured_image | img_url: '500x'}}" 
+    data-product_title="{{email_product.title}}" 
+    data-product_price="{{email_product.first_available_variant.price | money}}" 
+    data-product_description="{{email_product.description | strip_html}}" 
+    data-product_link="{{email_product.url | prepend: shop.url}}"
+> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
 {% endif %}
 
 <div class="email_friend js-popup" id="email_friend" style="display: none;">

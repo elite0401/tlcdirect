@@ -31,11 +31,23 @@
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.css"></noscript>
     <!-- Stylesheets for Turbo "6.1.2" -->
+    {{'styles.css' | asset_url | stylesheet_tag }}
+    {{ 'custom.min.css' | asset_url | stylesheet_tag }} 
+    
+    {%- comment -%}
     <link rel="preload" href="{{ 'styles.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{{ 'styles.css' | asset_url }}"></noscript>
-
+    {%- endcomment -%}
+    
+    {%- comment -%}
     <link rel="preload" href="{{ 'custom.scss.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{{ 'custom.scss.css' | asset_url }}"></noscript>
+    {%- endcomment -%}
+    
+    {%- comment -%}
+    <link rel="preload" href="{{ 'custom.min.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ 'custom.min.css' | asset_url }}"></noscript>
+    {%- endcomment -%}
     
     <script>
       window.lazySizesConfig = window.lazySizesConfig || {};
@@ -85,9 +97,13 @@
     {% render 'social-meta-info' %}
     {% if collection.previous_product %}<link rel="prev" href="{{ collection.previous_product }}">{% endif %}
     {% if collection.next_product %}<link rel="next" href="{{ collection.next_product }}">{% endif %}
-  {% include 'hulkcode_common' %}{% if template contains 'product' or template contains 'cart' %}<script src='https://ha-product-option.nyc3.digitaloceanspaces.com/assets/api/v2/hulkcode.js' defer='defer'></script>{% endif %}  {% include 'qikify-contactform' %}
+    {% include 'hulkcode_common' %}
+    {% if template contains 'product' or template contains 'cart' %}
+      <script src='https://ha-product-option.nyc3.digitaloceanspaces.com/assets/api/v2/hulkcode.js' defer='defer'></script>
+    {% endif %}  
+    {% include 'qikify-contactform' %}
 
-{% include 'globo.formbuilder.scripts' %}
+    {% include 'globo.formbuilder.scripts' %}
 </head>
 
   {% if template contains "index" %}

@@ -3868,11 +3868,11 @@ body.is-active #header {
 }
 {%- if settings.transparent_header -%}
 .menu .vertical-menu_submenu {
-    background: {{ settings.header_bg_color | color_modify: 'alpha', 0.9 }};
+    background: rgba(255, 255, 255, 0.9);
   }
 {%- else -%}
 .menu .vertical-menu_submenu {
-    background: {{ settings.header_bg_color }};
+    background: white;
   }
 {%- endif -%}
 .menu .vertical-menu_submenu li {
@@ -11240,7 +11240,7 @@ h4 span,
 
   .mobile_nav-fixed--true.promo-banner--show #pagecontent {
     display: block;
-    margin-top: 142px;
+    margin-top: 130px;
   }
 
   .index-sections .under-menu:nth-child(1) {
@@ -12860,7 +12860,7 @@ http://flickity.metafizzy.co
 
 .flickity-prev-next-button {
   position: absolute;
-  top: 50%;
+  top: calc(50% - 50px);
   width: 44px;
   height: 44px;
   border: none;
@@ -14134,9 +14134,18 @@ div.collection_title_tags {
     width: 50%;
     height: auto;
     color: {{ settings.logo_color }};
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  }
+
+  #header .top-bar a.mobile_logo p{
+    font-size: 18px;
+    line-height: 9px;
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  #header .top-bar a.mobile_logo p strong{
+    font-size: 38px;
+    font-style: italic;
   }
 
   #header a.mobile_logo img {
@@ -17291,3 +17300,13 @@ input[type=button].highlight-false--dark:hover {
 */
 /* #Custom Styles
 ================================================== */
+
+@media screen and (max-width: 1220px) {
+  .sticky_nav .main-nav .nav .menu li{
+    padding-right: 10px!important;
+  }
+}
+
+.fancybox-content textarea#49115-textarea-2.flat-input{
+  display: none!important;
+}

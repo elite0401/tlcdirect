@@ -23,9 +23,23 @@ max_height: <number>
     {%- endcapture -%}
   {% elsif extra_status %}
     {%- capture srcset -%}
-    {{ image | img_url: '600x'}} 600w,
-    {{ image | img_url: '400x'}} 1400w,
-    {{ image | img_url: '400x'}} 800w
+      {{ image | img_url: '400x'}} 1000w,
+      {{ image | img_url: '400x'}} 800w,
+      {{ image | img_url: '400x'}} 200w
+    {%- endcapture -%}
+  {% elsif large_status %}
+    {%- capture srcset -%}
+      {{ image | img_url: '5000x'}} 5000w,
+      {{ image | img_url: '4500x'}} 4500w,
+      {{ image | img_url: '4000x'}} 4000w,
+      {{ image | img_url: '3500x'}} 3500w,
+      {{ image | img_url: '3000x'}} 3000w,
+      {{ image | img_url: '2500x'}} 2500w,
+      {{ image | img_url: '2000x'}} 2000w,
+      {{ image | img_url: '1800x'}} 1800w,
+      {{ image | img_url: '1600x'}} 1600w,
+      {{ image | img_url: '1400x'}} 1400w,
+      {{ image | img_url: '1200x'}} 1200w
     {%- endcapture -%}
   {% else %}
     {%- capture srcset -%}
@@ -44,7 +58,7 @@ max_height: <number>
       {{ image | img_url: '800x'}} 800w,
       {{ image | img_url: '600x'}} 600w,
       {{ image | img_url: '400x'}} 400w,
-      {{ image | img_url: '200x'}} 200w
+      {{ image | img_url: '400x'}} 200w
     {%- endcapture -%}
   {% endif %}
   
@@ -57,8 +71,23 @@ max_height: <number>
     {%- endcapture -%}
   {% elsif extra_status %}
     {%- capture srcset -%}
-      {{ image | img_url: '400x'}} 1400w,
-      {{ image | img_url: '400x'}} 800w
+      {{ image | img_url: '400x'}} 1000w,
+      {{ image | img_url: '400x'}} 800w,
+      {{ image | img_url: '400x'}} 200w
+    {%- endcapture -%}
+  {% elsif large_status %}
+    {%- capture srcset -%}
+      {{ image | img_url: '5000x'}} 5000w,
+      {{ image | img_url: '4500x'}} 4500w,
+      {{ image | img_url: '4000x'}} 4000w,
+      {{ image | img_url: '3500x'}} 3500w,
+      {{ image | img_url: '3000x'}} 3000w,
+      {{ image | img_url: '2500x'}} 2500w,
+      {{ image | img_url: '2000x'}} 2000w,
+      {{ image | img_url: '1800x'}} 1800w,
+      {{ image | img_url: '1600x'}} 1600w,
+      {{ image | img_url: '1400x'}} 1400w,
+      {{ image | img_url: '1200x'}} 1200w
     {%- endcapture -%}
   {% else %}
     {%- capture srcset -%}
