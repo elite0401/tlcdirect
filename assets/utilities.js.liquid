@@ -816,7 +816,7 @@ var searchAutocomplete = {
 
       input.attr('autocomplete', 'off').on('input', function() {
         clearTimeout(searchAutocomplete.vars.displayTimer);
-        if ($(this).val().length > 2) {
+        if ($(this).val().length > 3) {
           searchAutocomplete.vars.term = $(this).val();
           searchAutocomplete.getResults(searchAutocomplete.vars.term, $this);
         } else {
@@ -840,7 +840,7 @@ var searchAutocomplete = {
         "limit": Shopify.theme_settings.search_items_to_display,
         "options": {
           "unavailable_products": "last",
-          "fields": "title,body,variants.title,vendor,product_type,tag,variants.sku"
+          "fields": "title,variants.sku"
         }
       }
     }).done(function(response) {
@@ -1404,119 +1404,123 @@ var quickShop = {
   init: function(){
 
     //EVENT - click on quick-shop
-    $('body').on('click', '.js-quick-shop-link', function(e){
-      e.stopImmediatePropagation();
-      e.preventDefault();
-      var $thumbnail = $(this)
-      $.ajax({
-        dataType: "json",
-        async: false,
-        cache: false,
-        url: "/products/" + $(this).data('handle') + ".js",
-        success: function(data) {
-          var data_single_variant = false;
-          if (data.variants == 1) {
-            data_single_variant = true
+    if (Shopify.media_queries.desktop.matches) {
+      console.log("asdfasdf")
+      $('body').on('click', '.js-quick-shop-link', function(e){
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        var $thumbnail = $(this)
+        $.ajax({
+          dataType: "json",
+          async: false,
+          cache: false,
+          url: "/products/" + $(this).data('handle') + ".js",
+          success: function(data) {
+            var data_single_variant = false;
+            if (data.variants == 1) {
+              data_single_variant = true
+            }
+            var images = [];
+            for (let i = 0; i < data.media.length; i++) {
+              var image = {
+                "path": data.media[i].src,
+                "alt": data.media[i].alt,
+                "id": data.media[i].id,
+                "mediaType": data.media[i].media_type
+              };
+              images.push(image);
+            }
+            var productData = {
+              handle: data.handle,
+              product_id: data.id,
+              single_variant: data_single_variant,
+              product_in_collection_url: data.url,
+              escaped_title: data.title.replace('"',""),
+              escaped_vendor: data.vendor.replace(/\&/g,'%26'),
+              feat_img: data.featured_image,
+              image_array: images,
+              collection_handles: "",
+              custom_message: $thumbnail.data("message"),
+              money_format: $('body').data('money-format')
+            }
+            console.log(productData);
+            var $sidebar = $thumbnail.parent().find('.js-quickshop-sidebar__container').find('.js-product_sidebar');
+  
+            //Find current product and notify forms
+            var $notifyForm = $thumbnail.next('.js-quickshop-forms__container').find('.notify_form .contact-form');
+            var $productForm = $thumbnail.next('.js-quickshop-forms__container').find('.product_form');
+            if (productData) {
+              $.fancybox.open($('.js-quick-shop'), {
+                baseClass: 'quick-shop__lightbox product-' + productData.product_id,
+                hash: false,
+                infobar : false,
+                toolbar: false,
+                loop: false,
+                smallBtn : true,
+                video: {
+                  autoStart: false
+                },
+                touch: false,
+                mobile: {
+                  preventCaptionOverlap: false,
+                  toolbar: true,
+                  buttons: [
+                    "close"
+                  ]
+                },
+                beforeLoad: function(){
+                  quickShop.beforeOpen(productData);
+                },
+                afterLoad: function(){
+                  quickShop.afterContent($productForm, $notifyForm, $sidebar, productData);
+                  videoFeature.setupRecommendedVideoPlayer();
+                  productMedia.setupMedia();
+                },
+                afterShow: function(){
+        
+                },
+                beforeClose: function(){
+        
+                  quickShop.beforeClose(productData);
+                }
+              })
+            }
+            
           }
-          var images = [];
-          for (let i = 0; i < data.media.length; i++) {
-            var image = {
-              "path": data.media[i].src,
-              "alt": data.media[i].alt,
-              "id": data.media[i].id,
-              "mediaType": data.media[i].media_type
-            };
-            images.push(image);
-          }
-          var productData = {
-            handle: data.handle,
-            product_id: data.id,
-            single_variant: data_single_variant,
-            product_in_collection_url: data.url,
-            escaped_title: data.title.replace('"',""),
-            escaped_vendor: data.vendor.replace(/\&/g,'%26'),
-            feat_img: data.featured_image,
-            image_array: images,
-            collection_handles: "",
-            custom_message: $thumbnail.data("message"),
-            money_format: $('body').data('money-format')
-          }
-          console.log(productData);
-          var $sidebar = $thumbnail.parent().find('.js-quickshop-sidebar__container').find('.js-product_sidebar');
-
-          //Find current product and notify forms
-          var $notifyForm = $thumbnail.next('.js-quickshop-forms__container').find('.notify_form .contact-form');
-          var $productForm = $thumbnail.next('.js-quickshop-forms__container').find('.product_form');
-          if (productData) {
-            $.fancybox.open($('.js-quick-shop'), {
-              baseClass: 'quick-shop__lightbox product-' + productData.product_id,
-              hash: false,
-              infobar : false,
-              toolbar: false,
-              loop: false,
-              smallBtn : true,
-              video: {
-                autoStart: false
-              },
-              touch: false,
-              mobile: {
-                preventCaptionOverlap: false,
-                toolbar: true,
-                buttons: [
-                  "close"
-                ]
-              },
-              beforeLoad: function(){
-                quickShop.beforeOpen(productData);
-              },
-              afterLoad: function(){
-                quickShop.afterContent($productForm, $notifyForm, $sidebar, productData);
-                videoFeature.setupRecommendedVideoPlayer();
-                productMedia.setupMedia();
-              },
-              afterShow: function(){
-      
-              },
-              beforeClose: function(){
-      
-                quickShop.beforeClose(productData);
-              }
-            })
-          }
-          
-        }
+        });
       });
-    });
-
-    $('body').on('click', '.js-quick-shop .js-product_sidebar .content .js-product-item', function (e) {
-      e.stopImmediatePropagation();
-      e.preventDefault();
-      quickShop.beforeClearContent();
-      //Set productData object based on data attributes
-      var btl_productData = {
-        handle: $(this).data('handle'),
-        product_id: $(this).data('id'),
-        single_variant: $(this).attr('data-single-variant'),
-        product_in_collection_url: $(this).data('url'),
-        escaped_title: $(this).data('title').replace('"',""),
-        escaped_vendor: $(this).data('vendor').replace(/\&/g,'%26'),
-        feat_img: $(this).data('feat-img'),
-        image_array: quickShop.createImageObjects($(this).data('images')),
-        collection_handles: $(this).data('collection-handles').trim(',').split(','),
-        money_format: $('body').data('money-format'),
-        variant_id: $(this).data('variant_id'),
-        custom_message: $(this).data('message')
-      }
-      var $sidebar = null;
-
-      //Find current product and notify forms
-      var $notifyForm = $(this).next('.js-quickshop-forms__container').find('.notify_form .contact-form');
-      var $productForm = $(this).next('.js-quickshop-forms__container').find('.product_form');
-      quickShop.beforeOpen(btl_productData);
-      quickShop.afterContent($productForm, $notifyForm, $sidebar, btl_productData);
-      videoFeature.setupRecommendedVideoPlayer();
-      productMedia.setupMedia();
-    })
+  
+      $('body').on('click', '.js-quick-shop .js-product_sidebar .content .js-product-item', function (e) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        quickShop.beforeClearContent();
+        //Set productData object based on data attributes
+        var btl_productData = {
+          handle: $(this).data('handle'),
+          product_id: $(this).data('id'),
+          single_variant: $(this).attr('data-single-variant'),
+          product_in_collection_url: $(this).data('url'),
+          escaped_title: $(this).data('title').replace('"',""),
+          escaped_vendor: $(this).data('vendor').replace(/\&/g,'%26'),
+          feat_img: $(this).data('feat-img'),
+          image_array: quickShop.createImageObjects($(this).data('images')),
+          collection_handles: $(this).data('collection-handles').trim(',').split(','),
+          money_format: $('body').data('money-format'),
+          variant_id: $(this).data('variant_id'),
+          custom_message: $(this).data('message')
+        }
+        var $sidebar = null;
+  
+        //Find current product and notify forms
+        var $notifyForm = $(this).next('.js-quickshop-forms__container').find('.notify_form .contact-form');
+        var $productForm = $(this).next('.js-quickshop-forms__container').find('.product_form');
+        quickShop.beforeOpen(btl_productData);
+        quickShop.afterContent($productForm, $notifyForm, $sidebar, btl_productData);
+        videoFeature.setupRecommendedVideoPlayer();
+        productMedia.setupMedia();
+      })
+    }
+    
 
     //Swatch toggler
     $('.swatch_options input').each(function(){

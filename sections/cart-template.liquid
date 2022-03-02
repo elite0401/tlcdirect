@@ -51,7 +51,7 @@
                 </div>
                 <div class="cart_content_info cart__item--content">
                   <h3 class="cart__item--title">
-                    <a href="{{ item.url }}">{{ item.product.title }}
+                    <a href="{{ item.url }}">{{ item.product.title }}<span class="ga_cart_upsell" data-productid="{{ item.product_id }}"></span>
                       <span class="saso-cart-item-discount-notes" data-key="{{item.key}}"></span>
                       <span class="saso-cart-item-upsell-notes" data-key="{{item.key}}"></span>
                     </a>
@@ -76,7 +76,7 @@
                   {%- comment -%}
                   {% if item.properties != blank %}
                     <p>
-                      {% for p in item.properties %}
+                      {%- for p in item.properties -%}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}{% if p.first == '_bundle' %}{% continue %}{% endif %}{% if p.first == '__is_bundle_product' %}{% continue %}{% endif %}{% if p.first == '_upsell_bundle' %}{% continue %}{% endif %}
                         {% unless p.last == blank %}
                           {% if p.last contains '/uploads/' %}
                             <div>
@@ -106,6 +106,9 @@
                 {% endif %}
                 <div class="cart__bottom_content medium-down--hide">
                   <div class="bottom">
+                    <script>
+                      console.log({{item | json}})
+                    </script>
                     <div class="product-quantity-box left">
                       <span class="ss-icon product-minus js-change-quantity" data-func="minus">
                         <span class="icon-minus"></span>
@@ -310,21 +313,6 @@
 </section>
 
 {% include 'cart-shipping-calculator' %}
-
-<div class="cart__blocks">
-  {% for block in section.blocks %}
-    <div {{ block.shopify_attributes }} class="block__{{ block.type }} block__{{ block.id }}">
-      {% if block.type == 'featured_collection' %}
-        {% assign item = cart.items | first %}
-        {% assign collection = item.product.collections | first %}
-        {% if collection == blank %}
-          {% assign collection = collections[block.settings.collection] %}
-        {% endif %}
-        {% include 'include-featured-collection', type: 'block', collection: collection %}
-      {% endif %}
-    </div>
-  {% endfor %}
-</div>
 
 {% comment %}Full Shelf app{% endcomment %}
 <script src="{{'full_shelf.js' | asset_url}}" defer></script>

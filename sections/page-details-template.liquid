@@ -127,12 +127,39 @@
     {% endfor %}
   {% endif %}
 </div>
+<style>
+  {% if section.settings.bg_image != blank %}
+  .shopify-section--page-details-template {
+    background: url({{section.settings.bg_image | img_url: '2048x' }});
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 0;
+  }
+  {% else %}
+  .shopify-section--page-details-template {
+    background: linear-gradient(180deg,#fff 0, {{section.settings.bg_color}} 100%);
+    margin-bottom: 0;
+  }
+  {% endif %}
+</style>
 
 {% schema %}
   {
     "name": "Page | details",
     "class": "shopify-section--page-details-template",
     "max_blocks": 20,
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background image"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background color"
+      }
+    ],
     "blocks": [
       {
         "type": "blog_posts",

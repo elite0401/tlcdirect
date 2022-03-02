@@ -10,19 +10,20 @@
     <div class="dropdown menu columns">
       <div class="dropdown_content {% if section.blocks < 4 %}dropdown_narrow{% endif %} {% if section.settings.banner_image != blank %}one-half column{% endif %}">
         {% for block in section.blocks %}
-          <div class="dropdown_column" {{ block.shopify_attributes }}>
+          <div class="dropdown_column {% if block.settings.image_top != nil or block.settings.image_bottom != nil %}caption-column{% endif %} {% if block.settings.richtext_top != blank or block.settings.richtext_bottom != blank %}text-column{% endif %}" {{ block.shopify_attributes }}>
             {% if block.type == 'column' %}
               {% comment %}Richtext{% endcomment %}
+              
               {% if block.settings.richtext_top != blank %}
                 <div class="mega-menu__richtext">
+                  <h2>{{block.settings.title}}</h2>
                   {{ block.settings.richtext_top }}
                 </div>
               {% endif %}
 
               {% comment %}Image with caption and link{% endcomment %}
-              {% if block.settings.image_top != nil or block.settings.image_caption_top != blank %}
+              {% if block.settings.image_top != nil or block.settings.image_caption_top != blank %} 
                 <div class="mega-menu__image-caption-link">
-                  <a {% if block.settings.image_link_top != blank %}href="{{ block.settings.image_link_top }}"{% endif %} >
                     {% if block.settings.image_top != nil %}
                       {% include 'image-element',
                               image: block.settings.image_top,
@@ -30,9 +31,8 @@
                       %}
                     {% endif %}
                     {% if block.settings.image_caption_top != blank %}
-                      <p class="mega-menu__image-caption">{{ block.settings.image_caption_top }}</p>
+                      <a {% if block.settings.image_link_top != blank %}href="{{ block.settings.image_link_top }}"{% endif %} class="mega-menu__image-caption button blue">{{ block.settings.image_caption_top }}</a>
                     {% endif %}
-                  </a>
                 </div>
               {% endif %}
 
@@ -120,7 +120,7 @@
               {% comment %}Image with caption and link{% endcomment %}
               {% if block.settings.image_bottom != nil or block.settings.image_caption_bottom != blank %}
                 <div class="mega-menu__image-caption-link">
-                  <a {% if block.settings.image_link_bottom != blank %}href="{{ block.settings.image_link_bottom }}"{% endif %} >
+                  
                     {% if block.settings.image_bottom != nil %}
                       {% include 'image-element',
                               image: block.settings.image_bottom,
@@ -128,14 +128,13 @@
                       %}
                     {% endif %}
                     {% if block.settings.image_caption_bottom != blank %}
-                      <p class="mega-menu__image-caption">{{ block.settings.image_caption_bottom }}</p>
+                    <a {% if block.settings.image_link_bottom != blank %}href="{{ block.settings.image_link_bottom }}"{% endif %} class="mega-menu__image-caption button blue">{{ block.settings.image_caption_bottom }}</a>
                     {% endif %}
-                  </a>
                 </div>
               {% endif %}
 
               {% comment %}Richtext{% endcomment %}
-              {% if block.settings.richtext_bottom %}
+              {% if block.settings.richtext_bottom != blank %}
                 <div class="mega-menu__richtext">
                   {{ block.settings.richtext_bottom }}
                 </div>
@@ -146,174 +145,185 @@
         {% endfor %}
       </div>
       {% if section.settings.banner_image != blank %}
-        <div class="banner_content omega one-half columns">
-          {% include 'image-element',
-            image: section.settings.banner_image,
-            alt: section.settings.banner_image.alt,
-            mobile_status: true,
-            stretch_width: true
-          %}
-          <div class="caption">
-            <h3>{{section.settings.title}}</h3>
-            {{ section.settings.description }}
-            <strong>{{section.settings.author}}</strong>
-            <div class="review-stars">
-              {% for item in (1..section.settings.starts) %}
-                {% include 'icon-pack' with icon: 'review-star' %}
-              {% endfor %}
-            </div>
-            
-            {% if section.settings.button_link != blank and section.settings.button_title != blank %}
-              {% if section.settings.modal_btn %}
-              <a data-fancybox href="javascript:;" class="button highlight-button modal-btn" data-src="{{section.settings.button_link}}">{{section.settings.button_title}}</a>
-              {% else %}
-              <a href="{{section.settings.button_link}}" class="button highlight-button">{{ section.settings.button_title }}</a>
+        <div class="banner_content omega one-half columns below-{{section.settings.bellow_btn}}" style="background: {{section.settings.bg_color}};">
+          <div class="banner_image">
+            {% include 'image-element',
+              image: section.settings.banner_image,
+              alt: section.settings.banner_image.alt,
+              mobile_status: true,
+              stretch_width: true
+            %}
+            <div class="caption">
+              <h3>{{section.settings.title}}</h3>
+              {{ section.settings.description }}
+              <strong>{{section.settings.author}}</strong>
+              <div class="review-stars">
+                {% for item in (1..section.settings.starts) %}
+                  {% include 'icon-pack' with icon: 'review-star' %}
+                {% endfor %}
+              </div>
+              
+              {% if section.settings.button_link != blank and section.settings.button_title != blank %}
+                {% if section.settings.modal_btn %}
+                <a data-fancybox href="javascript:;" class="button highlight-button modal-btn" data-src="{{section.settings.button_link}}">{{section.settings.button_title}}</a>
+                {% else %}
+                <a href="{{section.settings.button_link}}" class="button highlight-button">{{ section.settings.button_title }}</a>
+                {% endif %}
               {% endif %}
-            {% endif %}
-            
-          </div>
-          
+              
+            </div>
+          </div>          
         </div>
       {% endif %}
       
     </div>
   </div>
+  {% if section.settings.mobile == false %}
+    <ul class="mobile-mega-menu hidden" data-mobile-dropdown="{{ section.settings.parent | handleize }}">
+      {% for block in section.blocks %}
+        <div>
+        {% if block.type == 'column' %}
+          {% if block.settings.richtext_top != blank %}
+            <li class="mobile-mega-menu_block mega-menu__richtext">
+              {{ block.settings.richtext_top }}
+            </li>
+          {% endif %}
 
-  <ul class="mobile-mega-menu hidden" data-mobile-dropdown="{{ section.settings.parent | handleize }}">
-    {% for block in section.blocks %}
-      <div>
-      {% if block.type == 'column' %}
-        {% if block.settings.richtext_top != blank %}
-          <li class="mobile-mega-menu_block mega-menu__richtext">
-            {{ block.settings.richtext_top }}
-          </li>
-        {% endif %}
-
-        {% if block.settings.image_top != nil or block.settings.image_caption_top != blank %}
-          <li class="mobile-mega-menu_block">
-            <a {% if block.settings.image_link_top != blank %}href="{{ block.settings.image_link_top }}"{% endif %} >
-              {% if block.settings.image_top != nil %}
-                {% include 'image-element',
-                        image: block.settings.image_top,
-                        alt: block.settings.image_top.alt
-                %}
-              {% endif %}
-              {% if block.settings.image_caption_top != blank %}
-                <p class="mobile-mega-menu__image-caption">{{ block.settings.image_caption_top }}</p>
-              {% endif %}
-            </a>
-          </li>
-        {% endif %}
-
-        {% if block.settings.menu_1 != blank %}
-          <li class="mobile-mega-menu_block sublink">
-            {% if block.settings.menu_1_link == 'http://' or block.settings.menu_1_link == '' or block.settings.menu_1_link == '/' or block.settings.menu_1_link == 'https://' or block.settings.menu_1_link == '#' or block.settings.menu_1_link == blank %}
-              <a data-no-instant href="{{ block.settings.menu_1_link }}" class="parent-link--false">
-                {{ linklists[block.settings.menu_1].title }} <span class="right icon-down-arrow"></span>
+          {% if block.settings.image_top != nil or block.settings.image_caption_top != blank %}
+            <li class="mobile-mega-menu_block">
+              <a {% if block.settings.image_link_top != blank %}href="{{ block.settings.image_link_top }}"{% endif %} >
+                {% if block.settings.image_top != nil %}
+                  {% include 'image-element',
+                          image: block.settings.image_top,
+                          alt: block.settings.image_top.alt
+                  %}
+                {% endif %}
+                {% if block.settings.image_caption_top != blank %}
+                  <p class="mobile-mega-menu__image-caption">{{ block.settings.image_caption_top }}</p>
+                {% endif %}
               </a>
+            </li>
+          {% endif %}
+
+          {% if block.settings.menu_1 != blank %}
+            {% if linklists[block.settings.menu_1].links == blank %}
+              <li class="mobile-mega-menu_block">
+                <a data-no-instant href="{{ block.settings.menu_1_link }}" class="parent-link--false">
+                  {{ linklists[block.settings.menu_1].title }}
+                </a>
+              </li>
             {% else %}
-              <a data-no-instant href="{{ block.settings.menu_1_link }}" class="parent-link--true">
-                {{ linklists[block.settings.menu_1].title }} <span class="right icon-down-arrow"></span>
-              </a>
+              <li class="mobile-mega-menu_block sublink">
+                <a data-no-instant href="{{ block.settings.menu_1_link }}" class="parent-link--true">
+                  {{ linklists[block.settings.menu_1].title }} <span class="right icon-down-arrow"></span>
+                </a>
+                <ul>
+                  {% for sublink in linklists[block.settings.menu_1].links %}
+                    <li>
+                      <a href="{{ sublink.url }}">{{ sublink.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </li>
             {% endif %}
-            <ul>
-              {% for sublink in linklists[block.settings.menu_1].links %}
-                <li>
-                  <a href="{{ sublink.url }}">{{ sublink.title }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          </li>
-        {% endif %}
+          {% endif %}
 
-        {% if block.settings.menu_2 != blank %}
-          <li class="mobile-mega-menu_block sublink">
-            {% if block.settings.menu_2_link == 'http://' or block.settings.menu_2_link == '' or block.settings.menu_2_link == '/' or block.settings.menu_2_link == 'https://' or block.settings.menu_2_link == '#' or block.settings.menu_2_link == blank %}
-              <a data-no-instant href="{{ block.settings.menu_2_link }}" class="parent-link--false">
-                {{ linklists[block.settings.menu_2].title }} <span class="right icon-down-arrow"></span>
-              </a>
+          {% if block.settings.menu_2 != blank %}
+            {% if linklists[block.settings.menu_2].links == blank %}
+              <li class="mobile-mega-menu_block">
+                <a data-no-instant href="{{ block.settings.menu_2_link }}" class="parent-link--false">
+                  {{ linklists[block.settings.menu_2].title }}
+                </a>
+              </li>
             {% else %}
-              <a data-no-instant href="{{ block.settings.menu_2_link }}" class="parent-link--true">
-                {{ linklists[block.settings.menu_2].title }} <span class="right icon-down-arrow"></span>
-              </a>
+              <li class="mobile-mega-menu_block sublink">
+                <a data-no-instant href="{{ block.settings.menu_2_link }}" class="parent-link--true">
+                  {{ linklists[block.settings.menu_2].title }} <span class="right icon-down-arrow"></span>
+                </a>
+                <ul>
+                  {% for sublink in linklists[block.settings.menu_2].links %}
+                    <li>
+                      <a href="{{ sublink.url }}">{{ sublink.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </li>
             {% endif %}
-            <ul>
-              {% for sublink in linklists[block.settings.menu_2].links %}
-                <li>
-                  <a href="{{ sublink.url }}">{{ sublink.title }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          </li>
-        {% endif %}
+          {% endif %}
 
-        {% if block.settings.menu_3 != blank %}
-          <li class="mobile-mega-menu_block sublink">
-            {% if block.settings.menu_3_link == 'http://' or block.settings.menu_3_link == '' or block.settings.menu_3_link == '/' or block.settings.menu_3_link == 'https://' or block.settings.menu_3_link == '#' or block.settings.menu_3_link == blank %}
-              <a data-no-instant href="{{ block.settings.menu_3_link }}" class="parent-link--false">
-                {{ linklists[block.settings.menu_3].title }} <span class="right icon-down-arrow"></span>
-              </a>
+          {% if block.settings.menu_3 != blank %}
+            {% if linklists[block.settings.menu_3].links == blank %}
+              <li class="mobile-mega-menu_block">
+                <a data-no-instant href="{{ block.settings.menu_3_link }}" class="parent-link--false">
+                  {{ linklists[block.settings.menu_3].title }}
+                </a>
+              </li>
             {% else %}
-              <a data-no-instant href="{{ block.settings.menu_3_link }}" class="parent-link--true">
-                {{ linklists[block.settings.menu_3].title }} <span class="right icon-down-arrow"></span>
-              </a>
+              <li class="mobile-mega-menu_block sublink"> 
+                <a data-no-instant href="{{ block.settings.menu_3_link }}" class="parent-link--true">
+                  {{ linklists[block.settings.menu_3].title }} <span class="right icon-down-arrow"></span>
+                </a>
+                <ul>
+                  {% for sublink in linklists[block.settings.menu_3].links %}
+                    <li>
+                      <a href="{{ sublink.url }}">{{ sublink.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </li>
             {% endif %}
-            <ul>
-              {% for sublink in linklists[block.settings.menu_3].links %}
-                <li>
-                  <a href="{{ sublink.url }}">{{ sublink.title }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          </li>
-        {% endif %}
+          {% endif %}
 
-        {% if block.settings.menu_4 != blank %}
-          <li class="mobile-mega-menu_block sublink">
-            {% if block.settings.menu_4_link == 'http://' or block.settings.menu_4_link == '' or block.settings.menu_4_link == '/' or block.settings.menu_4_link == 'https://' or block.settings.menu_4_link == '#' or block.settings.menu_4_link == blank %}
-              <a data-no-instant href="{{ block.settings.menu_4_link }}" class="parent-link--false">
-                {{ linklists[block.settings.menu_4].title }} <span class="right icon-down-arrow"></span>
-              </a>
+          {% if block.settings.menu_4 != blank %}
+            {% if linklists[block.settings.menu_4].links == blank %}
+              <li class="mobile-mega-menu_block">
+                <a data-no-instant href="{{ block.settings.menu_4_link }}" class="parent-link--false">
+                  {{ linklists[block.settings.menu_4].title }}
+                </a>
+              </li>
             {% else %}
-              <a data-no-instant href="{{ block.settings.menu_4_link }}" class="parent-link--true">
-                {{ linklists[block.settings.menu_4].title }} <span class="right icon-down-arrow"></span>
-              </a>
+              <li class="mobile-mega-menu_block sublink">
+                <a data-no-instant href="{{ block.settings.menu_4_link }}" class="parent-link--true">
+                  {{ linklists[block.settings.menu_4].title }} <span class="right icon-down-arrow"></span>
+                </a>
+                <ul>
+                  {% for sublink in linklists[block.settings.menu_4].links %}
+                    <li>
+                      <a href="{{ sublink.url }}">{{ sublink.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </li>
             {% endif %}
-            <ul>
-              {% for sublink in linklists[block.settings.menu_4].links %}
-                <li>
-                  <a href="{{ sublink.url }}">{{ sublink.title }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          </li>
-        {% endif %}
+          {% endif %}
 
-        {% if block.settings.image_bottom != nil or block.settings.image_caption_bottom != blank %}
-          <li class="mobile-mega-menu_block"  >
-            <a {% if block.settings.image_link_bottom != blank %}href="{{ block.settings.image_link_bottom }}"{% endif %} >
-              {% if block.settings.image_bottom != nil %}
-                {% include 'image-element',
-                        image: block.settings.image_bottom,
-                        alt: block.settings.image_bottom.alt
-                %}
-              {% endif %}
-              {% if block.settings.image_caption_bottom != blank %}
-                <p class="mobile-mega-menu__image-caption">{{ block.settings.image_caption_bottom }}</p>
-              {% endif %}
-            </a>
-          </li>
-        {% endif %}
+          {% if block.settings.image_bottom != nil or block.settings.image_caption_bottom != blank %}
+            <li class="mobile-mega-menu_block"  >
+              <a {% if block.settings.image_link_bottom != blank %}href="{{ block.settings.image_link_bottom }}"{% endif %} >
+                {% if block.settings.image_bottom != nil %}
+                  {% include 'image-element',
+                          image: block.settings.image_bottom,
+                          alt: block.settings.image_bottom.alt
+                  %}
+                {% endif %}
+                {% if block.settings.image_caption_bottom != blank %}
+                  <p class="mobile-mega-menu__image-caption">{{ block.settings.image_caption_bottom }}</p>
+                {% endif %}
+              </a>
+            </li>
+          {% endif %}
 
-        {% if block.settings.richtext_bottom %}
-          <li class="mobile-mega-menu_block"  >
-            {{ block.settings.richtext_bottom }}
-          </li>
+          {% if block.settings.richtext_bottom %}
+            <li class="mobile-mega-menu_block"  >
+              {{ block.settings.richtext_bottom }}
+            </li>
+          {% endif %}
         {% endif %}
-      {% endif %}
-      </div>
-    {% endfor %}
-  </ul>
+        </div>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  
 {% endif %}
 
 {% schema %}
@@ -323,6 +333,11 @@
   "class": "mega-menu-section",
   "max_blocks": 5,
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "mobile",
+      "label": "Hide mobile?"
+    },
     {
       "type": "text",
       "id": "parent",
@@ -372,6 +387,16 @@
       "type": "checkbox",
       "id": "modal_btn",
       "label": "Modal button"
+    },
+    {
+      "type": "checkbox",
+      "id": "bellow_btn",
+      "label": "Bellow button"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color"
     }
   ],
   "blocks": [
@@ -382,6 +407,12 @@
         {
           "type": "header",
           "content": "Top content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Title Goes Here"
         },
         {
           "type": "richtext",

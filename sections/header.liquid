@@ -96,7 +96,7 @@
       </a>
       {% if section.settings.show_cart %}
         <div class="cart-container">
-          <a href="{{ routes.cart_url }}" title="{{ 'layout.general.cart' | t | escape }}" data-no-instant>{% include 'icon-pack' with icon: 'cart' %}</a>
+          <a href="{{ routes.cart_url }}" title="{{ 'layout.general.cart' | t | escape }}" data-no-instant>{% include 'icon-pack' with icon: 'cart' %} <span class="count">{{cart.item_count}}</span></a>
         </div>
       {% endif %}
     </div>
@@ -247,14 +247,14 @@
         {% if section.settings.show_cart %}
           <div class="cart-container">
             <a href="{{ routes.cart_url }}" class="mini_cart dropdown_link flex gap" data-no-instant>
-              {% include 'icon-pack' with icon:'cart' %} <span class="capitalize">Cart</span>
+              {% include 'icon-pack' with icon:'cart' %} <span class="count">{{cart.item_count}}</span> <span class="capitalize">Cart</span>
             </a>
           </div>
         {% endif %}
       </div>
     </div>
 
-    <div class="main-nav__wrapper">
+    <div class="main-nav__wrapper"> 
       <div class="main-nav menu-position--{{ section.settings.menu_position }} logo-alignment--{{ section.settings.logo_alignment }} logo-position--{{ section.settings.logo_position }} search-enabled--{{ section.settings.search_enabled }}" {% if section.settings.dropdown_click == true %}data-show-dropdown-on-click{% endif %}>
         {% capture logo %}
           <div class="header__logo {% if section.settings.logo_home == blank and section.settings.logo == blank %}logo--text{% else %}logo--image{% endif %}">
@@ -414,7 +414,7 @@
             {%- assign total_saving = saving | plus: total_saving -%}
           {% endif %}
 
-          <li class="mini-cart__item" data-cart-item data-line-id="{{ forloop.index }}" data-variant-id="{{ item.id }}">
+          <li class="mini-cart__item cart__item" data-cart-item data-line-id="{{ forloop.index }}" data-variant-id="{{ item.id }}">
             <a href="{{ item.url }}">
               {% if item.image %}
                 <div class="cart_image mini-cart__item-image">

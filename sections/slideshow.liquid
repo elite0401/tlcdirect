@@ -23,7 +23,7 @@
           css: custom_css,
           id: id
   %}
-
+  .homepage-slideshow-section { position: relative; }
   @media only screen and (max-width: 480px) {
     #shopify-section-{{ section.id }} .pretext,
     #shopify-section-{{ section.id }} .headline,
@@ -36,7 +36,7 @@
 {% if blocks.size > 0 %}
   <section class="section {{ css_class }} {% if section.settings.wide_display == true %}is-width-wide has-no-side-gutter{% endif %}">
     <div class="container">
-      <div class="one-whole column">
+      <div class="one-whole column homepage-slideshow-section">
         <div id="homepage_slider-{{ section.id }}" class="banner homepage-slideshow js-homepage-slideshow slideshow-transition--{{ section.settings.slideshow_animation }} {% if section.settings.slideshow_text_animation != '' %}text-animation--true{% else %}text-animation--false{% endif %} transparentBackground--{{ settings.slideshow_button_style }} full-width--{{ section.settings.wide_display }}" data-slider-id="homepage_slider-{{ section.id }}" data-slideshow-speed="{{ section.settings.slideshow_speed }}" data-slideshow-text-animation="{{ section.settings.slideshow_text_animation }}" data-adaptive-height="{{ section.settings.activate_adaptiveHeight }}">
           {% for block in blocks %}
             {% comment %} Content settings {% endcomment %}
@@ -82,18 +82,20 @@
               {% unless block.settings.pretext == blank and block.settings.title == blank and block.settings.subtitle == blank and block.settings.button1 == blank and block.settings.button2 == blank %}
                 <div class="caption position-{{ block.settings.text_position }} js-caption caption--below-{{ section.settings.mobile_text_below_image }}">
                   <div class="caption-content caption-background-{{ block.settings.caption_background }} caption-transparency-{{ block.settings.caption_background_transparency }} align-{{ block.settings.text_align }}">
-                    {% if block.settings.pretext != blank %}
-                      <div class="pretext">
-                        {{ block.settings.pretext }}
-                      </div>
-                    {% endif %}
+                    <div class="top-content">
+                      {% if block.settings.pretext != blank %}
+                        <div class="pretext">
+                          {{ block.settings.pretext }}
+                        </div>
+                      {% endif %}
 
-                    {% if forloop.first == true and block.settings.title != blank %}
-                      <h1 class="headline">{{ block.settings.title }}</h1>
-                    {% elsif block.settings.title != blank %}
-                      <p class="headline">{{ block.settings.title }}</p>
-                    {% endif %}
-
+                      {% if forloop.first == true and block.settings.title != blank %}
+                        <h1 class="headline">{{ block.settings.title }}</h1>
+                      {% elsif block.settings.title != blank %}
+                        <p class="headline">{{ block.settings.title }}</p>
+                      {% endif %}
+                    </div>
+                    
                     {% if block.settings.subtitle != blank %}
                       <div class="subtitle">
                         {{ block.settings.subtitle }}

@@ -13,7 +13,7 @@
     data-product_price="{{email_product.first_available_variant.price | money}}" 
     data-product_description="{{email_product.description | strip_html}}" 
     data-product_link="{{email_product.url | prepend: shop.url}}"
-> {% render 'icon-pack' with icon: "email" %} <span>Email to friend</span></a>
+> {% render 'icon-pack' with icon: "email" %} <span>Email to a friend</span></a>
 {% endif %}
 
 <div class="email_friend js-popup" id="email_friend" style="display: none;">

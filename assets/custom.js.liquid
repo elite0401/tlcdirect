@@ -101,20 +101,23 @@ $(document).ready(function() {
           <h2 class="text-center">${Shopify.theme_settings.quiz_title}</h2>
           </div>
           <div class="content">
-              <div class="octane-ai-quiz " data-quiz-id="LetmtTH2nLejJ7he" data-embed-type="fullpage" data-mobile-height="match_browser" data-desktop-height="match_browser"></div><script src="https://app.octaneai.com/s5jlsfej3twdpbh8/quiz.js" async defer></script>
+          <div class="octane-ai-quiz " data-quiz-id="DDgbaY7qA9LwoEQy" data-embed-type="fullpage" data-mobile-height="match_browser" data-desktop-height="match_browser"></div><script src="https://app.octaneai.com/s5jlsfej3twdpbh8/quiz.js" async defer></script>
           </div>
         `);
     }
   });
-
-  $(document).on('click','[data-element="oct-quiz-btn oct-quiz-media"]', function (e) {
+  $(document).on('click','#shopify-section-page-details-template [data-element="oct-quiz-btn oct-quiz-media"]', function (e) {
+    e.preventDefault();
+    location.reload();
+  })
+  $(document).on('click','#quiz-popup [data-element="oct-quiz-btn oct-quiz-media"]', function (e) {
     e.preventDefault();
     $('.fancybox-slide #quiz-popup').html(`
       <div class="heading">
       <h2 class="text-center">${Shopify.theme_settings.quiz_title}</h2>
       </div>
       <div class="content">
-          <div class="octane-ai-quiz " data-quiz-id="LetmtTH2nLejJ7he" data-embed-type="fullpage" data-mobile-height="match_browser" data-desktop-height="match_browser"></div><script src="https://app.octaneai.com/s5jlsfej3twdpbh8/quiz.js" async defer></script>
+      <div class="octane-ai-quiz " data-quiz-id="DDgbaY7qA9LwoEQy" data-embed-type="fullpage" data-mobile-height="match_browser" data-desktop-height="match_browser"></div><script src="https://app.octaneai.com/s5jlsfej3twdpbh8/quiz.js" async defer></script>
       </div>
       <button type="button" data-fancybox-close="" class="fancybox-button fancybox-close-small" title="Close"><svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 24 24"><path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path></svg></button>
     `);
@@ -152,7 +155,40 @@ $(document).ready(function() {
       cellAlign: 'left',
       wrapAround: true
     });
+    $('.shopify-section--product-template .product__info .product_form .swatch_options .color .enlarge-content').each(function (e) {
+      var document_width = $(document).width();
+      var popup_position = $(this).offset().left + 260;
+      console.log(popup_position)
+      console.log(document_width)
+      if (popup_position > document_width) {
+        var left_position = popup_position - document_width;
+        
+        $(this).css({
+          left: -(25 + left_position)
+        })
+      }
+    });
+  } else {
+    $('.shopify-section--product-template .product__info .product_form .swatch_options .color .enlarge-content').each(function (e) {
+      var document_width = $(document).width();
+      var popup_position = $(this).offset().left + 140;
+      console.log(popup_position)
+      console.log(document_width)
+      if (popup_position > document_width) {
+        var left_position = popup_position - document_width;
+        
+        $(this).css({
+          right: 25 + left_position
+        })
+      }
+    });
   }
+
+  
+
+  // $(document).on('mouseleave', '.shopify-section--product-template .product__info .product_form .swatch', function (e) {
+  //   $('.product__images .product-main-gallery .gallery-hover-image').removeClass('active')
+  // });
 
   $('.dropdown_container .dropdown--header .close').on('click', function (e) {
     e.preventDefault();
@@ -215,26 +251,52 @@ $(document).ready(function() {
   })
   
 });
-
+var print_status = false;
 function printDiv(divName) {
-  var printContents = document.getElementById(divName).innerHTML;
-  var originalContents = document.body.innerHTML;
-  var mywindow = window.open('', 'PRINT', 'height=660,width=1000');
-  mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-  mywindow.document.write('</head><body >');
-  mywindow.document.write('<h1>' + document.title  + '</h1>');
-  mywindow.document.write(printContents);
-  mywindow.document.write('</body></html>');
-  mywindow.document.close();
-  mywindow.focus();
-  mywindow.print();
-  mywindow.onafterprint = function(){
-    console.log("Printing completed...");
-    mywindow.close();
- }
+  console.log(print_status);
+  if ($(window).width() > 768) {
+    var printContents = document.getElementById(divName).innerHTML;
+    var originalContents = document.body.innerHTML;
+    var mywindow = window.open('', 'PRINT', 'height=660,width=1000');
+    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write('<h1>' + document.title  + '</h1>');
+    mywindow.document.write(printContents);
+    mywindow.document.write('</body></html>');
+    mywindow.document.close();
+    mywindow.focus();
+    mywindow.print();
+    mywindow.onafterprint = function(event){
+      console.log("Printing completed...");
+      mywindow.close();
+      console.log("asdfasd")
+    }
+  } else {
+    if (print_status == false) {
+      var printContents = document.getElementById(divName).innerHTML;
+      var originalContents = document.documentElement.innerHTML;
+      window.document.write('<html><head><title>' + document.title  + '</title>');
+      window.document.write('</head><body >');
+      window.document.write('<h1>' + document.title  + '</h1>');
+      window.document.write(printContents);
+      window.document.write('</body></html>');
+      window.document.close();
+      window.print();
+      document.getElementsByTagName("BODY")[0].onafterprint = function(event){
+        console.log("Printing completed...");
+        window.document.write(originalContents);
+        window.document.close();
+        console.log("asdfasd")
+      }
+      print_status = true;
+    } else {
+      window.location.reload();
+    }
+    
+  }
+  
 }
 
 function doneyet() { 
-  document.body.onfocus = ""; 
-  alert("after print dialog"); 
+  console("after print dialog"); 
 } 

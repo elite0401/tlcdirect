@@ -54,7 +54,7 @@
     {% if settings.pagination_type != 'basic_pagination' %}
       {% if paginate.next.url %}
         <span class="js-load-more load-more">
-          <a href="{{ paginate.next.url }}" data-no-instant class="load-more__btn action_button continue-button">
+          <a href="{{ paginate.next.url }}" data-no-instant class="load-more__btn action_button continue-button" style="opacity: 0;">
             {% if template contains 'collection' %}
               {{ 'collections.general.load_more' | t }}
             {% elsif template contains 'search' %}

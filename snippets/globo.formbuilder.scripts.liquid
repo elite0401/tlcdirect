@@ -10,7 +10,8 @@
             },
             hideWaterMark : false,
             encryptionFormId : false,
-            copyright: 'Powered by Globo <a href="https://apps.shopify.com/form-builder-contact-form" target="_blank">Form</a>'
+            copyright: 'Powered by Globo <a href="https://apps.shopify.com/form-builder-contact-form" target="_blank">Form</a>',
+            scrollTop: true
         },
         pricing:{
             features:{
@@ -48,6 +49,7 @@
 
 <link rel="preload" href="{{ 'globo.formbuilder.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="{{ 'globo.formbuilder.css' | asset_url }}"></noscript>
+<link rel="stylesheet" href="{{ 'globo.formbuilder.css' | asset_url }}">
 {% capture GF_appScript %}{{ 'globo.formbuilder.index.js' | asset_url }}{% endcapture %}
 {% assign GF_assetsPath = GF_appScript | split: 'globo.formbuilder.index.js' | first %}
 <script>

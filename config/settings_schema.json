@@ -1436,7 +1436,7 @@
         "type": "richtext",
         "id": "notify_me_richtext",
         "label": "\"Back in stock request\" form text",
-        "default": "<p>Notify me when this product is available:<\/p>"
+        "default": "<p>Email me with it's available:<\/p>"
       },
       {
         "type": "radio",
@@ -1529,6 +1529,11 @@
         "label": "Choosing Wig content"
       },
       {
+        "type": "url",
+        "id": "choose_wig_link",
+        "label": "Choose Wig link"
+      },
+      {
         "type": "header",
         "content": "Reviews"
       },
@@ -1547,6 +1552,30 @@
         "id": "enable_shopify_collection_badges",
         "label": "Display star rating on product thumbnails",
         "default": false
+      },
+      {
+        "type": "header",
+        "content": "Custom Message"
+      },
+      {
+        "type": "color",
+        "id": "custom_msg_color",
+        "label": "Color"
+      },
+      {
+        "type": "font_picker",
+        "id": "custom_msg_font",
+        "label": "Font",
+        "default": "open_sans_n4"
+      },
+      {
+        "type": "range",
+        "id": "custom_msg_font_size",
+        "label": "Font size",
+        "min": 12,
+        "max": 24,
+        "default": 14,
+        "unit": "px"
       }
     ]
   },
@@ -2191,7 +2220,7 @@
     ]
   },
   {
-    "name": "Email to friend form",
+    "name": "Email to a friend form",
     "settings": [
       {
         "type": "text",

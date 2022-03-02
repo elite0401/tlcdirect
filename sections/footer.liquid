@@ -118,7 +118,7 @@
                           {% if link.title == 'eCatalog' %}
                             {% assign target = 'target="_blank"' %}
                           {% endif %}
-                          <a {{target}} href="{{ link_url }}">{{ link.title }}</a>
+                          <a {{target}} {% if link.title contains 'American Cancer Society' %}onClick="ga('send', 'event', { eventCategory: 'click', eventAction: 'greetingcard'});"{% endif %} href="{{ link_url }}">{{ link.title }}</a>
                         </p>
                       </li>
                     {% endfor %}

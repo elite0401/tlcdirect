@@ -24,6 +24,8 @@
   {% assign headline__font = settings.headline__font.family %}
 {% endif %}
 
+{% assign custom_msg_font = settings.custom_msg_font.family %}
+
 {% if settings.slideshow_font_extra_status %}
   {% assign slideshow_headline__font = settings.slideshow_font_extra %}
 {% else %}
@@ -157,5 +159,12 @@
     --banner_button_color_extra: {{banner_button_color}};
     --regular_color_extra: {{regular_color}};
     --shadow: {{shadow}};
+
+    --custom_msg_font: {{custom_msg_font}};
+    --custom_msg_weight: {{ settings.custom_msg_font.weight }};
+    --custom_msg_font_style: {{ settings.custom_msg_font.style }};
+    --custom_msg_font_size: {{ settings.custom_msg_font_size }};
+    --custom_msg_color: {{ settings.custom_msg_color }};
+
 }
 {% endstyle %}

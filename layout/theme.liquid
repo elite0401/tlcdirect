@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="cleartype" content="on">
     <meta name="robots" content="index,follow">
+    <meta name="format-detection" content="telephone=no">
 
     <!-- Mobile Specific Metas -->
     <meta name="HandheldFriendly" content="True">
@@ -32,7 +33,7 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.css"></noscript>
     <!-- Stylesheets for Turbo "6.1.2" -->
     {{'styles.css' | asset_url | stylesheet_tag }}
-    {{ 'custom.min.css' | asset_url | stylesheet_tag }} 
+    {{ 'custom.scss.css' | asset_url | stylesheet_tag }} 
     
     {%- comment -%}
     <link rel="preload" href="{{ 'styles.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -92,6 +93,7 @@
       {{ "customer_area.js" | shopify_asset_url | script_tag }}
     {% endif %}
     {{ content_for_header }}
+{% render 'globo.alsobought.script' %}
     {%- render 'bold-common' -%}
     {%- include 'bold-product' with product, hide_action: 'header' -%}
     {% render 'social-meta-info' %}
@@ -103,7 +105,7 @@
     {% endif %}  
     {% include 'qikify-contactform' %}
 
-    {% include 'globo.formbuilder.scripts' %}
+    
 </head>
 
   {% if template contains "index" %}
@@ -187,7 +189,7 @@
 
     </div>
     {% section 'modals' %}
-    {{ content_for_layout }}
+    <div class="globoRecommendationsTop"></div>{{ content_for_layout }}{% render 'globo.alsobought.action' %}
     {% section 'newsletter' %}
     {% section 'icon-bar' %}
     {% section 'footer' %}
@@ -196,7 +198,7 @@
         <h2 class="text-center">{{settings.quiz_title}}</h2>
     </div>
     <div class="content">
-        <div class="octane-ai-quiz " data-quiz-id="LetmtTH2nLejJ7he" data-embed-type="fullpage" data-mobile-height="match_browser" data-desktop-height="match_browser"></div><script src="https://app.octaneai.com/s5jlsfej3twdpbh8/quiz.js" async defer></script>
+      <div class="octane-ai-quiz " data-quiz-id="DDgbaY7qA9LwoEQy" data-embed-type="fullpage" data-mobile-height="match_browser" data-desktop-height="match_browser"></div><script src="https://app.octaneai.com/s5jlsfej3twdpbh8/quiz.js" async defer></script>
     </div>
   </div>
     {% if settings.size_chart != blank %}
@@ -313,8 +315,8 @@
 <!-- Back in Stock helper snippet -->
 {% render 'back-in-stock-helper' %}
 <!-- End Back in Stock helper snippet -->
-
-</body>
+{% include 'globo.formbuilder.scripts' %}
+{% include 'appikon-discounts' %}</body>
 </html>
 {% endcapture %}
 {% assign content = content | replace_first: '<!DOCTYPE', '!DOCTYPE' | split: ' <' %}

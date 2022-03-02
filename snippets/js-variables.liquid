@@ -85,13 +85,11 @@ Shopify.theme_settings.slideshow_arrow_size = {{ settings.slideshow_arrow_size |
 {% comment %} Quickshop {% endcomment %}
 Shopify.theme_settings.quick_shop_enabled = {{ settings.quick_shop_enabled | json }};
 
-Shopify.theme_settings.quiz_title = {{ settings.quiz_title | json }};
+Shopify.theme_settings.quiz_title = "{{ settings.quiz_title }}";
 {% if contact != blank %}
 Shopify.theme_settings.contact_email = {{ contact.fields.email | json }};
 {% endif %}
-{% if customer != blank %}
-Shopify.thene_settings.customer_email = {{ customer.email | json }}; 
-{% endif %}
+
 
 {% comment %} /* # Translation
 ================================================== */ {% endcomment %}

@@ -30,7 +30,7 @@
 
           {%- assign collection_handles = product.collections | map: 'handle' -%}
           {%- assign variant = bold_selected_or_first_available_variant -%}
-{%- include 'bold-variant' with variant, output: 'none' -%}
+          {%- include 'bold-variant' with variant, output: 'none' -%}
 
           {% if product.available %}
             {% if settings.sale_banner_enabled and bold_compare_at_price > bold_price %}
@@ -56,7 +56,14 @@
               <span>{{ variant.sku | split: " " | first }}</span>
             </p>
           {% endif %}
-          <h1 class="product_name">{{ product.title }}</h1>
+          <h1 class="product_name">
+            {{ product.title }}
+            <div class="wishlist">
+              {% include 'swym-product-view', product: product %}
+              <a data-swaction="addToWishlist" data-product-id="{{product.id | json}}" class="wishlist_btn"> {% include 'icon-wishlist' %} <span>Add to Wishlist</span></a>
+            </div>
+          </h1>
+          
           {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
             <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
           {% endif %}

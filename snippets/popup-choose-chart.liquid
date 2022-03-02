@@ -13,6 +13,7 @@
               <div class="actions">
                 <a  onclick="printDiv('choose-chart')" class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
                 {% render 'popup-email' %}
+                
               </div>
               <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
             </div>
@@ -28,6 +29,7 @@
           <div class="actions">
             <a  onclick="printDiv('choose-chart')" class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
             {% render 'popup-email' %}
+            
           </div>
           <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
         </div>
@@ -44,7 +46,10 @@
         <div class="bottom">
           <div class="actions">
             <a  onclick="printDiv('choose-wig-chart')" class="capitalize"> {% render 'icon-pack' with icon: "fax" %} <span>print</span></a>
+            {%- comment -%}
             {% render 'popup-email' %}
+            {%- endcomment -%}
+            
           </div>
           <button type="button" data-fancybox-close="" class="button border fancybox-button" title="Close">close</button>
         </div>
