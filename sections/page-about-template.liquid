@@ -46,6 +46,12 @@
                           {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
                         {% endif %}
                       </a>
+                      {% if block.settings.caption_image != blank %}
+                      <div class="caption_image medium-down--hide">
+                        <img data-src="{{block.settings.caption_image | img_url: '640x'}}" class="lazyload">
+                      </div>
+                      {% endif %}
+                      
                       <p class="caption_text hide medium-down--show">
                         “tlc”
                       </p>

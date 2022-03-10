@@ -61,7 +61,7 @@
       <label>{{ product.options[0] }}</label>
       <select id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}" name="id">
         {% for v in product.variants %}
-{%- include 'bold-variant' with v, hide_action: 'skip' -%}
+          {%- include 'bold-variant' with v, hide_action: 'skip' -%}
           <option {% if v == variant %}selected="selected"{% endif %} value="{{ v.id }}" data-featured-image="{{ v.featured_media }}" data-image="{{ v.featured_media | product_img_url: '600x' }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
         {% endfor %}
       </select>
@@ -75,8 +75,16 @@
     {{ product.metafields.global.color_html }}
   </div>
   {% endif %}
-  {% if settings.product_form_style == "swatches" and product.variants.size > 1 or settings.product_form_style == "swatches"%}
-    {% if product.options[0] != "Title"  %}
+  {% if settings.product_form_style == "swatches" and product.variants.size > 1 %}
+    {% assign size_status = true %}
+    {% for option_value in product.options_by_name['Title'].values %}
+      {% if option_value contains "Default Title" %}
+        {% assign size_status = false %}
+      {% else %}
+        {% assign size_status = true %}
+      {% endif %}
+    {% endfor %}
+    {% if size_status %}
     <div class="swatch_options">
       {% for option in product.options %} 
         {% include 'product-swatch',

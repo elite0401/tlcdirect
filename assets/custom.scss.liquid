@@ -1433,6 +1433,7 @@ a[data-src="#email_friend"]{
           color: white;
         }
       }
+      
       .info{
         max-width: 320px;
         @include respond-to("medium-down"){
@@ -3970,7 +3971,14 @@ div[data-product-recommendations-container]{
     }
     &.image-with-text__image-column{
       .featured-link--wrap{
-        height: 100%;
+        height: auto;
+        position: relative;
+        .caption_image{
+          position: absolute;
+          bottom: 0;
+          right: 0; 
+          max-width: 320px;
+        }
         .image-element__wrap{
           max-width: initial!important;
           img{
