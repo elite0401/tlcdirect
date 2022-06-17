@@ -10,7 +10,7 @@
             },
             hideWaterMark : false,
             encryptionFormId : false,
-            copyright: 'Powered by Globo <a href="https://apps.shopify.com/form-builder-contact-form" target="_blank">Form</a>',
+            copyright: `Powered by Globo <a href="https://apps.shopify.com/form-builder-contact-form" target="_blank">Form</a>`,
             scrollTop: true
         },
         pricing:{
@@ -40,6 +40,13 @@
         href : window.location.href,
         type: "{{ request.page_type }}"
     };
+    {% if request.page_type == 'product' %}
+    Globo.FormBuilder.product= {
+        title : '{{ product.title }}',
+        type : '{{ product.type }}',
+        vendor : '{{ product.vendor }}'
+    }
+    {% endif %}
     Globo.FormBuilder.assetFormUrls = [];
             Globo.FormBuilder.assetFormUrls[44059] = "{{ 'globo.formbuilder.data.44059.js' | asset_url }}";
                     Globo.FormBuilder.assetFormUrls[44078] = "{{ 'globo.formbuilder.data.44078.js' | asset_url }}";

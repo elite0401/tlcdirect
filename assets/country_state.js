@@ -140,7 +140,6 @@ function locationInfo() {
         var method = "post";
         var data = {};
         
-        jQuery(country_cls).find("option:eq(0)").html("Please wait..");
         call.send(data, url, method, function(data) {
             jQuery(country_cls).find("option:eq(0)").html("Country");
             jQuery(country_cls).find("option:eq(1)").remove();
@@ -206,6 +205,8 @@ function locationInfo() {
                        
                     });
                 }
+                jQuery(country_cls).find("option:eq(1)").attr('selected', 'selected');
+                jQuery(country_cls).trigger('change');
                 if (presel) {
                     jQuery(country_cls).trigger('change');
                 }

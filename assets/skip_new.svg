@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="153px" height="153px" viewBox="0 0 153 153" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <desc>Created with Lunacy</desc>
+  <defs>
+    <path d="M0 0L150 0L150 150L0 150L0 0Z" id="path_1" />
+    <path d="M0 0L147 0L147 147L0 147L0 0L0 0Z" id="path_2" />
+    <path d="M0 0L144 0L144 144L0 144L0 0L0 0L0 0Z" id="path_3" />
+    <clipPath id="mask_1">
+      <use xlink:href="#path_1" />
+    </clipPath>
+    <clipPath id="mask_2">
+      <use xlink:href="#path_2" />
+    </clipPath>
+    <clipPath id="mask_3">
+      <use xlink:href="#path_3" />
+    </clipPath>
+  </defs>
+  <g id="skip" transform="translate(1.5 1.5)">
+    <path d="M0 0L150 0L150 150L0 150L0 0Z" id="Background" fill="none" fill-rule="evenodd" stroke="none" />
+    <g clip-path="url(#mask_1)">
+      <g id="03cf4ca3-697a-40ce-b5e4-3e0c2be83355" transform="translate(1.5 1.5)">
+        <path d="M0 0L147 0L147 147L0 147L0 0L0 0Z" id="Background" fill="none" fill-rule="evenodd" stroke="none" />
+        <g id="Mask-group">
+          <path d="M0 0L147 0L147 147L0 147L0 0L0 0Z" id="path_1" fill="none" fill-rule="evenodd" stroke="none" />
+          <g clip-path="url(#mask_2)">
+            <g id="Group" transform="translate(1.5 1.5)">
+              <g id="d18050cc-3c17-40f4-ad3a-8d7f52872c91">
+                <path d="M0 0L144 0L144 144L0 144L0 0L0 0L0 0Z" id="Background#1" fill="none" fill-rule="evenodd" stroke="none" />
+                <g id="Mask-group">
+                  <path d="M0 0L144 0L144 144L0 144L0 0L0 0L0 0Z" id="path_1#1" fill="none" fill-rule="evenodd" stroke="none" />
+                  <g id="Mask-group">
+                    <path d="M0 0L144 0L144 144L0 144L0 0L0 0L0 0Z" id="path_2" fill="none" fill-rule="evenodd" stroke="none" />
+                    <g clip-path="url(#mask_3)">
+                      <g id="Group" transform="translate(2 2)">
+                        <g id="Group">
+                          <g id="skip">
+                            <path d="M0 70C0 31.34 31.34 0 70 0C108.66 0 140 31.34 140 70C140 108.66 108.66 140 70 140C31.34 140 0 108.66 0 70L0 70L0 70L0 70Z" id="Ellipse" fill="#D94EAD" fill-rule="evenodd" stroke="none" />
+                            <g id="Group-3" transform="translate(43.36643 44.722225)">
+                              <path d="M0 0L20.764 25.2778L0 50.5555" id="New-shape" fill="none" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M0 0L20.764 25.2778L0 50.5555" transform="translate(18.060163 0)" id="New-shape-Copy" fill="none" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M0 0L0 50.5555" transform="translate(51.462963 0)" id="Line" fill="none" fill-rule="evenodd" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

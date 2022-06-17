@@ -90,6 +90,17 @@
                       mobile_status: true,
                       additional_classes: "hide medium-down--show"
                     %}
+                    {% if block.settings.caption != blank %}
+                    <div class="caption-image">
+                      {% include 'image-element',
+                        image: block.settings.caption,
+                        alt: block.settings.caption.alt,
+                        stretch_width: true,
+                        mobile_status: true
+                      %}
+                    </div>
+                    {% endif %}
+                    
                   {% else %}
                     {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
                     {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
@@ -191,12 +202,14 @@
                   <div class="collection-content">
                     <a href="{{collection.url}}">
                       <div class="image">
-                        {% include 'image-element' with
-                          image: block.settings.image,
-                          alt: block.settings.title,
-                          extra_status: true,
-                          stretch_width: true,
-                        %}
+                        {%- capture srcset -%}
+                          {{ block.settings.image | img_url: '300x'}} 800w,
+                          {{ block.settings.image | img_url: '300x'}} 600w,
+                          {{ block.settings.image | img_url: '300x'}} 200w,
+                          {{ block.settings.image | img_url: '200x'}} 100w
+                        {%- endcapture -%}
+                        <div class="lazyload" data-bgset="{{ block.settings.image | img_url: '200x' }} 400w"
+                            data-sizes="100vw" style="padding-top: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 | plus: 1}}%;background-size: cover;"></div>
                       </div>
                       <div class="detail center">
                         <p>{{block.settings.title}}</p>
@@ -211,7 +224,7 @@
         {% if status %}
         {% for block in blocks %}
           {% if block.type == 'image' %}
-          <div class="container image-with-text-container section-{{ forloop.index }} featured_collections {% if object.settings.carousel == true %} carousel-cell eleven-twelfths{% endif %} container--{{ block.id }}
+          <div class="image-with-text-container section-{{ forloop.index }} featured_collections {% if object.settings.carousel == true %} carousel-cell eleven-twelfths{% endif %} container--{{ block.id }}
           {% if object.settings.featured_links_per_row == '1' and object.settings.carousel == false %}
             {% if object.settings.frontpage_image_position == 'row' %}
             is-flex-{% cycle 'row', 'row-reverse' %}
@@ -432,6 +445,11 @@
           "id": "image",
           "label": "Image",
           "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "image_picker",
+          "id": "caption",
+          "label": "caption image"
         },
         {
           "type": "image_picker",

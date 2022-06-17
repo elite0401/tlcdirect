@@ -44,7 +44,7 @@
     </div>
   {% elsif product.options.size == 1 and product.variants.size > 1 or product.options.size == 1 and product.options[0] != "Title" %}
     <div class="select">
-      <label>{{ product.options[0] }}</label>
+      <label>Select {{ product.options[0] }}</label>
       <select id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}" name="id">
         {% for v in product.variants %}
           <option {% if v == variant %}selected="selected"{% endif %} value="{{ v.id }}" data-featured-image="{{ v.featured_media }}" data-image="{{ v.featured_media | product_img_url: '600x' }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
@@ -64,30 +64,9 @@
     {% endif %}
   {% endif %}
   <div class="additional-info">
-    <label>Denominations<span>(as you would like it to appear – or leave blank)</span></label>
-    <div class="additional-form">
-      <div class="form-group">
-        <label>Name</label>
-        <input type="text" name="properties['name']" class="form-control">
-      </div>
-
-      <div class="form-group">
-        <label>Address 2</Address></label>
-        <input type="text" name="properties['address2']" class="form-control">
-      </div>
-
-      <div class="form-group">
-        <label>Address</label>
-        <input type="text" name="properties['address']" class="form-control">
-      </div>
-      
-      <div class="form-group">
-        <label>City/State/Zip</label>
-        <input type="text" name="properties['city/state/zip']" class="form-control">
-      </div>
-      
-      
-      
+    <label>Personalized Message<span>(Optional)</span></label>
+    <div class="form-group">
+      <textarea rows="5" name="properties[gift_note]" class="form-control"></textarea>
     </div>
   </div>
   <div class="purchase-details">

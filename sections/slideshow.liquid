@@ -37,15 +37,12 @@
   <section class="section {{ css_class }} {% if section.settings.wide_display == true %}is-width-wide has-no-side-gutter{% endif %}">
     <div class="container">
       <div class="one-whole column homepage-slideshow-section">
-        <div id="homepage_slider-{{ section.id }}" class="banner homepage-slideshow js-homepage-slideshow slideshow-transition--{{ section.settings.slideshow_animation }} {% if section.settings.slideshow_text_animation != '' %}text-animation--true{% else %}text-animation--false{% endif %} transparentBackground--{{ settings.slideshow_button_style }} full-width--{{ section.settings.wide_display }}" data-slider-id="homepage_slider-{{ section.id }}" data-slideshow-speed="{{ section.settings.slideshow_speed }}" data-slideshow-text-animation="{{ section.settings.slideshow_text_animation }}" data-adaptive-height="{{ section.settings.activate_adaptiveHeight }}">
+        <div id="homepage_slider-{{ section.id }}" class="banner homepage-slideshow {% if blocks.size > 1 %}js-homepage-slideshow  slideshow-transition--{{ section.settings.slideshow_animation }} {% if section.settings.slideshow_text_animation != '' %}text-animation--true{% else %}text-animation--false{% endif %}{% endif %} transparentBackground--{{ settings.slideshow_button_style }} full-width--{{ section.settings.wide_display }}" data-slider-id="homepage_slider-{{ section.id }}" data-slideshow-speed="{{ section.settings.slideshow_speed }}" data-slideshow-text-animation="{{ section.settings.slideshow_text_animation }}" data-adaptive-height="{{ section.settings.activate_adaptiveHeight }}">
           {% for block in blocks %}
             {% comment %} Content settings {% endcomment %}
             {%- assign image = block.settings.image -%}
             {%- assign mobile_image = block.settings.mobile_image -%}
             {% comment %} End content settings {% endcomment %}
-
-
-
             <div class="gallery-cell slide-{{ forloop.index }}" {{ block.shopify_attributes }} data-block-id="{{ block.id }}">
               {% if image != blank %}
                 {% include 'image-element',

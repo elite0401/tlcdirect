@@ -55,10 +55,11 @@
         </p>
         {% endif %}
         <div class="info">
-          <h1 class="product_name">{{ product.title }}<div class="wishlist">
-            {% include 'swym-product-view', product: product %}
-            <a data-swaction="addToWishlist" data-product-id="{{product.id | json}}" class="wishlist_btn"> {% include 'icon-wishlist' %} <span>Add to Wishlist</span></a>
-          </div></h1>
+          <h1 class="product_name">{{ product.title }}
+            <div class="wishlist">
+              <div class="swym-wishlist-button-bar"></div>
+            </div>
+          </h1>
           {% if section.settings.enable_shopify_product_badges and settings.enable_shopify_review_comments %}
             <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
           {% endif %}
@@ -152,7 +153,7 @@
                   context: 'product',
                   collection_handles: collection_handles
           %}
-        {% include 'product-notify-me', product: product %}
+          {% include 'product-notify-me', product: product %}
           
         {% endunless %}
         {% if template contains 'product' %}
@@ -572,6 +573,23 @@
             "type": "html",
             "id": "promotion",
             "label": "Promotion text"
+          }
+        ]
+      },
+      {
+        "name": "QTY text",
+        "type": "qty",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection",
+            "info": "This QTY text will display this collection page"
+          },     
+          {
+            "type": "html",
+            "id": "qty",
+            "label": "QTY text"
           }
         ]
       }

@@ -67,7 +67,7 @@
   {% endif %}
   <div class="phone-number">
     <div class="flex gap" style="height: 40px;">
-      {% include 'icon-pack' with icon: 'phone-white' %}&nbsp;We are here to help&nbsp;{{ section.settings.phone_number }}
+      {% include 'icon-pack' with icon: 'phone' %}&nbsp;We are here to help&nbsp;<a href="tel:{{ section.settings.phone_number }}">{{ section.settings.phone_number }}</a>
     </div>
   </div>
   <div class="top-bar">

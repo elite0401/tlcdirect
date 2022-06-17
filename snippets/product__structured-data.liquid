@@ -3,7 +3,7 @@
   https://developers.google.com/search/docs/data-types/products
 {% endcomment %}
 
-{%- assign selected_variant = bold_selected_or_first_available_variant | default: bold_selected_or_first_available_variant -%}
+{%- assign selected_variant = product.selected_or_first_available_variant | default: product.selected_or_first_available_variant -%}
 {%- assign product_image = selected_variant.featured_image | default: product.featured_image -%}
 
 {%- capture product_name -%}
@@ -26,12 +26,12 @@
     "name": {{ product_name | strip_newlines | json }},
     "image": {{ product_image | img_url: '1024x1024' | prepend: 'https:' | json }},
     {% if product.description != blank %}
-      "description": {{ product.description | json }},
+      "description": {{ product.description | strip_html | escape | json }},
     {% endif %}
     {% if product.vendor %}
       "brand": {
         "@type": "Thing",
-        "name": {{ product.vendor | json }}
+        "name": {{ product.metafields.global.brand | json }}
       },
     {% endif %}
     {% if selected_variant.sku != blank %}
@@ -43,7 +43,7 @@
     "offers": {
       "@type": "Offer",
       "priceCurrency": {{ cart.currency.iso_code | json }},
-      "price": {{ bold_variant_price | divided_by: 100.0 | json }},
+      "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
       "availability": "http://schema.org/{% if selected_variant.available %}InStock{% else %}OutOfStock{% endif %}",
       "url": "{{ shop.url }}{{ selected_variant.url }}",
       "seller": {

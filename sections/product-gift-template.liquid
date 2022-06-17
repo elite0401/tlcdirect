@@ -24,7 +24,7 @@
                   set_product_height: section.settings.set_product_height
           %}
           <div class="banner-info medium-down--hide">
-            {{product.description | split: '<!-- banner_title -->' | first }}
+            {{product.metafields.global.gift_card_image_text}}
           </div>
           
         </div>

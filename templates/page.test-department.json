@@ -1,0 +1,34 @@
+{
+  "sections": {
+    "main": {
+      "type": "page-item-template",
+      "blocks": {
+        "87973c4c-69c1-426c-a301-1273a8f95365": {
+          "type": "employee",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/4.1_9417_GL44_51_alt_copy.png",
+            "title": "test title",
+            "link": "shopify:\/\/blogs\/aids-to-coping\/tips-on-choosing-and-wearing-a-wig",
+            "description": "<p>test description<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "87973c4c-69c1-426c-a301-1273a8f95365"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/2.1_9273_Pink_9276_Grey_Editorial_1_047_75df4260-95be-42e5-a4c0-3b1f192f3890.webp",
+        "image_position": "right",
+        "pre_heading": "test",
+        "title": "test department",
+        "text": "<p>Test description<\/p>",
+        "text_position": "left",
+        "bg_color": "#e9effa",
+        "employee_per_row": 3
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

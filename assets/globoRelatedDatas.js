@@ -1,6 +1,6 @@
 globoRelatedProductsConfig = {
-    apiUrl: "https://related-products.globosoftware.net/v2/public/api",
-    alternateApiUrl: "https://related-products.globosoftware.net/v2/public",
+    apiUrl: "https://related-products.globosoftware.net/api",
+    alternateApiUrl: "https://related-products.globosoftware.net",
     shop: "",
     shopNumber: 32219,
     domain: "",

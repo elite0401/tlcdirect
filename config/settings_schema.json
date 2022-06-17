@@ -1436,7 +1436,7 @@
         "type": "richtext",
         "id": "notify_me_richtext",
         "label": "\"Back in stock request\" form text",
-        "default": "<p>Email me with it's available:<\/p>"
+        "default": "<p>Notify me when this product is available:<\/p>"
       },
       {
         "type": "radio",

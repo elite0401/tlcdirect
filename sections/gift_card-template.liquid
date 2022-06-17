@@ -26,12 +26,17 @@
 </head>
 <body>
   <div class="wrapper">
+    
     <header class="giftcard-header" role="banner">
       <div class="giftcard-header__logo">
+        {%- comment -%}
         <a href="{{ shop.url }}" itemprop="url">{{ section.settings.logo }}</a>
+        {%- endcomment -%}
       </div>
       <div class="shop-url">{{ shop.url }}</div>
     </header>
+    
+    
 
     <main class="giftcard" role="main">
       <div class="giftcard__border{% if gift_card.expired or gift_card.enabled != true %} disabled{% endif %}">
@@ -53,11 +58,21 @@
               <strong>{{ formatted_initial_value }}</strong>
               <hr>
               <p>gift certificates</p>
-              {% assign code_size = gift_card.code | format_code | size %}
-              <div class="giftcard__code{% if code_size <= 25 %} giftcard__code--large{% elsif code_size > 25 and code_size <= 30 %} giftcard__code--medium{% else %} giftcard__code--small{% endif %}" onclick="selectText('GiftCardDigits');">
-                <div class="giftcard__code__inner">
-                  <strong class="giftcard__code__text" id="GiftCardDigits">{{ gift_card.code | format_code }}</strong>
-                </div>
+            </div>
+            
+            {% unless gift_card.properties == empty %}
+              {% for property in gift_card.properties %}
+                {% if property.first == "gift_note" %}
+                  <p class="gift-note">{{property.last }}</p>
+                {% endif %}
+              {% endfor %}
+            {% endunless %}
+            
+
+            {% assign code_size = gift_card.code | format_code | size %}
+            <div class="giftcard__code{% if code_size <= 25 %} giftcard__code--large{% elsif code_size > 25 and code_size <= 30 %} giftcard__code--medium{% else %} giftcard__code--small{% endif %}" onclick="selectText('GiftCardDigits');">
+              <div class="giftcard__code__inner">
+                <strong class="giftcard__code__text" id="GiftCardDigits">{{ gift_card.code | format_code }}</strong>
               </div>
             </div>
 
@@ -66,15 +81,6 @@
           <p class="giftcard__instructions">
             {{ 'gift_cards.issued.redeem' | t }}
           </p>
-          <div id="QrCode"></div>
-          <script>
-            new QRCode(document.getElementById('QrCode'), {
-              text: "{{ gift_card.qr_identifier }}",
-              width: 120,
-              height: 120
-            });
-          </script>
-
         </div>
       </div>
     </main>

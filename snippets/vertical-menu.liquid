@@ -1,6 +1,7 @@
 <div class="vertical-menu">
   {% for link in linklists[linklist].links %}
     {% if linklists[link.handle] == empty %}
+    {% assign target = '' %}
     {% assign link_url = link.url %}
       {% if link.title == 'Ecatalog' %}
         {% assign cls = 'ecatalog' %}

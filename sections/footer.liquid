@@ -155,9 +155,15 @@
               {% if block.settings.content %}
                 <div class="toggle_content">
                   <ul class="none">
+                    {% if block.settings.phone != blank %}
                     <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'phone' %} <span>Phone: {{block.settings.phone}}</span></li>
+                    {% endif %}
+                    {% if block.settings.email != blank %}
                     <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'email' %} <span>Email : {{block.settings.email}}</span></li>
+                    {% endif %}
+                    {% if block.settings.address != blank %}
                     <li class="flex is-align-center gap">{% include 'icon-pack' with icon: 'address' %} <span>{{block.settings.address | newline_to_br}}</span></li>
+                    {% endif %}
                   </ul>
                   {{ block.settings.content }}
                 </div>

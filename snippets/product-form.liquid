@@ -72,7 +72,32 @@
 
   {% if product.metafields.global.color_html != blank %}
   <div class="static-colors">
-    {{ product.metafields.global.color_html }}
+    {% assign options = product.metafields.global.color_html | split: 'T:' %}
+    {% if options.size > 1 %}
+      <div class="swatch is-flex is-flex-wrap">
+        <div class="option_title">Color</div>
+        
+        {% for option in options %}
+          {% if forloop.index > 1 %}
+          {% assign title = option | split: 'L:' | first %}
+          {% assign link = option | split: 'L:' | last %}
+          <div class="swatch-element color available">
+            <a href="/products/{{link}}">
+              <div class="tooltip">{{title}}</div>
+              {% assign value_handle = title | handle %}
+              {% assign color_name = product.vendor | handle | append: '-' | append: value_handle %}
+              {% assign image_link = color_name | append: '.' | append: 'png' | file_img_url: '480x' | prepend: 'https:' %}
+              <label style="background-image: url({{image_link}});"></label>
+            </a>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+        <div class="wrapper">
+          {{ product.metafields.global.color_html }}
+        </div>
+      {% endif %}
   </div>
   {% endif %}
   {% if settings.product_form_style == "swatches" and product.variants.size > 1 %}
@@ -99,7 +124,23 @@
 
   {% if product.metafields.global.size_html != blank %}
   <div class="static-size">
-    {{ product.metafields.global.size_html }}
+    <div class="swatch_options">
+      <div class="swatch is-flex is-flex-wrap">
+          <div class="option_title">Size</div>
+          {% assign options = product.metafields.global.size_html | split: 'T:' %}
+          {% for option in options %}
+            {% if forloop.index > 1 %}
+              {% assign title = option | split: 'L:' | first %}
+              {% assign link = option | split: 'L:' | last %}
+              <div class="swatch-element available">
+                <a href="/products/{{link}}">
+                    <label>{{title}}</label>
+                </a>
+              </div>
+            {% endif %}
+          {% endfor %}
+      </div>
+  </div>
   </div>
   {% endif %}
 
@@ -172,7 +213,19 @@
           </div>
       {% endif %}
     {% else %}
-      {% if product.metafields.global.qty_break_msg != blank %}
+      {% assign qty_message = '' %}
+      {% for block in section.blocks %}
+        {% if block.type == 'qty' %}
+          {% for p_collection in product.collections %}
+            {% if p_collection.handle == block.settings.collection %}
+              {% assign qty_message = block.settings.qty %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+      {% if qty_message != blank %}
+        <p class="qty_break_message">{% render 'qty_break' %}{{ qty_message }}</p>
+      {% elsif product.metafields.global.qty_break_msg != blank %}
         <p class="qty_break_message">{% render 'qty_break' %}{{ product.metafields.global.qty_break_msg }}</p>
       {% endif %}
     {% endif %}

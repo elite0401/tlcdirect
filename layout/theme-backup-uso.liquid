@@ -69,13 +69,16 @@
       {{ "customer_area.js" | shopify_asset_url | script_tag }}
     {% endif %}
     {{ content_for_header }}
+  {% include 'qikify-apps' %}
+
     {% include 'bold-common' %}
     {% render 'social-meta-info' %}
     {% if collection.previous_product %}<link rel="prev" href="{{ collection.previous_product }}">{% endif %}
     {% if collection.next_product %}<link rel="next" href="{{ collection.next_product }}">{% endif %}
-  {% include 'hulkcode_common' %}{% if template contains 'product' or template contains 'cart' %}<script src='https://ha-product-option.nyc3.digitaloceanspaces.com/assets/api/v2/hulkcode.js' defer='defer'></script>{% endif %}  {% include 'qikify-contactform' %}
+  {% include 'hulkcode_common' %}{% if template contains 'product' or template contains 'cart' %}<script src='https://ha-product-option.nyc3.digitaloceanspaces.com/assets/api/v2/hulkcode.js' defer='defer'></script>{% endif %}  
 
 {% include 'globo.formbuilder.scripts' %}
+  
 </head>
 
   {% if template contains "index" %}
