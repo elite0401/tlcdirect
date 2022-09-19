@@ -1,0 +1,50 @@
+{
+  "sections": {
+    "main": {
+      "type": "page-item-template",
+      "blocks": {
+        "9dd3374c-cb75-47a3-a541-da43bd2d2131": {
+          "type": "employee",
+          "settings": {
+            "title": "Jamie Ipsum",
+            "link": "",
+            "description": "<p>Powered by cats and coffee.<\/p>"
+          }
+        },
+        "cea15e7e-f77e-4a03-a207-1d897c902db3": {
+          "type": "employee",
+          "settings": {
+            "title": "Jamie Ipsum",
+            "link": "",
+            "description": "<p>Powered by cats and coffee.<\/p>"
+          }
+        },
+        "f1a4a071-e01e-47d9-8560-104ffab7056c": {
+          "type": "employee",
+          "settings": {
+            "title": "Jamie Ipsum",
+            "link": "",
+            "description": "<p>Powered by cats and coffee.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "9dd3374c-cb75-47a3-a541-da43bd2d2131",
+        "cea15e7e-f77e-4a03-a207-1d897c902db3",
+        "f1a4a071-e01e-47d9-8560-104ffab7056c"
+      ],
+      "settings": {
+        "image_position": "right",
+        "pre_heading": "",
+        "title": "Toni Brattin Wig Collection",
+        "text": "",
+        "text_position": "left",
+        "bg_color": "#e9effa",
+        "employee_per_row": 3
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

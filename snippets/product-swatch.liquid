@@ -24,21 +24,21 @@ Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
   <div class="option_title">{{ swatch }} 
     {%- assign product_tags = product.tags | join: ' ' -%}
     {% if settings.size_title == swatch %}
-      {%if settings.size_chart != blank and product_tags contains 'size-guide' %}
+      {%if settings.size_chart != blank and product.tagsproduct.tags contains 'size-guide' %}
         <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }}</a>
       {% endif %}
-      {% if settings.choose_chart != blank and product_tags contains 'size-guide' %}
+      {% if settings.choose_chart != blank and product.tags contains 'size-guide' %}
         <a href="javascript:;" class="size_chart" data-fancybox data-src="#choose-chart" data-type="inline" data-no-instant>{{ 'products.product.choose_chart' | t }}</a>
       {% endif %}
-      {%if settings.size_wig_chart != blank and product_tags contains 'size-wig-guide' %}
+      {%if settings.size_wig_chart != blank and product.tags contains 'size-wig-guide' %}
         <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-wig-chart" data-type="inline" data-no-instant>{{ 'products.product.size_wig_chart' | t }}</a>
       {% endif %}
-      {% if settings.choose_wig_chart != blank and product_tags contains 'size-wig-guide' %}
+      {% if settings.choose_wig_chart != blank and product.tags contains 'size-wig-guide' %}
         <a href="javascript:;" class="size_chart" data-fancybox data-src="#choose-wig-chart" data-type="inline" data-no-instant>{{ 'products.product.choose_wig_chart' | t }}</a>
-      {% elsif settings.choose_wig_link != blank and product_tags contains 'size-wig-guide' %}
+      {% elsif settings.choose_wig_link != blank and product.tags contains 'size-wig-guide' %}
         <a href="{{settings.choose_wig_link}}" class="size_chart">{{ 'products.product.choose_wig_chart' | t }}</a>
       {% endif %}
-    {% endif %} 
+    {% endif %}
   </div>
 
   {%- assign values = '' -%}
@@ -58,17 +58,14 @@ Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
       {% endif %}
       <input id="swatch-{{ option_index }}-{{ value | handle }}-{{ product.id }}{% if section.id %}-{{ section.id }}{% endif %}" type="radio" name="option-{{ option_index }}" aria-label="{{ value | escape }}" tabindex="0" value="{{ value | escape }}"{% if forloop.first %} checked{% endif %} />
 
-      <div tabindex="0"  value="{{ value | escape }}" data-value="{{ value | escape }}" data-id="{{ variant.id }}" class="swatch-element {% if is_color %}color{% endif %} {{ value | handle }}-swatch {% if variant.available %}available{% else %}soldout{% endif %}">
-        {% if is_color %}
-          <div class="tooltip">{{ placeholder }}</div>
-        {% endif %}
-        
+      <div tabindex="0"  value="{{ value | escape }}" data-value="{{ value | escape }}" data-id="{{ variant.id }}" class="swatch-element {% if is_color %}color{% endif %} {{ value | handle }}-swatch {% if variant.available %}available{% else %}soldout{% endif %}">        
         {% if is_color %}
           {% assign value_handle = value | handle %}
           {% assign color_name = product.vendor | handle | append: '-' | append: value_handle %}
           {% assign image_link = color_name | prepend: 'large-' | append: '.' | append: 'png' | file_img_url: '480x' | prepend: 'https:' %}
           <div class="enlarge-content">
             <img class="lazyload" data-src="{{ image_link }}" onError="style.display = 'none';">
+            <div class="label">{{placeholder}}</div> 
           </div>
           
           {% assign image_link = color_name | append: '.' | append: file_extension | file_img_url: '100x' | prepend: 'https:' %}

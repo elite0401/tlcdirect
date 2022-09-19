@@ -7,6 +7,20 @@ $(document).ready(function() {
     wrapAround: true
   });
 
+  $('.static-colors').each(function () {
+    var swatch_section = $(this);
+    var swatch_elements = swatch_section.find('.swatch-element');
+    swatch_elements.each(function () {
+      var label = $(this).find('label');
+      var bg = label.css('background-image');
+          bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
+      console.log(bg);
+      var image = `<img class="lazyload" data-src="${bg}"><span>${$(this).find('.tooltip').text()}</span>`;
+      var tooltip = $(this).find('.tooltip').html(image);
+    })
+   
+  })
+
   $(document).on('click', '.email_friend_btn', function (e) {
     e.preventDefault();
     var email_product_data = {
@@ -157,14 +171,14 @@ $(document).ready(function() {
     });
     $('.shopify-section--product-template .product__info .product_form .swatch_options .color .enlarge-content').each(function (e) {
       var document_width = $(document).width();
-      var popup_position = $(this).offset().left + 260;
-      console.log(popup_position)
-      console.log(document_width)
-      if (popup_position > document_width) {
-        var left_position = popup_position - document_width;
-        
+      var popup_width = 264;
+      var popup_position = $(this).offset().left;
+      
+      if ((popup_position+popup_width) > document_width) {
+        var left_position = popup_position+popup_width - document_width;
+        console.log(left_position)
         $(this).css({
-          left: -(25 + left_position)
+          left: -(left_position)
         })
       }
     });

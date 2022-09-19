@@ -219,7 +219,8 @@
         {% endif %}
 
         <p class="credits">
-          {{ section.settings.copyright_text }}
+          {% assign year = 'now' | date: '%Y' %}
+          {{ section.settings.copyright_text | replace: '[year]', year }}
         </p>
 
         {% if section.settings.display_payment_methods %}

@@ -35,16 +35,20 @@
     {{ 'style.min.css' | asset_url | stylesheet_tag }}
     {{ 'custom.scss.css' | asset_url | stylesheet_tag }}
     <style>
-      #preview-bar-iframe{
-        display: none;
-      }
       @media only screen and (max-width:1023px){
         #pagecontent{
           display:block;
-          margin-top:130px;
+          margin-top:140px;
         }
       }
     </style>
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5HDQQBT');</script>
+<!-- End Google Tag Manager -->
     <script>
       window.lazySizesConfig = window.lazySizesConfig || {};
       lazySizesConfig.expand = 300;
@@ -93,7 +97,7 @@
       {%- render 'bold-common' -%}
       {%- include 'bold-product' with product, hide_action: 'header' -%}
       {% include 'qikify-contactform' %}
-      {% include 'globo.formbuilder.scripts' %}
+      
     {% endunless %}
     
 </head>
@@ -109,6 +113,11 @@
         data-shop-currency="{{ shop.currency }}"
         data-shop-url="{{ shop.url }}">
 
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5HDQQBT"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  
     {% section 'header' %}
 
     <div class="mega-menu-container">
@@ -179,7 +188,7 @@
     </script>
     <script src="{{ 'vendors.js' | asset_url }}"></script>
     <script src="{{ 'sections.min.js' | asset_url }}"></script>
-    <script src="{{ 'utilities.min.js' | asset_url }}"></script>
+    <script src="{{ 'utilities.js' | asset_url }}"></script>
     <script src="{{ 'app.js' | asset_url }}"></script>
     <script src="{{ 'custom.js' | asset_url }}"></script>
 

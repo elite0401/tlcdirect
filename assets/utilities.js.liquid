@@ -433,6 +433,7 @@ var enableLoadMoreButton = function(parentClass) {
 
 var enableLoadMoreProducts = function(){
   $('body').on('click', '.js-load-more a', function(e){
+    
     enableInfiniteScroll();
     e.stopPropagation();
     return false;
@@ -440,6 +441,7 @@ var enableLoadMoreProducts = function(){
 }
 
 var enableInfiniteScroll = function(){
+  
   if ($('.collection-matrix').length) {
     var infiniteScroll = new Waypoint.Infinite({
       element: $('.collection-matrix')[0],
@@ -447,7 +449,8 @@ var enableInfiniteScroll = function(){
       more: '.load-more__btn',
       loadingClass: 'loading-in-progress',
       onBeforePageLoad: function(){
-        $('.js-load-more').hide();
+        Waypoint.disableAll()
+        $('.load-more__btn').hide();
       },
       onAfterPageLoad: function(data){
         $('.collection-matrix > .collection-matrix .thumbnail').unwrap('.collection-matrix');
@@ -499,6 +502,7 @@ var enableLoadMoreSearch = function(){
 }
 
 var enableInfiniteSearchScroll = function(){
+  console.log("searchinfinite")
   if ($('.search-matrix').length) {
     var infiniteSearchScroll = new Waypoint.Infinite({
       element: $('.search-matrix')[0],
@@ -506,6 +510,7 @@ var enableInfiniteSearchScroll = function(){
       more: '.load-more__btn',
       loadingClass: 'loading-in-progress',
       onBeforePageLoad: function(){
+        Waypoint.disableAll()
         $('.js-load-more').hide();
       },
       onAfterPageLoad: function(data){
@@ -538,6 +543,8 @@ var enableInfiniteSearchScroll = function(){
         if (Shopify.theme_settings.collection_secondary_image){
           imageFunctions.showSecondaryImage();
         }
+
+        Waypoint.refreshAll()
       }
     })
   }
@@ -630,7 +637,7 @@ var quickFilter = {
     quickFilter.processUrl(path, currentTags, query);
   },
   updateView: function(filterURL) {
-
+    console.log(filterURL)
     $.ajax({
       type: 'GET',
       url: filterURL,
@@ -1405,7 +1412,6 @@ var quickShop = {
 
     //EVENT - click on quick-shop
     if (Shopify.media_queries.desktop.matches) {
-      console.log("asdfasdf")
       $('body').on('click', '.js-quick-shop-link', function(e){
         e.stopImmediatePropagation();
         e.preventDefault();

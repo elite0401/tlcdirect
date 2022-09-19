@@ -53,7 +53,9 @@
         </div>
         <div class="newsletter one-half column">
         <span class="message"></span>
+          <a href="//app.greenrope.com/j1.pl?9ec6ce8b4e17b30be35bd456021964a4fa899c1f11072b9e2780d213f0aa6bdb" target="_blank" class="action_button sign_up">SIGN UP</a>
 
+          {% comment %}
         {% if settings.mailchimp_link != blank %}
           <form action="{{ settings.mailchimp_link }}" method="post" name="mc-embedded-subscribe-form" id="contact_form" target="_blank">
             {% if form.posted_successfully? %}
@@ -107,6 +109,7 @@
             </div>
           {% endform %}
         {% endif %}
+        {% endcomment %}
         </div>
       </div>
   </div>

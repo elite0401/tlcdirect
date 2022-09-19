@@ -18,7 +18,7 @@
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="format-detection" content="telephone=no">
-
+  {{ content_for_header }}
   {{ 'styles.css' | asset_url | stylesheet_tag }}
   {{ 'gift-card.css' | asset_url | stylesheet_tag }}
   {{ 'modernizr.gift-card.js' | shopify_asset_url | script_tag }}
@@ -43,19 +43,8 @@
         <div class="giftcard__content">
 
           <div class="giftcard__wrap {% if section.settings.image == blank %}no-banner{% endif %}">
-            {% comment %}
             {% if section.settings.image != blank %}
             <img src="{{ section.settings.image | img_url: '2048x' }}" alt="{{ 'gift_cards.issued.subtext' | t }}">
-            {% endif %}
-            {% endcomment %}
-            {% if gift_card.product.featured_image != blank %}
-            
-              <img src="{{ gift_card.product.featured_image | img_url: '2048x' }}" alt="{{ 'gift_cards.issued.subtext' | t }}">
-            
-            {% elsif section.settings.image != blank %}
-            
-              <img src="{{ section.settings.image | img_url: '2048x' }}" alt="{{ 'gift_cards.issued.subtext' | t }}">
-            
             {% endif %}
             
 
