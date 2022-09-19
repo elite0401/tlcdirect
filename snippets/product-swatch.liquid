@@ -24,18 +24,18 @@ Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
   <div class="option_title">{{ swatch }} 
     {%- assign product_tags = product.tags | join: ' ' -%}
     {% if settings.size_title == swatch %}
-      {%if settings.size_chart != blank and product.tagsproduct.tags contains 'size-guide' %}
+      {%if settings.size_chart != blank and product.tags contains 'size-guide' %}
         <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-chart" data-type="inline" data-no-instant>{{ 'products.product.size_chart' | t }}</a>
       {% endif %}
-      {% if settings.choose_chart != blank and product.tags contains 'size-guide' %}
+      {% if settings.choose_chart != blank and product.tags contains 'choose-guide' %}
         <a href="javascript:;" class="size_chart" data-fancybox data-src="#choose-chart" data-type="inline" data-no-instant>{{ 'products.product.choose_chart' | t }}</a>
       {% endif %}
       {%if settings.size_wig_chart != blank and product.tags contains 'size-wig-guide' %}
         <a href="javascript:;" class="size_chart" data-fancybox data-src="#size-wig-chart" data-type="inline" data-no-instant>{{ 'products.product.size_wig_chart' | t }}</a>
       {% endif %}
-      {% if settings.choose_wig_chart != blank and product.tags contains 'size-wig-guide' %}
+      {% if settings.choose_wig_chart != blank and product.tags contains 'choose-wig-guide' %}
         <a href="javascript:;" class="size_chart" data-fancybox data-src="#choose-wig-chart" data-type="inline" data-no-instant>{{ 'products.product.choose_wig_chart' | t }}</a>
-      {% elsif settings.choose_wig_link != blank and product.tags contains 'size-wig-guide' %}
+      {% elsif settings.choose_wig_link != blank and product.tags contains 'choose-wig-guide' %}
         <a href="{{settings.choose_wig_link}}" class="size_chart">{{ 'products.product.choose_wig_chart' | t }}</a>
       {% endif %}
     {% endif %}

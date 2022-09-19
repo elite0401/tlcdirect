@@ -452,9 +452,9 @@
   "shopify": {
     "checkout": {
       "order_summary": {
+        "gift_card_and_discount_placeholder": "Gift card",
         "gift_card_and_discount_title": "Gift card",
-        "gift_card_and_discount_label": "Gift card",
-        "gift_card_and_discount_placeholder": "Gift card"
+        "gift_card_and_discount_label": "Gift card"
       }
     }
   }
