@@ -120,11 +120,8 @@ $(document).ready(function() {
         `);
     }
   });
-  $(document).on('click','#shopify-section-page-details-template [data-element="oct-quiz-btn oct-quiz-media"]', function (e) {
-    e.preventDefault();
-    location.reload();
-  })
-  $(document).on('click','#quiz-popup [data-element="oct-quiz-btn oct-quiz-media"]', function (e) {
+  
+  $('#quiz-popup').on('click','[data-element="oct-quiz-btn oct-quiz-media"]', function (e) {
     e.preventDefault();
     $('.fancybox-slide #quiz-popup').html(`
       <div class="heading">
@@ -135,7 +132,12 @@ $(document).ready(function() {
       </div>
       <button type="button" data-fancybox-close="" class="fancybox-button fancybox-close-small" title="Close"><svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 24 24"><path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path></svg></button>
     `);
-    console.log("asdfasdf")
+    console.log("asdfasdf");
+  });
+
+  $(document).on('click','.page [data-element="oct-quiz-btn oct-quiz-media"]', function (e) {
+    e.preventDefault();
+    location.reload();
   })
 
   if ($(window).width() < 1024) {
