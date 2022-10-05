@@ -71,9 +71,12 @@
     </div>
   </div>
   <div class="top-bar">
-    <div class="side-icon">
-      {% include 'icon-pack' with icon: 'side-logo' %}
-    </div>
+    {% if section.settings.side_icon %}
+      <div class="side-icon">
+        <img src="{{ section.settings.side_icon | img_url: '320x' }}" alt="{{ shop.name | escape }}" class="lazyload" />
+      </div>
+    {% endif %}
+    
 
     <a href="{{ routes.root_url }}" title="{{ shop.name | escape }}" class="mobile_logo logo">
       {% if section.settings.logo_mobile != blank %}
@@ -310,9 +313,12 @@
             </div>
           {% endif %}
         {% endcapture %}
-        <div class="side-icon">
-          {% include 'icon-pack' with icon: 'side-logo' %}
-        </div>
+        {% if section.settings.side_icon != blank %}
+          <div class="side-icon">
+            <img src="{{ section.settings.side_icon | img_url: '320x' }}" alt="{{ shop.name | escape }}" class="lazyload" />
+          </div>
+        {% endif %}
+        
         
         {% if section.settings.phone_number != blank %}
           <div class="phone">
@@ -672,6 +678,12 @@
         "max": 205,
         "default": 205,
         "unit": "px"
+      },
+      {
+        "type": "image_picker",
+        "id": "side_icon",
+        "label": "Side icon",
+        "info": "160px recommended"
       },
       {
         "type": "image_picker",
