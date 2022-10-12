@@ -125,6 +125,9 @@
                 {% if block.settings.icon != blank and block.settings.icon_position == 'top' %}
                   {{ block.settings.icon }}
                 {% endif %}
+                {% if block.settings.icon_image != blank and block.settings.icon_position == 'top' %}
+                  {{ block.settings.icon_image | image_url: width: 110 | image_tag: class: 'icon' }}
+                {% endif %}
                 {% if block.settings.title != blank %}
                 <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
                   {{ block.settings.title | escape }}
@@ -240,6 +243,7 @@
                 {% if block.settings.icon != blank and block.settings.icon_position == 'top' %}
                   {{ block.settings.icon }}
                 {% endif %}
+                
                 {% if block.settings.title != blank %}
                 <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
                   {{ block.settings.title | escape }}
@@ -517,6 +521,11 @@
           "type": "html",
           "id": "icon",
           "label": "Icon"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image"
         },
         {
           "type": "select",
