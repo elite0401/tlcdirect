@@ -817,6 +817,16 @@ a[data-src="#email_friend"]{
     .banner_content{
       width: calc(50% - 10px);
       position: relative;
+      .banner_image {
+        height: 100%;
+        .image-element__wrap {
+          height: 100%;
+          img {
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
       &.below-true{
         display: flex;
         .banner_image {
