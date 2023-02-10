@@ -45,7 +45,6 @@ FLAGS:
   {%- if shop.metafields.shop_csp_tag_group.shop_csp_tag or bold_variant.metafields.shappify_csp -%}
     {%- assign csp_flag_string = ' (' | append: bold_variant_customer_tag | append: ')' -%}
     {%- assign all_shop_tags = shop.metafields.shop_csp_tag_group.shop_csp_tag | append: ',default' | split: ',' -%}
-
     {%- unless bold_variant.metafields.shappify_csp.csp_tag == blank -%}
 
       {%- if bold_variant.metafields.shappify_csp.csp_tag == 'default' and bold_variant_customer_tag != 'default' -%}
