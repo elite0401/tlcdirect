@@ -212,21 +212,27 @@
           </div>
           </div>
       {% endif %}
-    {% else %}
+    {% elsif section.settings.hide_all == false %}
       {% assign qty_message = '' %}
       {% for block in section.blocks %}
         {% if block.type == 'qty' %}
-          {% for p_collection in product.collections %}
-            {% if p_collection.handle == block.settings.collection %}
+          {% if block.settings.collection == blank %}
+            {% if section.settings.hide_site_level == false %}
               {% assign qty_message = block.settings.qty %}
             {% endif %}
-          {% endfor %}
+          {% elsif section.settings.hide_cp_level == false %}
+            {% for p_collection in product.collections %}
+              {% if p_collection.handle == block.settings.collection %}
+                {% assign qty_message = block.settings.qty %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
         {% endif %}
       {% endfor %}
-      {% if qty_message != blank %}
-        <p class="qty_break_message">{% render 'qty_break' %}{{ qty_message }}</p>
-      {% elsif product.metafields.global.qty_break_msg != blank %}
+      {% if product.metafields.global.qty_break_msg != blank and section.settings.hide_pdp_level == false %}
         <p class="qty_break_message">{% render 'qty_break' %}{{ product.metafields.global.qty_break_msg }}</p>
+      {% elsif qty_message != blank %}
+        <p class="qty_break_message">{% render 'qty_break' %}{{ qty_message }}</p>
       {% endif %}
     {% endif %}
     
