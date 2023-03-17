@@ -89,9 +89,9 @@
 
           </div>
 
-          <p class="giftcard__instructions">
-            {{ 'gift_cards.issued.redeem' | t }}
-          </p>
+          <div class="giftcard__instructions">
+            {{ section.settings.text }}
+          </div>
         </div>
       </div>
     </main>
@@ -149,6 +149,12 @@
           "id": "title",
           "label": "Gift title",
           "default": "Gift Card"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Use this code at checkout to redeem your gift card</p>"
         }
     ]
 }

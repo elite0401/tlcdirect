@@ -119,7 +119,7 @@
         <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
       </div>
     {% endif %}
-    {% if product.metafields.global.qty_break_msg != blank %}
+    {% if product.metafields.global.qty_break_msg != blank and section.settings.qty_msg_enable %}
       <p class="qty_break_message">{% render 'qty_break' %}{{ product.metafields.global.qty_break_msg }}</p>
     {% endif %}
     <div class="purchase-details__buttons purchase-details__spb--{{ show_payment_button }} {% if product.available == false %}product-is-unavailable{% endif %}">
