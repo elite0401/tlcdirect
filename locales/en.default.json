@@ -354,7 +354,7 @@
       "disabled": "Disabled",
       "expired": "Expired on {{ expiry }}",
       "active": "Expires on {{ expiry }}",
-      "redeem": "Use this code at checkout to redeem your gift card",
+      "redeem": "Use this code at checkout to redeem your gift card. Please keep your card in case you need to make a return. Refunds are conveniently placed back onto the gift card making it easy for you to purchase another item. ",
       "shop_link": "Start shopping",
       "print": "Print"
     }
