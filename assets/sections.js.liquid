@@ -638,7 +638,6 @@ selectCallback = function(variant, selector) {
     }
   }
 
-  console.log(variant)
   $product.find($notify_form).hide();
 
   if (variant && variant.available == true) {
@@ -740,7 +739,6 @@ selectCallback = function(variant, selector) {
 };
 
 QuickshopselectCallback = function(variant, selector) {
-  console.log(selector);
   var $product = $('.quick-shop__lightbox');
   var $notify_form = $('.notify-form-' + selector.product.id + ' .contact-form');
   var $productForm = $('.product_form, .shopify-product-form', $product);
@@ -2336,7 +2334,6 @@ var header = {
 
     //Remove theme-editor data-attributes
     header.removeDataAttributes('.header .mega-menu.dropdown_container .dropdown_column');
-    console.log(Shopify.media_queries)
     if (is_touch_device() || Shopify.media_queries.medium.matches) {
       $('.dropdown_link').attr('data-no-instant', true);
     }
@@ -2503,7 +2500,7 @@ var globalAccordions = {
 
 function refreshCart(cart) {
     $('.show_loading').addClass('active');
-    var bold_qb_ajax = function (cart) {
+    var qb_ajax = function (cart) {
       $(".cart_count").empty();
       $cartBtn = $(".cart_count");
       var value = $cartBtn.text() || '0';
@@ -2548,16 +2545,8 @@ function refreshCart(cart) {
                 '<img src="' + item.image.replace(/(\.[^.]*)$/, "_compact$1").replace('http:', '') + '" alt="' + htmlEncode(item.title) + '" />' +
               '</div></a>';
           }
-          var boldTitleFix = item.title;
-          if(item.title.includes("(default)")){
-            var index = item.title.indexOf("(default)");
-            var index2 = item.title.indexOf("/ ");
-            var index3 = item.title.indexOf("(default)", item.title.indexOf("(default)") + 1);
-            boldTitleFix = item.title.substring(0, index) + item.title.substring(index2, index3);
-            
-          }
           
-          cart_items_html += '<div class="mini-cart__item--content"><div class="mini-cart__item__title"><div class="item_title"><a href="' + item.url + '">' + boldTitleFix + '</a></div>';
+          cart_items_html += '<div class="mini-cart__item--content"><div class="mini-cart__item__title"><div class="item_title"><a href="' + item.url + '">' + item.title + '</a></div>';
 
           // if(item.properties) {
           //   $.each(item.properties, function(title, value) {
@@ -2625,10 +2614,10 @@ function refreshCart(cart) {
       }
     }
     if (typeof shappify_csp_got_cart == 'function') {
-      shappify_csp_got_cart(cart,bold_qb_ajax)
+      shappify_csp_got_cart(cart, qb_ajax)
     }
 
     else {
-      bold_qb_ajax(cart);
+      qb_ajax(cart);
     }
 }

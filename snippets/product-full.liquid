@@ -1,8 +1,6 @@
 {% for product in products %}
-<script type="application/json" class="bold-product-json">{%- render 'bold-product', output: 'json' -%}</script>
   {% assign collection_handles = product.collections | map: 'handle' %}
-  {% assign variant = bold_selected_or_first_available_variant %}
-{%- render 'bold-variant' with variant, output: 'none' -%}
+  {% assign variant = product.selected_or_first_available_variant %}
 
   <div class="product-{{ product.id }} section">
     <div class="product_section js-product_section">
@@ -13,7 +11,7 @@
           %}
 
         <div class="banner_holder">
-          {% if settings.sale_banner_enabled and bold_compare_at_price > bold_price %}
+          {% if settings.sale_banner_enabled and product.compare_at_price > product.price %}
             <div class="sale_banner_product">{{ 'collections.general.sale' | t }}</div>
           {% endif %}
 
@@ -47,17 +45,17 @@
         {% else %}
           <p class="modal_price">
             <span class="sold_out">{% if variant.available == false %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
-            <span content="{{ bold_variant_price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > bold_variant_price %}sale{% endif %}">
+            <span content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
               <span class="current_price {% if product.available == false %}hidden{% endif %}">
-                {% if bold_variant_price > 0 %}
-                  <span class="money">{% render 'price-element', price: bold_price %}</span>
+                {% if variant.price > 0 %}
+                  <span class="money">{% render 'price-element', price: variant.price %}</span>
                 {% else %}
                   {{ settings.free_price_text }}
                 {% endif %}
               </span>
             </span>
             <span class="was_price">
-            {% if bold_variant_price < variant.compare_at_price and variant.available %}
+            {% if variant.price < variant.compare_at_price and variant.available %}
               <span class="money">{% render 'price-element', price: variant.compare_at_price %}</span>
             {% endif %}
             </span>

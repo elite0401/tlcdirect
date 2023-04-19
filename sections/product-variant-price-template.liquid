@@ -1,4 +1,3 @@
-{%- include 'bold-product' with product, hide_action: 'break', output: 'none' -%}
 {% comment %}
 ** Product - default view **
 - Product template
@@ -25,12 +24,11 @@
 
     <div class="one-half columns large-down--one-whole product__info">
       {%- assign collection_handles = product.collections | map: 'handle' -%}
-      {%- assign variant = bold_selected_or_first_available_variant -%}
-      {%- include 'bold-variant' with variant, output: 'none' -%}
+      {%- assign variant = product.selected_or_first_available_variant -%}
 
 
       {% if product.available %}
-        {% if settings.sale_banner_enabled and bold_compare_at_price > bold_price %}
+        {% if settings.sale_banner_enabled and product.compare_at_price > product.price %}
           <div class="sale_banner_product">{{ 'collections.general.sale' | t }}</div>
         {% endif %}
       {% endif %}
@@ -77,9 +75,9 @@
           <div class="modal_price">
             {% assign variant_price_str = '' %}
             {% for variant in product.variants %}
-              {% unless variant_price_str contains bold_variant_price %}
+              {% unless variant_price_str contains variant.price %}
                 <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
-                  {% if variant.compare_at_price > bold_variant_price %}
+                  {% if variant.compare_at_price > variant.price %}
                     <span class="was_price_variant">
                         <span class="label">
                           {% for value in price_option_arr.values %}
@@ -91,8 +89,8 @@
                         <del>{% include 'price-element', price: variant.compare_at_price %}</del>
                     </span>
                   {% endif %}
-                  <span content="{{ bold_variant_price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > bold_variant_price %}sale{% endif %}">
-                    {% if variant.compare_at_price > bold_variant_price %}
+                  <span content="{{ variant.price | money_without_currency | remove: "," }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
+                    {% if variant.compare_at_price > variant.price %}
                       Sale Price: 
                     {% else %}
                       <span class="label">
@@ -105,7 +103,7 @@
                     {% endif %}
                     
                     <span class="current_price_variant">
-                      {% if bold_variant_price > 0 %}
+                      {% if variant.price > 0 %}
                         <span class="money">{% include 'price-element', price: variant.price %}</span>
                       {% else %}
                         {{ settings.free_price_text }}
@@ -115,8 +113,8 @@
   
                   {% if section.settings.display_savings %}
                     <span class="sale savings">
-                      {% if bold_variant_price < variant.compare_at_price %}
-                        {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_variant_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% include 'price-element', price: compare_at -%}</span>)
+                      {% if variant.price < variant.compare_at_price %}
+                        {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price %}{% include 'price-element', price: compare_at -%}</span>)
                       {% endif %}
                     </span>
                 {% endif %}
@@ -132,7 +130,7 @@
               {% if product.metafields.global.suggested_retail_price != blank %}
               {% assign cls = 'retail-price-container' %}
               {% endif %}
-              <div class="price__container {{cls}} {% if variant.compare_at_price > bold_price %}sale{% endif %} price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
+              <div class="price__container {{cls}} {% if variant.compare_at_price > variant.price %}sale{% endif %} price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
                 {% if product.metafields.global.suggested_retail_price != blank %}
                     
                   <p class="retail_price">
@@ -145,14 +143,14 @@
                 
                 <p class="compare_price">
                   <span class="was_price">
-                    {% if bold_variant_price < variant.compare_at_price %}
+                    {% if variant.price < variant.compare_at_price %}
                     <span class="money">{{ variant.compare_at_price | money }}</span></span>
                     {% endif %}
                 </p>
                 
-                <p content="{{ bold_price | money_without_currency | remove: "," }}" class="current_price">
-                  {% if bold_price > 0 %}
-                    <span class="money">{{ bold_price | money }}</span>
+                <p content="{{ variant.price | money_without_currency | remove: "," }}" class="current_price">
+                  {% if variant.price > 0 %}
+                    <span class="money">{{ variant.price | money }}</span>
                   {% else %}
                     {{ settings.free_price_text }}
                   {% endif %}
@@ -161,8 +159,8 @@
                 
                 {% if section.settings.display_savings %}
                   <span class="sale savings">
-                    {% if bold_price < variant.compare_at_price %}
-                      {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: bold_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% include 'price-element', price: compare_at -%}</span>)
+                    {% if variant.price < variant.compare_at_price %}
+                      {{ 'products.product.savings' | t }}  {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{%- assign compare_at = variant.compare_at_price | minus: variant.price %}{% include 'price-element', price: compare_at -%}</span>)
                     {% endif %}
                   </span>
                 {% endif %}

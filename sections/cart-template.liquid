@@ -2,7 +2,6 @@
 ** Cart page - default view **
 - Template section
 {% endcomment %}
-{%- include 'bold-cart' -%}
 <section class="section">
   <a name="pagecontent" id="pagecontent"></a>
   <div class="container content cart-page-container" >
@@ -31,8 +30,6 @@
             {%- assign total_saving = 0 -%}
 
             {% for item in cart.items %}
-              {%- include 'bold-cart-item' with item -%}
-              <script type="application/json" class="bold-product-json">{{ item.product | json }}</script>
               {% if item.variant.compare_at_price > item.variant.price %}
                 {%- assign saving = item.variant.compare_at_price | minus: item.variant.price | times: item.quantity -%}
                 {%- assign total_saving = saving | plus: total_saving -%}
@@ -61,13 +58,8 @@
                     <p class="meta">
                       {% for option in item.product.options %}
                       
-                      {% assign bold_title_fix = item.variant.options[forloop.index0] %}
-                      {% if item.variant.options[forloop.index0] contains "(default)" %}
-                      {% assign bold_title_fixed = item.variant.options[forloop.index0] | split: ' (' %}
-                      {% assign bold_title_fix = bold_title_fixed[0] %}
-                      {% endif %}
                       <p class="meta">
-                        <span class="label">{{ option }}:</span> <span>{{bold_title_fix}}</span><span class="space"></span>
+                        <span class="label">{{ option }}:</span> <span>{{item.variant.options[forloop.index0]}}</span><span class="space"></span>
                       </p>
                         
                       {% endfor %}
@@ -235,7 +227,7 @@
 
                 <p class="cart_subtotal js-cart_subtotal">
                   <span class="right">
-                    <span class="money" data-key="{{item.key}}" data-cart-total>{{ bold_cart_total_price | money }}</span>
+                    <span class="money" data-key="{{item.key}}" data-cart-total>{{ cart.total_price | money }}</span>
                   </span>
                   <span>{{ 'cart.general.subtotal' | t }}</span>
                 </p>

@@ -37,7 +37,6 @@
         {% else %}
           {% assign BTL_image = BTL_product.featured_media.preview_image %}
         {% endif %}
-        <script>console.log({{BTL_product | json }})</script>
         <div class="image__container">
           {% include 'image-element',
             image: BTL_image,

@@ -14,7 +14,7 @@ $(document).ready(function() {
       var label = $(this).find('label');
       var bg = label.css('background-image');
           bg = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
-      console.log(bg);
+
       var image = `<img class="lazyload" data-src="${bg}"><span>${$(this).find('.tooltip').text()}</span>`;
       var tooltip = $(this).find('.tooltip').html(image);
     })
@@ -30,7 +30,7 @@ $(document).ready(function() {
       "description": $(this).data('product_description'),
       "link": $(this).data('product_link')
     }
-    console.log(email_product_data)
+
     $.fancybox.open($('#email_friend'), {
       hash: false,
       infobar : false,
@@ -50,8 +50,6 @@ $(document).ready(function() {
       },
       afterLoad: function(){
         var html = `${email_product_data.image}//split//${email_product_data.title}//split//${email_product_data.price}//split//${email_product_data.link}//split//${email_product_data.description}`;
-        console.log(html)
-        console.log($('.fancybox-content').find('#49115-textarea-2'));
         $(document).find('.fancybox-content textarea#49115-textarea-2.flat-input').val(html);
         $(document).find('.fancybox-content textarea#49115-textarea-2.flat-input').parent().hide()
       },
@@ -132,7 +130,6 @@ $(document).ready(function() {
       </div>
       <button type="button" data-fancybox-close="" class="fancybox-button fancybox-close-small" title="Close"><svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 24 24"><path d="M13 12l5-5-1-1-5 5-5-5-1 1 5 5-5 5 1 1 5-5 5 5 1-1z"></path></svg></button>
     `);
-    console.log("asdfasdf");
   });
 
   $(document).on('click','.page [data-element="oct-quiz-btn oct-quiz-media"]', function (e) {
@@ -178,7 +175,7 @@ $(document).ready(function() {
       
       if ((popup_position+popup_width) > document_width) {
         var left_position = popup_position+popup_width - document_width;
-        console.log(left_position)
+        
         $(this).css({
           left: -(left_position)
         })
@@ -188,8 +185,6 @@ $(document).ready(function() {
     $('.shopify-section--product-template .product__info .product_form .swatch_options .color .enlarge-content').each(function (e) {
       var document_width = $(document).width();
       var popup_position = $(this).offset().left + 140;
-      console.log(popup_position)
-      console.log(document_width)
       if (popup_position > document_width) {
         var left_position = popup_position - document_width;
         
@@ -269,7 +264,6 @@ $(document).ready(function() {
 });
 var print_status = false;
 function printDiv(divName) {
-  console.log(print_status);
   if ($(window).width() > 768) {
     var printContents = document.getElementById(divName).innerHTML;
     var originalContents = document.body.innerHTML;
@@ -283,9 +277,7 @@ function printDiv(divName) {
     mywindow.focus();
     mywindow.print();
     mywindow.onafterprint = function(event){
-      console.log("Printing completed...");
       mywindow.close();
-      console.log("asdfasd")
     }
   } else {
     if (print_status == false) {
@@ -299,10 +291,8 @@ function printDiv(divName) {
       window.document.close();
       window.print();
       document.getElementsByTagName("BODY")[0].onafterprint = function(event){
-        console.log("Printing completed...");
         window.document.write(originalContents);
         window.document.close();
-        console.log("asdfasd")
       }
       print_status = true;
     } else {

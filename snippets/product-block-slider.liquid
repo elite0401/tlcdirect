@@ -36,7 +36,7 @@
           <div class="relative product_image">
             <a href="{{ product.url | within: collection }}">
               <div class="image__container">
-                {% if bold_selected_or_first_available_variant.image %}
+                {% if product.selected_or_first_available_variant.image %}
                   {% render 'image-element',
                           image: product.selected_or_first_available_variant.image,
                           alt: alt_text,

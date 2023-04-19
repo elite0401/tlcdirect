@@ -1,7 +1,6 @@
 {% comment %}
 ** Product snippet - only used as AJAX reference for recently viewed **
 {% endcomment %}
-{%- include 'bold-product' with product, hide_action: 'break', output: 'none' -%}
 <div class="js-recently-viewed-product">
   <div class="product-wrap {% if settings.collection_secondary_image != blank and product.media[1] != blank %}has-secondary-media-swap{% endif %}">
       <div class="relative product_image">

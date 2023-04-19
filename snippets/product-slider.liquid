@@ -49,13 +49,12 @@
                   visible-{{ visible_products }}
                   quick-shop-style--{{ settings.quick_shop_style }}
                   product-{{ product.id }}">
-                  <script type="application/json" class="bold-product-json">{%- include 'bold-product', output: 'json' -%}</script>
                   {%- assign collection_handles = product.collections | map: 'handle' -%}
         <div class="product-wrap {% if settings.collection_secondary_image != blank and product.media[1] != blank %}has-secondary-media-swap{% endif %}">
           <div class="relative product_image">
             <a href="{{ product.url | within: collection }}">
               <div class="image__container">
-                {% if bold_selected_or_first_available_variant.image %}
+                {% if product.selected_or_first_available_variant.image %}
                   {% render 'image-element',
                           image: product.selected_or_first_available_variant.image,
                           alt: alt_text,
