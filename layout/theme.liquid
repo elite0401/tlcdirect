@@ -74,7 +74,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {% else %}
       <link rel="shortcut icon" type="image/x-icon" href="{{ 'favicon.png' | asset_url }}">
     {% endif %}
-    <link rel="canonical" href="{{ canonical_url }}" />
+    {% if template contains 'collection' %}
+    	<link rel="canonical" href="{{ shop.url }}{{ collection.url }}" />
+    {% elsif template contains 'blog' %}
+    	<link rel="canonical" href="{{ blog.url }}" />
+    {% else %}
+    	<link rel="canonical" href="{{ canonical_url }}" />
+    {% endif %}
 
     {% if template contains 'customer' %}
       {{ "shopify_common.js" | shopify_asset_url | script_tag }}
@@ -94,8 +100,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     {% unless template contains 'index' %}
       {% include 'discountduck-loader' %}
-      {%- render 'bold-common' -%}
-      {%- include 'bold-product' with product, hide_action: 'header' -%}
       {% include 'qikify-contactform' %}
       
     {% endunless %}

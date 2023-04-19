@@ -502,7 +502,6 @@ var enableLoadMoreSearch = function(){
 }
 
 var enableInfiniteSearchScroll = function(){
-  console.log("searchinfinite")
   if ($('.search-matrix').length) {
     var infiniteSearchScroll = new Waypoint.Infinite({
       element: $('.search-matrix')[0],
@@ -637,7 +636,6 @@ var quickFilter = {
     quickFilter.processUrl(path, currentTags, query);
   },
   updateView: function(filterURL) {
-    console.log(filterURL)
     $.ajax({
       type: 'GET',
       url: filterURL,
@@ -1449,7 +1447,6 @@ var quickShop = {
               custom_message: $thumbnail.data("message"),
               money_format: $('body').data('money-format')
             }
-            console.log(productData);
             var $sidebar = $thumbnail.parent().find('.js-quickshop-sidebar__container').find('.js-product_sidebar');
   
             //Find current product and notify forms
@@ -1611,7 +1608,6 @@ var quickShop = {
     //Initiate selectCallback
     if ($productForm.hasClass("product_form_options") && $productForm.hasClass("viewed") == false) {
       //If form hasn't been viewed previously, run OptionSelectors function
-      console.log($productForm.data("select-id"))
       new Shopify.OptionSelectors($productForm.data("select-id"),
       {
         product: $productForm.data("product"),
@@ -1631,7 +1627,6 @@ var quickShop = {
       var productID = productData.product_id;
       var productSection = '.fancybox-content .js-product_section';
       var swatchOptions = $productForm.find('.swatch_options .swatch');
-      console.log(productSection)
       if (swatchOptions.length > 1){
         Shopify.linkOptionSelectors(JSONData, productSection);
       }
@@ -1750,11 +1745,9 @@ var quickShop = {
 
   },
   updateVariant: function(variant){
-    console.log(variant)
     if (globalQuickShopProduct != 'undefined'){
 
       var product = globalQuickShopProduct;
-      console.log(product)
       $('.js-current-price').html('');
       $('.js-was-price').html('');
       $('.js-savings').html('');

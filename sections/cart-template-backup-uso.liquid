@@ -253,9 +253,7 @@
     </div>
   {% endfor %}
 </div>
-if(typeof BOLD === 'object' && BOLD.common && BOLD.common.eventEmitter && typeof BOLD.common.eventEmitter.emit === 'function') {
-BOLD.common.eventEmitter.emit("BOLD_COMMON_cart_loaded");
-}
+
 {% comment %}Full Shelf app{% endcomment %}
 <script src="{{'full_shelf.js' | asset_url}}" defer></script>
 {{'full_shelf.css' | asset_url | stylesheet_tag}}

@@ -6,8 +6,8 @@
   {% assign show_payment_button = false %}
 {% endif %}
 
-{% assign variant = bold_selected_or_first_available_variant %}
-{%- include 'bold-variant' with variant, output: 'none' -%}
+{% assign variant = product.selected_or_first_available_variant %}
+
 
 {%- assign checkout_url = '/checkout' -%}
   {% for locale in shop.enabled_locales %}
@@ -19,7 +19,7 @@
   {% endif %}
 {% endfor %}
 
-<div class="product_form init smart-payment-button--{{ show_payment_button }} {% if bold_variants_size > 1 or product.options.size > 1 %}product_form_options{% endif %} product_form--{{ settings.product_form_style }}"
+<div class="product_form init smart-payment-button--{{ show_payment_button }} {% if product.variants.size > 1 or product.options.size > 1 %}product_form_options{% endif %} product_form--{{ settings.product_form_style }}"
       id="product-form-{{ product.id }}"
       data-product-form
       data-options-size="{{ product.options.size }}"
@@ -27,10 +27,9 @@
       data-shop-currency="{{ shop.currency }}"
       data-select-id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}"
       data-enable-state="{% if template contains 'product' %}true{% else %}false{% endif %}"
-      data-product="{%- include 'bold-product', output: 'json', escape: true -%}"
+      data-product="{{ product | json | escape }}"
       {% if settings.limit_quantity or settings.display_inventory_left %}
-        data-variant-inventory='[{%- for v in product.variants -%}
-{%- include 'bold-variant' with v, hide_action: 'skip' -%}{"id":{{v.id}},"inventory_quantity":{{v.inventory_quantity}},"inventory_management":"{{v.inventory_management}}","inventory_policy":"{{v.inventory_policy}}"}{% if forloop.last == false %},{% endif %}{%- endfor -%}]'
+        data-variant-inventory='[{%- for v in product.variants -%}{"id":{{v.id}},"inventory_quantity":{{v.inventory_quantity}},"inventory_management":"{{v.inventory_management}}","inventory_policy":"{{v.inventory_policy}}"}{% if forloop.last == false %},{% endif %}{%- endfor -%}]'
       {% endif %}
       data-product-id="{{ product.id }}"
       >
@@ -51,17 +50,15 @@
     <div class="select">
       <select id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}" name="id" class="multi_select">
         {% for v in product.variants %}
-{%- include 'bold-variant' with v, hide_action: 'skip' -%}
           <option {% if v == variant %}selected="selected"{% endif %} value="{{ v.id }}" data-featured-image="{{ v.featured_media }}" data-image="{{ v.featured_media | product_img_url: '600x' }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
         {% endfor %}
       </select>
     </div>
-  {% elsif product.options.size == 1 and bold_variants_size > 1 or product.options.size == 1 and product.options[0] != "Title" %}
+  {% elsif product.options.size == 1 and product.variants.size > 1 or product.options.size == 1 and product.options[0] != "Title" %}
     <div class="select">
       <label>{{ product.options[0] }}</label>
       <select id="product-select-{{ product.id }}{{ product-form }}{{ section.id }}{{ block.id }}" name="id">
         {% for v in product.variants %}
-          {%- include 'bold-variant' with v, hide_action: 'skip' -%}
           <option {% if v == variant %}selected="selected"{% endif %} value="{{ v.id }}" data-featured-image="{{ v.featured_media }}" data-image="{{ v.featured_media | product_img_url: '600x' }}" data-sku="{{ v.sku }}">{{ v.title }}</option>
         {% endfor %}
       </select>
@@ -176,14 +173,14 @@
       {% if collection_handles contains 'coming-soon' %}
         <p class="modal_price">{{ 'collections.general.coming_soon' | t }}</p>
       {% else %}
-          {%- assign variant = bold_selected_or_first_available_variant -%}
+          {%- assign variant = product.selected_or_first_available_variant -%}
 
           <div class="modal_price">
           {% unless product.available == false and settings.display_price == false %}
               <div class="price__container price__container--display-price-{{ settings.display_price }} {% if settings.display_price %}has-margin-right{% endif %}">
-              <span content="{{ bold_variant_price | money_without_currency }}" class="{% if variant.compare_at_price > bold_variant_price %}sale{% endif %}">
+              <span content="{{ variant.price | money_without_currency }}" class="{% if variant.compare_at_price > variant.price %}sale{% endif %}">
                   <span class="current_price">
-                  {% if bold_variant_price > 0 %}
+                  {% if variant.price > 0 %}
                       <span class="money">{% include 'price-element', price: variant.price %}</span>
                   {% else %}
                       {{ settings.free_price_text }}
@@ -192,15 +189,15 @@
               </span>
 
               <span class="was_price">
-                  {% if bold_variant_price < variant.compare_at_price %}
+                  {% if variant.price < variant.compare_at_price %}
                   <span class="money">{% include 'price-element', price: variant.compare_at_price %}</span>
                   {% endif %}
               </span>
 
               {% if block.settings.display_savings %}
                   <span class="sale savings">
-                  {% if bold_variant_price < variant.compare_at_price %}
-                      {{ 'products.product.savings' | t }} {{ variant.compare_at_price | minus: bold_variant_price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{% assign compare_at = variant.compare_at_price | minus: bold_variant_price %}{% include 'price-element', price: compare_at %}</span>)
+                  {% if variant.price < variant.compare_at_price %}
+                      {{ 'products.product.savings' | t }} {{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}% (<span class="money">{% assign compare_at = variant.compare_at_price | minus: variant.price %}{% include 'price-element', price: compare_at %}</span>)
                   {% endif %}
                   </span>
               {% endif %}

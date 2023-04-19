@@ -36,7 +36,7 @@
           {% if settings.product_form_style == 'dropdown' %}
             {% render 'quick-shop-gallery', product: product %}
           {% else %}
-            {% if settings.quick_shop_enabled and settings.quick_shop_style == 'inline' and bold_selected_or_first_available_variant.image %}
+            {% if settings.quick_shop_enabled and settings.quick_shop_style == 'inline' and product.selected_or_first_available_variant.image %}
               {% render 'image-element',
                       image: product.selected_or_first_available_variant.image,
                       alt: alt_text,

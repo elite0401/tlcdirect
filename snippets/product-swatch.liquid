@@ -42,9 +42,6 @@ Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
   </div>
 
   {%- assign values = '' -%}
-  <script>
-    console.log({{product | json}})
-  </script>
   {% for variant in product.variants %}
     {%- assign value = variant.options[option_index] | remove: csp_flag_string -%}
     {% unless values contains value %}
