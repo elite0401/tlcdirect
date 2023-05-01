@@ -152,8 +152,8 @@ ASSIGN LIQUID VARIABLES
                 {%- if variant_output_json.size > 1 -%}{%- assign variant_output_json = variant_output_json | append: ',' -%}{%- endif -%}
                 {%- assign variant_output_json = variant_output_json | append: bold_variant_check -%}
   
-                {%- if variant.price < bold_price_min -%}{%- assign bold_price_min = variant.price -%}{%- endif -%}
-                {%- if variant.price > bold_price_max -%}{%- assign bold_price_max = variant.price -%}{%- endif -%}
+                {%- if bold_variant_price < bold_price_min -%}{%- assign bold_price_min = bold_variant_price -%}{%- endif -%}
+                {%- if bold_variant_price > bold_price_max -%}{%- assign bold_price_max = bold_variant_price -%}{%- endif -%}
                 {%- if bold_price_max != bold_price_min -%}{%- assign bold_price_varies = true -%}{%- endif -%}
                 {%- assign bold_price = bold_price_min -%}
   

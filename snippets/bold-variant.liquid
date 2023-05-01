@@ -71,7 +71,7 @@ FLAGS:
   {%- assign bold_variant_app_list = app_list | default: custom_app_list | default: false -%}
 {%- endif -%}
 
-{%- assign variant.price = bold_variant.price -%}
+{%- assign bold_variant_price = bold_variant.price -%}
 
 {%- if bold_variant_app_list -%}
 
@@ -214,7 +214,7 @@ FLAGS:
   "available":{{- bold_variant_available | json -}},
   "name":{{- bold_variant_base_product.title | append: " - " | append: bold_variant.title | remove: csp_flag_string | json -}},
   "options":{{- bold_variant.options | json | remove: csp_flag_string -}},
-  "price":{%- unless price_style == 'json' -%}{{- variant.price | default: bold_variant.price | json -}}{%- else -%}{%- assign cents = variant.price | default: bold_variant.price | modulo: 100 | prepend: '00' | slice: -2, 2 -%}{%- assign dollars = variant.price | default: bold_variant.price | times: 0.01 | floor -%}{{- dollars | append: '.' | append: cents | json -}}{%- endunless -%},
+  "price":{%- unless price_style == 'json' -%}{{- bold_variant_price | default: bold_variant.price | json -}}{%- else -%}{%- assign cents = bold_variant_price | default: bold_variant.price | modulo: 100 | prepend: '00' | slice: -2, 2 -%}{%- assign dollars = bold_variant_price | default: bold_variant.price | times: 0.01 | floor -%}{{- dollars | append: '.' | append: cents | json -}}{%- endunless -%},
   "weight":{{- bold_variant.weight | json -}},
   "compare_at_price":{%- if bold_base_variant.compare_at_price == blank -%}null{% else %}{%- unless price_style == 'json' -%}{{- bold_variant_compare_at_price | default: bold_variant.compare_at_price | json -}}{%- else -%}{%- assign cents = bold_variant_compare_at_price | default: bold_variant.compare_at_price | modulo: 100 | prepend: '00' | slice: -2, 2 -%}{%- assign dollars = bold_variant_compare_at_price | default: bold_variant.compare_at_price | times: 0.01 | floor -%}{{- dollars | append: '.' | append: cents | json -}}{%- endunless -%}{%- endif -%},
   "inventory_quantity":{{- bold_variant_inventory_quantity | default: variant.inventory_quantity | json -}},

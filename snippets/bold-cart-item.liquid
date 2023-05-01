@@ -74,7 +74,7 @@ To use this file:
 
 
 {% include 'bold-variant' with bold_item.variant, base_product: bold_item.product, line_item: bold_item %}
-{% assign bold_item_price = variant.price | default: bold_item_price %}
+{% assign bold_item_price = bold_variant_price | default: bold_item_price %}
 
 
 {% assign bold_hidden_item = false %}
