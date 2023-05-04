@@ -211,7 +211,7 @@
                           {{ block.settings.image | img_url: '300x'}} 200w,
                           {{ block.settings.image | img_url: '200x'}} 100w
                         {%- endcapture -%}
-                        <div class="lazyload" data-bgset="{{ block.settings.image | img_url: '200x' }} 400w"
+                        <div class="lazyload" data-bgset="{{ block.settings.image | img_url: '400x' }} 400w"
                             data-sizes="100vw" style="padding-top: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 | plus: 1}}%;background-size: cover;"></div>
                       </div>
                       <div class="detail center">
