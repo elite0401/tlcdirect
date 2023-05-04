@@ -1354,19 +1354,42 @@ a[data-src="#email_friend"]{
       }
     }
     .caption {
+      max-width: 93%;
       @include respond-to("small-down"){
         position: relative;
       }
+      .pretext p {
+        font-size: 20px;
+        @include respond-to("large-down") {
+          font-size: 16px;
+        }
+      }
       h1.headline{
+        font-size: 44px;
         color: white;
         margin-bottom: 10px;
+        @include respond-to("large-down") {
+          font-size: 32px;
+        }
+      }
+      .subtitle {
+        p {
+          font-size: 20px;
+          @include respond-to("large-down") {
+            font-size: 16px;
+          }
+        }
       }
       .caption-content{
-        .action_button{
-          @include respond-to("small-down") {
+        .button{
+          font-size: 18px;
+          max-width: 320px;
+          height: 50px;
+          @include respond-to("small-down") { 
             max-width: 240px;
             background: var(--banner_button_color);
             height: 48px;
+            font-size: 16px;
             border: none;
             white-space: nowrap; 
           }
