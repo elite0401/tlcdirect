@@ -4,6 +4,8 @@
   <head>
   {% render 'sizechartsrelentless' %}
 
+  {% render 'sizechartsrelentless' %}
+
     <meta charset="utf-8">
     <meta http-equiv="cleartype" content="on">
     <meta name="robots" content="index,follow">
@@ -18,13 +20,35 @@
     <meta name="description" content="{% if template contains 'search' %} {{ page_title }} - {{ shop.name }} {% else %}{{ page_description | escape }}{% if current_tags %} {{ 'general.meta.tagged_html' | t: tags: meta_tags | escape }}.{% endif %}{% if current_page != 1 %} {{ 'general.meta.page' | t: page_number: current_page }}.{% endif %}{% endif %}" />
     {% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %}{% endif %}
     <title>
-      {% if template contains "index" %}{{ page_title }}{% else %}{{ page_title }}{% if current_tags %} {{ 'general.meta.tagged_html' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} {{ 'general.meta.page' | t: page_number: current_page }}{% endif %}{% unless page_title contains shop.name %} - {{ shop.name }}{% endunless %}{% endif %}
+      {% if template contains "index" %}
+        {{ page_title }}
+      {% else %}
+        {% if page_title contains "|" %}
+          {% assign new_page_title =  page_title | split: "|" %}
+          {{new_page_title.first}}
+        {% else %}
+          {{ page_title }}
+        {% endif %}
+        
+        {% if current_tags %} 
+          {{ 'general.meta.tagged_html' | t: tags: meta_tags }}
+        {% endif %}
+        {% if current_page != 1 %} 
+          {{ 'general.meta.page' | t: page_number: current_page }}
+        {% endif %}
+        
+        {% comment %} {% unless page_title contains shop.name %} - {{ shop.name }}{% endunless %} {% endcomment %}
+      {% endif %}
     </title>
     {% include 'variable' %}
     <link rel="preconnect dns-prefetch" href="https://fonts.shopifycdn.com" />
     <link rel="preconnect dns-prefetch" href="https://cdn.shopify.com" />
     <link rel="preconnect dns-prefetch" href="https://v.shopify.com" />
     <link rel="preconnect dns-prefetch" href="https://cdn.shopifycloud.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     {% if settings.enable_shopify_review_comments %}
       <link rel="preconnect dns-prefetch" href="https://productreviews.shopifycdn.com" />
@@ -49,6 +73,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-5HDQQBT');</script>
 <!-- End Google Tag Manager -->
+
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-1039098696"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-1039098696');
+</script>
+
     <script>
       window.lazySizesConfig = window.lazySizesConfig || {};
       lazySizesConfig.expand = 300;
@@ -74,13 +109,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     {% else %}
       <link rel="shortcut icon" type="image/x-icon" href="{{ 'favicon.png' | asset_url }}">
     {% endif %}
-    {% if template contains 'collection' %}
-    	<link rel="canonical" href="{{ shop.url }}{{ collection.url }}" />
-    {% elsif template contains 'blog' %}
-    	<link rel="canonical" href="{{ blog.url }}" />
-    {% else %}
-    	<link rel="canonical" href="{{ canonical_url }}" />
-    {% endif %}
+    <link rel="canonical" href="{{ canonical_url }}" />
 
     {% if template contains 'customer' %}
       {{ "shopify_common.js" | shopify_asset_url | script_tag }}
@@ -103,7 +132,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       {% include 'qikify-contactform' %}
       
     {% endunless %}
-    
+    <!-- OneTrust Cookies Consent Notice start for tlcdirect.org -->
+    <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="65f87097-dae0-4c89-8a53-4cf871b21871" ></script>
+    <script type="text/javascript">
+    function OptanonWrapper() { }
+    </script>
+    <!-- OneTrust Cookies Consent Notice end for tlcdirect.org -->
 </head>
 
 
@@ -191,7 +225,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       {% render 'js-variables' %}
     </script>
     <script src="{{ 'vendors.js' | asset_url }}"></script>
-    <script src="{{ 'sections.min.js' | asset_url }}"></script>
+    <script src="{{ 'sections.js' | asset_url }}"></script>
     <script src="{{ 'utilities.js' | asset_url }}"></script>
     <script src="{{ 'app.js' | asset_url }}"></script>
     <script src="{{ 'custom.js' | asset_url }}"></script>

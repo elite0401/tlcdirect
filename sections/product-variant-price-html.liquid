@@ -441,7 +441,7 @@
                 <span class="ss-icon product-plus js-change-quantity" data-func="plus"><span class="icon-plus"></span></span>
               </div>
             {% endif %}
-            {% if product.metafields.global.qty_break_msg != blank and section.settings.qty_msg_enable %}
+            {% if product.metafields.global.qty_break_msg != blank %}
               <p class="qty_break_message">{% include 'qty_break' %}{{ product.metafields.global.qty_break_msg }}</p>
             {% endif %}
             <div class="purchase-details__buttons purchase-details__spb--{{ show_payment_button }} {% if product.available == false %}product-is-unavailable{% endif %}">
@@ -663,12 +663,6 @@
         "type": "checkbox",
         "id": "display_savings",
         "label": "Show price savings",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "qty_msg_enable",
-        "label": "Display Quantity break message",
         "default": true
       },
       {

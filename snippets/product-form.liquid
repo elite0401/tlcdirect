@@ -209,27 +209,21 @@
           </div>
           </div>
       {% endif %}
-    {% elsif section.settings.hide_all == false %}
+    {% else %}
       {% assign qty_message = '' %}
       {% for block in section.blocks %}
         {% if block.type == 'qty' %}
-          {% if block.settings.collection == blank %}
-            {% if section.settings.hide_site_level == false %}
+          {% for p_collection in product.collections %}
+            {% if p_collection.handle == block.settings.collection %}
               {% assign qty_message = block.settings.qty %}
             {% endif %}
-          {% elsif section.settings.hide_cp_level == false %}
-            {% for p_collection in product.collections %}
-              {% if p_collection.handle == block.settings.collection %}
-                {% assign qty_message = block.settings.qty %}
-              {% endif %}
-            {% endfor %}
-          {% endif %}
+          {% endfor %}
         {% endif %}
       {% endfor %}
-      {% if product.metafields.global.qty_break_msg != blank and section.settings.hide_pdp_level == false %}
-        <p class="qty_break_message">{% render 'qty_break' %}{{ product.metafields.global.qty_break_msg }}</p>
-      {% elsif qty_message != blank %}
+      {% if qty_message != blank %}
         <p class="qty_break_message">{% render 'qty_break' %}{{ qty_message }}</p>
+      {% elsif product.metafields.global.qty_break_msg != blank %}
+        <p class="qty_break_message">{% render 'qty_break' %}{{ product.metafields.global.qty_break_msg }}</p>
       {% endif %}
     {% endif %}
     
@@ -246,10 +240,26 @@
         {% assign tag_string = tag_string | append: tag_string %}
       {% endfor %}
       
+      {% assign is_help_btn = 0 %}
+      {% for tag in product.tags %}
+        {% assign tag_down = tag | downcase %}
+        {% if tag_down contains 'wigs & more' %}
+          {% assign is_help_btn = 1 %}
+        {% endif %}
+      {% endfor %}
+      {% for tag in product.tags %}
+        {% assign tag_down = tag | downcase %}
+        {% if tag_down contains 'wig essentials' %}
+          {% assign is_help_btn = 0 %}
+        {% endif %}
+      {% endfor %}
+
       {% unless template contains 'cart' %}
-        {% if tag_string contains 'wigs' %}
+        {% if is_help_btn == 1 %}
           {% assign cls = 'one-half' %}
           <a data-fancybox href="javascript:;" class="button blue modal-btn {{cls}} medium-down--one-whole" data-src="#quiz-popup">Help me choose</a>
+        {% endif %}
+        {% if tag_string contains 'wigs' %}
         {% endif %}
       {% endunless %}
       

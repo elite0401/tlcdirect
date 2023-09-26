@@ -34,7 +34,12 @@
                 {% if section.settings.text %}
                   {{ section.settings.text }}
                 {% endif %}
+                {% if section.settings.button_text != blank  %}
+                 <a class="button blue" href="{{ section.settings.button_url }}">{{ section.settings.button_text }}</a>
+                {% endif %}
               </span>
+
+               
             </div>
           {% endif %}
         </div>
@@ -155,6 +160,16 @@
         "max": 4,
         "step": 1,
         "default": 3
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button Text"
+      },
+      {
+        "type": "url",
+        "id": "button_url",
+        "label": "Button URL"
       }
     ],
     "blocks": [

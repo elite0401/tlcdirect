@@ -306,3 +306,30 @@ function printDiv(divName) {
 function doneyet() { 
   console("after print dialog"); 
 } 
+
+if(window.location.href.includes("?_pos=")>0)
+{
+  (function () {
+    var keys = ['_pos','_sid','_ss'];
+    var deleteRegex = new RegExp(keys.join('=|') + '=')
+
+    var params = location.search.slice(1).split('&')
+    var search = []
+    for (var i = 0; i < params.length; i++) if (deleteRegex.test(params[i]) === false) search.push(params[i])
+
+    window.history.replaceState({}, document.title, location.pathname + (search.length ? '?' + search.join('&') : '') + location.hash)
+  })();
+}
+if(window.location.href.includes("?_psq=")>0)
+{
+  (function () {
+    var keys = ['_psq','_v','_ss'];
+    var deleteRegex = new RegExp(keys.join('=|') + '=')
+
+    var params = location.search.slice(1).split('&')
+    var search = []
+    for (var i = 0; i < params.length; i++) if (deleteRegex.test(params[i]) === false) search.push(params[i])
+
+    window.history.replaceState({}, document.title, location.pathname + (search.length ? '?' + search.join('&') : '') + location.hash)
+  })();
+}

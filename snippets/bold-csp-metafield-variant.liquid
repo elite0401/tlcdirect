@@ -87,7 +87,7 @@ FLAGS:
   {%- if use_discount_compare_at == '1' and bold_csp_variant.compare_at_price > 0 -%}
     {%- assign new_price = bold_csp_variant.compare_at_price -%}
   {%- else -%}
-    {%- assign new_price = variant.price | default: bold_csp_variant.price -%}
+    {%- assign new_price = bold_variant_price | default: bold_csp_variant.price -%}
   {%- endif -%}
 
   {%- case price_type -%}
@@ -101,7 +101,7 @@ FLAGS:
   {%- endcase -%}
 
   {%- if new_price < 0 -%}
-    {%- assign new_price = variant.price | default: bold_csp_variant.price -%}
+    {%- assign new_price = bold_variant_price | default: bold_csp_variant.price -%}
   {%- endif -%}
 
   {%- if cents != '' and cents != null -%}
@@ -110,7 +110,7 @@ FLAGS:
   {%- endif -%}
 
   {%- if new_price < bold_csp_variant.price -%}
-  	{%- assign variant.price = new_price -%}
+  	{%- assign bold_variant_price = new_price -%}
   {%- endif -%}
 
   {%- if taxable == '1' -%}
@@ -122,7 +122,7 @@ FLAGS:
 {%- else -%}
   {%- comment -%} APPLY TAG DEFAULT DISCOUNT {%- endcomment -%}
   {%- if tag_default_discount != blank -%}
-    {%- assign new_price = variant.price | default: bold_csp_variant.price -%}
-    {%- assign variant.price = new_price | times: tag_default_discount | round -%}
+    {%- assign new_price = bold_variant_price | default: bold_csp_variant.price -%}
+    {%- assign bold_variant_price = new_price | times: tag_default_discount | round -%}
   {%- endif -%}
 {%- endif -%}
