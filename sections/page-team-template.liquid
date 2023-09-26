@@ -20,6 +20,7 @@
         <div class="team-page__content--{{ section.settings.image_position }} {% if section.settings.image != blank and section.settings.text != blank %}teamPage__content--multiple{% endif %}">
           {% if section.settings.image != blank %}
             <div class="team-page__image">
+              
               {% include 'image-element',
                       image: section.settings.image,
                       alt: section.settings.image.alt,
@@ -38,6 +39,7 @@
                 {% if section.settings.text %}
                   {{ section.settings.text }}
                 {% endif %}
+                          
               </span>
             </div>
           {% endif %}
@@ -147,6 +149,7 @@
         "label": "Text",
         "default": "<p>Say a little something about your team here, tell the story of how you got together, describe what roles people play, and help your customers get to know you better! All your staff members can be listed below, with their respective photos, job titles, descriptions or mini-bios, and Twitter handles.</p>"
       },
+      
       {
         "type": "select",
         "id": "text_position",
@@ -166,6 +169,16 @@
             "label": "Right"
           }
         ]
+      },
+      {
+        "type": "url",
+        "id": "btn_url",
+        "label": "Button Link"
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Button Text"
       },
       {
         "type": "header",
@@ -197,6 +210,11 @@
         "id": "member_overlay_color",
         "label": "Overlay",
         "default": "#000"
+      },
+      {
+        "type": "text",
+        "id": "member_button_top_text",
+        "label": "Banner Button"
       }
     ],
     "blocks": [

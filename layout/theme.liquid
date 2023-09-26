@@ -45,6 +45,10 @@
     <link rel="preconnect dns-prefetch" href="https://cdn.shopify.com" />
     <link rel="preconnect dns-prefetch" href="https://v.shopify.com" />
     <link rel="preconnect dns-prefetch" href="https://cdn.shopifycloud.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     {% if settings.enable_shopify_review_comments %}
       <link rel="preconnect dns-prefetch" href="https://productreviews.shopifycdn.com" />
@@ -128,13 +132,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       {% include 'qikify-contactform' %}
       
     {% endunless %}
-    <!-- OptanonConsentNoticeStart -->
-
+    <!-- OneTrust Cookies Consent Notice start for tlcdirect.org -->
     <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="65f87097-dae0-4c89-8a53-4cf871b21871" ></script>
     <script type="text/javascript">
     function OptanonWrapper() { }
     </script>
-    <!-- OptanonConsentNoticeEnd -->
+    <!-- OneTrust Cookies Consent Notice end for tlcdirect.org -->
 </head>
 
 
@@ -222,7 +225,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       {% render 'js-variables' %}
     </script>
     <script src="{{ 'vendors.js' | asset_url }}"></script>
-    <script src="{{ 'sections.min.js' | asset_url }}"></script>
+    <script src="{{ 'sections.js' | asset_url }}"></script>
     <script src="{{ 'utilities.js' | asset_url }}"></script>
     <script src="{{ 'app.js' | asset_url }}"></script>
     <script src="{{ 'custom.js' | asset_url }}"></script>

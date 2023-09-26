@@ -136,10 +136,6 @@ a.button, input[type="submit"].button, .button, .action_button{
   span{
     color: inherit;
   }
-  &:hover{
-    background-color: var(--btn_hover_color);
-    border-color: var(--btn_hover_color);
-  }
   @include font-gothic-bold();
   max-width: 240px;
   width: 100%;
@@ -157,6 +153,7 @@ a.button, input[type="submit"].button, .button, .action_button{
     background: transparent;
     padding: 0 10px;
   }
+  
   &.full{
     max-width: 100%;
     width: 100%;
@@ -166,11 +163,6 @@ a.button, input[type="submit"].button, .button, .action_button{
   &.blue{
     background: var(--banner_button_color);
     border-color: var(--banner_button_color);
-    
-    &:hover{
-      background-color: var(--banner_btn_hover_color);
-      border-color: var(--banner_btn_hover_color);
-    }
     &.light{
       background: transparent;
       position: relative;
@@ -190,10 +182,6 @@ a.button, input[type="submit"].button, .button, .action_button{
   &.pink{
     background-color: var(--btn_color);
     border-color: var(--btn_color);
-    &:hover{
-      background-color: var(--btn_hover_color);
-      border-color: var(--btn_hover_color);
-    }
     &.light{
       background: transparent;
       position: relative;
@@ -207,13 +195,12 @@ a.button, input[type="submit"].button, .button, .action_button{
         opacity: 0.1;
         z-index: -1;
       }
-      &:hover{
-        color: white;
-        &::after{
-          opacity: 1;
-        }
-      }
     }
+  }
+  &.outline--true {
+    border: 3px solid;
+    background: white;
+    color: var(--banner_button_color);
   }
 }
 
@@ -275,21 +262,21 @@ a.button, input[type="submit"].button, .button, .action_button{
 }
 
 .logo{
-  margin-top: 30px;
+  margin-top: 10px;
   p{
     margin: 0;
     font-family: var(--logo__font);
     font-size: calc(var(--logo_font_size) * 1px);
     text-transform: var(--logo_font_style);
     line-height: 1;
-    color: #C0218D;
+    color: #2746F8;
     font-style: italic;
     strong{
       font-family: var(--logo__font);
       font-size: calc(var(--logo_font_size) * 2.6px);
       font-weight: normal;
       line-height: 1;
-      color: #9D114E;
+      color: #2746F8;
       letter-spacing: -0.52px;
     }
     &.mobile_logo {
@@ -299,7 +286,7 @@ a.button, input[type="submit"].button, .button, .action_button{
         font-size: calc(var(--logo_font_size) * 0.9px);
         text-transform: var(--logo_font_style);
         line-height: 1;
-        color: #9D114E;
+        color: #2746F8;
       }
     }
   }
@@ -312,12 +299,12 @@ a.button, input[type="submit"].button, .button, .action_button{
     font-size: 22px;
     text-transform: var(--logo_font_style);
     line-height: 1;
-    color: #9D114E;
+    color: #2746F8;
     margin: 0;
     strong {
       font-weight: 400;
       font-style: italic;
-      color: #9d114e;
+      color: #2746F8;
       font-family: var(--logo__font);
       font-size: 50px;
     }
@@ -618,6 +605,9 @@ a[data-src="#email_friend"]{
                     display: inline-block;
                     text-transform: unset;
                     gap: 0;
+                    font-family: Poppins;
+                    font-weight: 700;
+                    letter-spacing: 0.075px;
                     svg{
                       margin-right: 10px;
                     }
@@ -661,12 +651,12 @@ a[data-src="#email_friend"]{
           padding: 0;
           
           .search__form{
-            margin: 30px auto;
-            max-width: 438px;
+            margin: 0px;
+            max-width: 395px;
           }
         }
         .nav {
-          padding: 0;
+          padding: 0 50px;
           background: $color-white;
           box-shadow:  0 22px 44px -20px rgba(0,0,0,0.29);
           .menu {
@@ -707,13 +697,14 @@ a[data-src="#email_friend"]{
           }
         }
         .side-icon{
-          position: absolute;
-          top: 35%;
-          transform: translateY(-68%);
-          left: 45px;
+          position: relative;
+          top: auto;
+          left: 25px;
+          padding: 5px 0;
+          display: inherit;
           img {
             image-rendering: -webkit-optimize-contrast;
-            width: 160px;
+            width: 80px;
           }
         }
         .phone {
@@ -991,7 +982,7 @@ a[data-src="#email_friend"]{
         }
       }
       &::after{
-        content: "Keep Shopping";
+        content: "CLOSE";
         text-decoration: underline;
         color: #3158A7;
         font-size: $regular_size;
@@ -1036,12 +1027,11 @@ a[data-src="#email_friend"]{
           letter-spacing: 0.7px;
           span{
             &.sku{
-              opacity: 0.35;
+              color: black;
               text-transform: capitalize;
             }
             &.in_stock{
-              color: #2C9E48;
-              opacity: 0.77;
+              color: #008000!important;
             }
             &.out_stock{
               color: $color-pink;
@@ -1113,11 +1103,11 @@ a[data-src="#email_friend"]{
           }
           .quantity_update{
             cursor: pointer;
-            color: #3158A7!important;
+            color: #2746F8 !important;
             @include font-gothic-regular();
             font-size: $regular_size;
             letter-spacing: 0.77px;
-            text-decoration: underline;
+            text-decoration: none;
           }
         }
         
@@ -1206,9 +1196,10 @@ a[data-src="#email_friend"]{
     .side-icon{
       margin-left: 30px;
       max-width: 90px;
-      height: 110px;
+      height: auto;
       display: flex;
       align-items: center;
+      padding: 5px 0;
       img {
         width: 100%;
       }
@@ -1218,6 +1209,10 @@ a[data-src="#email_friend"]{
     }
     .phone{
       margin-left: 35px;
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
       & > div {
         height: 40px;
         font-size: 13px;
@@ -1231,11 +1226,11 @@ a[data-src="#email_friend"]{
     }
     .header__logo{
       width: auto;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 0;
-      padding: 24px 0px;
+      /* position: absolute; */
+      /* left: 50%; */
+      /* transform: translate(-50%); */
+      /* top: 0; */
+      padding: 5px 0 0;
       .sticky_logo{
         display: block;
       }
@@ -1359,10 +1354,16 @@ a[data-src="#email_friend"]{
         position: relative;
       }
       .pretext p {
-        font-size: 20px;
-        @include respond-to("large-down") {
-          font-size: 16px;
-        }
+          font-size: 20px;
+          font-family: 'Poppins';
+          font-weight: 400;          
+          @include respond-to("large-down") {
+            font-size: 16px;
+          }
+          strong, .bold {
+            font-family: var(--headline__font);
+            font-weight: 400;
+          }
       }
       h1.headline{
         font-size: 44px;
@@ -1375,8 +1376,14 @@ a[data-src="#email_friend"]{
       .subtitle {
         p {
           font-size: 20px;
+          font-family: inherit;
+          font-weight: inherit;
           @include respond-to("large-down") {
             font-size: 16px;
+          }
+          strong, .bold {
+            font-family: var(--headline__font);
+            font-weight: 400;
           }
         }
       }
@@ -1385,6 +1392,11 @@ a[data-src="#email_friend"]{
           font-size: 18px;
           max-width: 320px;
           height: 50px;
+          &:hover {
+            background-color: var(--banner_button_color);
+            border-color: var(--banner_button_color);
+            color: var(--btn_text_color) !important;
+          }
           @include respond-to("small-down") { 
             max-width: 240px;
             background: var(--banner_button_color);
@@ -1772,11 +1784,11 @@ a[data-src="#email_friend"]{
           height: 20px;
         }
         g, path{
-          stroke: #122F54;
+          stroke: #2746F8;
         }
       }
       p, a{
-        color: #122F54;
+        color: #030303;
         margin: 0;
         font-size: $regular_size;
         max-width: 180px;
@@ -1859,6 +1871,9 @@ a[data-src="#email_friend"]{
                 align-items: center;
                 svg{
                   margin-right: 10px;
+                  #icons{
+                    stroke: #FF3C96;
+                  }
                   @include respond-to("medium-down") {
                     width: 20px;
                     height: 20px;
@@ -1867,7 +1882,7 @@ a[data-src="#email_friend"]{
                 h5{
                   font-size: $small_size;
                   text-transform: uppercase;
-                  color: #A83A86;
+                  color: #FF3C96;
                   margin-bottom: 0;
                   padding: 0
                 }
@@ -1891,7 +1906,7 @@ a[data-src="#email_friend"]{
         }
       }
       &:nth-last-child(2){
-        background: #F7E6F3;
+        background: #E9EFFA;
         margin-left: 0px;
         margin-right: 0;
         padding-right: 20px;
@@ -1903,6 +1918,9 @@ a[data-src="#email_friend"]{
           min-width: 24px;
           width: 24px;
           height: 24px;
+          path {
+              stroke: #2746F8;
+          }
         }
         @include respond-to("medium-down"){
           margin: 0;
@@ -1923,14 +1941,14 @@ a[data-src="#email_friend"]{
       }
       &.footer_credits{
         padding: 0 20px;
-        background: #030303;
+        background: #012169;
         margin: 0;
         width: 100%;
         .credits{
           text-align: center;
           color: white;
           width: 100%;
-          @include font-gothic-regular();
+          font-family: var(--regular__font);
           font-size: $small_size;
           a{
             color: white;
@@ -3357,6 +3375,7 @@ div.content.cart-page-container {
       display: flex;
       align-items: center;
       top: 10px;
+      flex-direction: row-reverse;
       right: 10px;
       svg{
         width: 25px;
@@ -3368,7 +3387,7 @@ div.content.cart-page-container {
         content: none;
       }
       &::after{
-        content: "Keep Shopping";
+        content: "CLOSE";
         @include font-gothic-regular();
         font-size: $regular_size;
         color: #3158A7;
@@ -3887,15 +3906,16 @@ div.content.cart-page-container {
     .product-details{
       text-align: center;
       .title{
-        @include font-gothic-regular();
+        font-family: var(--regular__font);
         font-size: $body_size;
         text-transform: capitalize;
         letter-spacing: 0.88px;
+        font-weight: 400;
       }
       .price {
         &.sale {
           .current_price{
-            color: var(--sale_color);
+            color: #030303;
             &::before {
               color: #BA0C2F;
               content: "Sale: ";
@@ -5857,7 +5877,7 @@ body.blocked-scroll {
     &:hover{
       .product-info__caption {
         .title{
-          color: #A83A86; 
+          color: #FF3C96; 
         }
       }
     }

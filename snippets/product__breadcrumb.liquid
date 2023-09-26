@@ -37,16 +37,16 @@
 </script>
 
 <div class="breadcrumb_text one-whole column">
-  <a href="{{ routes.root_url }}" title="{{ shop.name | escape }}" class="breadcrumb_link">
+  <a href="{{ routes.root_url }}" title="{{ shop.name | escape }}">
     <span>{{ 'general.breadcrumbs.home' | t }}</span>
   </a>
   <span class="breadcrumb-divider">/</span>
   {% if collection %}
-    <a href="{{ collection.url }}" title="{{ collection.title | escape }}" class="breadcrumb_link">
+    <a href="{{ collection.url }}" title="{{ collection.title | escape }}">
       <span>{{ collection.title }}</span>
       </a>
   {% else %}
-    <a href="{{ routes.all_products_collection_url }}" title="{{ collections.all.title }}" class="breadcrumb_link">
+    <a href="{{ routes.all_products_collection_url }}" title="{{ collections.all.title }}">
       <span>{{ collections.all.title }}</span>
       </a>
   {% endif %}

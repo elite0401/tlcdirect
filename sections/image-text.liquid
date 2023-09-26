@@ -32,273 +32,274 @@
     {% endif %}
 {% endfor %}
 <section class="section {{ css_class }}
-          {% if object.settings.wide_display == false %}
-          is-width-standard
-          {% else %}
-          is-width-wide has-no-side-gutter
-          {% endif %}
-          {% if object.settings.featured_links_per_row == '2'%}
-          is-flex is-flex-wrap
-          {% endif %}
-          {% if object.settings.carousel == true %}
-            image-text-slider
-          {% endif %}
-          {% if object.settings.left_image_status %}
-            image-text-left-image
-          {% endif %}
-          ">
-      {% if blocks.size > 0 %}
-        {% for block in blocks %}
-          {% if block.type == 'image' %}
-          <div class="container
-          image-with-text-container has-no-side-gutter 
-          section-{{ forloop.index }}
-          featured_collections 
-          {% if object.settings.carousel == true %}
-            carousel-cell eleven-twelfths medium-down--one-whole 
-          {% endif %}
-          container--{{ block.id }}
-          {% if object.settings.featured_links_per_row == '1' and object.settings.carousel == false %}
-            {% if object.settings.frontpage_image_position == 'row' %}
-            is-flex-{% cycle 'row', 'row-reverse' %}
-            {% else %}
-            is-flex-{% cycle 'row-reverse', 'row' %}
-            {% endif %}
-          {% elsif object.settings.featured_links_per_row == '2' %}
-            one-half column medium-down--one-whole is-flex-{{ object.settings.frontpage_image_position }} has-no-side-gutter
-          {% endif %}" {{ block.shopify_attributes }} >
+  {% if object.settings.wide_display == false %}
+  is-width-standard
+  {% else %}
+  is-width-wide has-no-side-gutter
+  {% endif %}
+  {% if object.settings.featured_links_per_row == '2'%}
+  is-flex is-flex-wrap
+  {% endif %}
+  {% if object.settings.carousel == true %}
+    image-text-slider
+  {% endif %}
+  {% if object.settings.left_image_status %}
+    image-text-left-image
+  {% endif %}
+  ">
+  {% if blocks.size > 0 %}
+    {% for block in blocks %}
+      {% if block.type == 'image' %}
+      <div class="container
+      image-with-text-container has-no-side-gutter 
+      section-{{ forloop.index }}
+      featured_collections 
+      {% if object.settings.carousel == true %}
+        carousel-cell eleven-twelfths medium-down--one-whole 
+      {% endif %}
+      container--{{ block.id }}
+      {% if object.settings.featured_links_per_row == '1' and object.settings.carousel == false %}
+        {% if object.settings.frontpage_image_position == 'row' %}
+        is-flex-{% cycle 'row', 'row-reverse' %}
+        {% else %}
+        is-flex-{% cycle 'row-reverse', 'row' %}
+        {% endif %}
+      {% elsif object.settings.featured_links_per_row == '2' %}
+        one-half column medium-down--one-whole is-flex-{{ object.settings.frontpage_image_position }} has-no-side-gutter
+      {% endif %}" {{ block.shopify_attributes }} >
 
-            {% comment %} Content settings {% endcomment %}
-            {%- assign image = block.settings.image -%}
-            {% assign right_image = block.settings.right_image %}
-            {% assign mobile_image = block.settings.mobile_image %}
-            {% comment %} End content settings {% endcomment %}
-            <div class="featured-link--half eight image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
-              <div class="featured-link--wrap">
-                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
-                  {% if image != blank %}
-                    {% include 'image-element',
-                      image: image,
-                      alt: image.alt,
-                      stretch_width: true,
-                      additional_classes: "medium-down--hide"
-                    %}
-                    {% include 'image-element',
-                      image: mobile_image,
-                      alt: image.alt,
-                      stretch_width: true,
-                      mobile_status: true,
-                      additional_classes: "hide medium-down--show"
-                    %}
-                    {% if block.settings.caption != blank %}
-                    <div class="caption-image">
-                      {% include 'image-element',
-                        image: block.settings.caption,
-                        alt: block.settings.caption.alt,
-                        stretch_width: true,
-                        mobile_status: true
-                      %}
-                    </div>
-                    {% endif %}
-                    
-                  {% else %}
-                    {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
-                    {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
-                  {% endif %}
-                </a>
-                <div class="caption">
-                  {{block.settings.caption_text}}
-                  {% if block.settings.caption_button_text != blank %}
-                    <a href="{{block.settings.caption_button_url}}" target="_blank" class="button border">{{block.settings.caption_button_text}}</a>
-                  {% endif %}
+        {% comment %} Content settings {% endcomment %}
+        {%- assign image = block.settings.image -%}
+        {% assign right_image = block.settings.right_image %}
+        {% assign mobile_image = block.settings.mobile_image %}
+        {% comment %} End content settings {% endcomment %}
+        <div class="featured-link--half eight image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
+          <div class="featured-link--wrap">
+            <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
+              {% if image != blank %}
+                {% include 'image-element',
+                  image: image,
+                  alt: image.alt,
+                  stretch_width: true,
+                  additional_classes: "medium-down--hide"
+                %}
+                {% include 'image-element',
+                  image: mobile_image,
+                  alt: image.alt,
+                  stretch_width: true,
+                  mobile_status: true,
+                  additional_classes: "hide medium-down--show"
+                %}
+                {% if block.settings.caption != blank %}
+                <div class="caption-image">
+                  {% include 'image-element',
+                    image: block.settings.caption,
+                    alt: block.settings.caption.alt,
+                    stretch_width: true,
+                    mobile_status: true
+                  %}
                 </div>
-              </div>
+                {% endif %}
+                
+              {% else %}
+                {% capture i %}{% cycle "1", "2", "3", "4", "5", "6" %}{% endcapture %}
+                {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg placeholder-svg--promotions' }}
+              {% endif %}
+            </a>
+            <div class="caption">
+              {{block.settings.caption_text}}
+              {% if block.settings.caption_button_text != blank %}
+                <a href="{{block.settings.caption_button_url}}" target="_blank" class="button border">{{block.settings.caption_button_text}}</a>
+              {% endif %}
             </div>
-            {% if block.settings.right_image != blank %}
-              {% assign cls = 'six' %}
-              {% assign left_cls = 'two' %}
-            {% else %}
-              {% assign cls = 'eight' %}
+          </div>
+        </div>
+        {% if block.settings.right_image != blank %}
+          {% assign cls = 'six' %}
+          {% assign left_cls = 'two' %}
+        {% else %}
+          {% assign cls = 'eight' %}
+        {% endif %}
+        <div class="featured-link--half {{cls}} {% if status %}medium-down--hide{% endif %} image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole block--{{ block.id }}">
+          <div class="info text-align--{{ object.settings.frontpage_text_align }}">
+            {% if block.settings.icon != blank and block.settings.icon_position == 'top' %}
+              {{ block.settings.icon }}
             {% endif %}
-            <div class="featured-link--half {{cls}} {% if status %}medium-down--hide{% endif %} image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole block--{{ block.id }}">
-              <div class="info text-align--{{ object.settings.frontpage_text_align }}">
-                {% if block.settings.icon != blank and block.settings.icon_position == 'top' %}
-                  {{ block.settings.icon }}
-                {% endif %}
-                {% if block.settings.icon_image != blank and block.settings.icon_position == 'top' %}
-                  {{ block.settings.icon_image | image_url: width: 110 | image_tag: class: 'icon' }}
-                {% endif %}
-                {% if block.settings.title != blank %}
-                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
-                  {{ block.settings.title | escape }}
-                </a>
-                {% endif %}
-               
-                {% if block.settings.text != blank %}
-                  <div class="description">{{ block.settings.text }}</div>
-                {% endif %}
-                {% if block.settings.icon != blank and block.settings.icon_position == 'bottom' %}
-                  {{ block.settings.icon }}
-                {% endif %}
-                <div class="button-bar button_align--{{block.settings.button_align}}">
-                  {% if block.settings.button_primary_label != blank %}
-                    <a {% if block.settings.link_primary != blank %}href="{{ block.settings.link_primary }}"{% endif %} class="button blue">
-                      {{ block.settings.button_primary_label }}
-                    </a>
-                  {% endif %}
-                  {% if block.settings.button_third_label != blank %}
-                    {% if block.settings.third_popup %}
-                    <a data-fancybox href="javascript:;" class="button blue modal-btn  medium-down--hide" data-src="{{block.settings.link_third}}">
-                      <span class="medium-down--hide">{{ block.settings.button_third_label }}</span>
-                      <span class="hide medium-down--show">{{block.settings.button_third_mobile_label}}</span>
-                    </a>
-                    {% else %}
-                    <a {% if block.settings.link_third != blank %}href="{{ block.settings.link_third }}"{% endif %} class="button pink">
-                      <span class="medium-down--hide">{{ block.settings.button_third_label }}</span>
-                      <span class="hide medium-down--show">{{block.settings.button_third_mobile_label}}</span>
-                    </a>
-                    {% endif %}
-                  {% endif %}
-                  {% if block.settings.button_second_label != blank %}
-                  {% if block.settings.second_popup %}
-                  <a data-fancybox href="javascript:;" class="button blue modal-btn" data-src="{{block.settings.link_second}}">
-                    <span class="medium-down--hide">{{ block.settings.button_second_label }}</span>
-                    <span class="hide medium-down--show">{{block.settings.button_second_mobile_label}}</span>
-                  </a>
-                  {% else %}
-                  <a {% if block.settings.link_second != blank %}href="{{ block.settings.link_second }}"{% endif %} class="button pink">
-                    <span class="medium-down--hide">{{ block.settings.button_second_label }}</span>
-                    <span class="hide medium-down--show">{{block.settings.button_second_mobile_label}}</span>
-                  </a>
-                  {% endif %}
-                {% endif %}
-                
-                </div>
-                
-              </div>
-            </div>
-            {% if right_image != blank and object.settings.left_image_status %}
-            <div class="featured-link--half medium-down--hide left_image image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
-              <div class="featured-link--wrap">
-                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
-                  {% if right_image != blank %}
-                    {% include 'image-element',
-                      image: right_image,
-                      alt: right_image.alt,
-                      stretch_width: true
-                    %}
-                  {% endif %}
-                </a>
-              </div>
-            </div>
+            {% if block.settings.icon_image != blank and block.settings.icon_position == 'top' %}
+              {{ block.settings.icon_image | image_url: width: 110 | image_tag: class: 'icon' }}
+            {% endif %}
+            {% if block.settings.title != blank %}
+            <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
+              {{ block.settings.title | escape }}
+            </a>
             {% endif %}
             
-          </div>
-          {% endif %}
-        {% endfor %}
-        {% if status %}
-          <div class="section featured-collection-slider container collection-blocks">
-            {% for block in section.blocks %}
-              {% if block.type == 'collection' %}
-                <div class="one-fifth column carousel-cell is-align-center">
-                  {% assign collection = collections[block.settings.collection] %}
-                  <div class="collection-content">
-                    <a href="{{collection.url}}">
-                      <div class="image">
-                        {%- capture srcset -%}
-                          {{ block.settings.image | img_url: '300x'}} 800w,
-                          {{ block.settings.image | img_url: '300x'}} 600w,
-                          {{ block.settings.image | img_url: '300x'}} 200w,
-                          {{ block.settings.image | img_url: '200x'}} 100w
-                        {%- endcapture -%}
-                        <div class="lazyload" data-bgset="{{ block.settings.image | img_url: '400x' }} 400w"
-                            data-sizes="100vw" style="padding-top: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 | plus: 1}}%;background-size: cover;"></div>
-                      </div>
-                      <div class="detail center">
-                        <p>{{block.settings.title}}</p>
-                      </div>
-                    </a>
-                  </div>
-                </div> 
-              {% endif %}
-            {% endfor %}
-          </div>
-        {% endif %}
-        {% if status %}
-        {% for block in blocks %}
-          {% if block.type == 'image' %}
-          <div class="image-with-text-container section-{{ forloop.index }} featured_collections {% if object.settings.carousel == true %} carousel-cell eleven-twelfths{% endif %} container--{{ block.id }}
-          {% if object.settings.featured_links_per_row == '1' and object.settings.carousel == false %}
-            {% if object.settings.frontpage_image_position == 'row' %}
-            is-flex-{% cycle 'row', 'row-reverse' %}
-            {% else %}
-            is-flex-{% cycle 'row-reverse', 'row' %}
+            {% if block.settings.text != blank %}
+              <div class="description">{{ block.settings.text }}</div>
             {% endif %}
-          {% elsif object.settings.featured_links_per_row == '2' %}
-            one-half column medium-down--one-whole is-flex-{{ object.settings.frontpage_image_position }} has-no-side-gutter
-          {% endif %}" {{ block.shopify_attributes }} >
-
-            <div class="featured-link--half hide medium-down--visible column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
-              <div class="info text-align--{{ object.settings.frontpage_text_align }}">
-                {% if block.settings.icon != blank and block.settings.icon_position == 'top' %}
-                  {{ block.settings.icon }}
-                {% endif %}
-                
-                {% if block.settings.title != blank %}
-                <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
-                  {{ block.settings.title | escape }}
+            {% if block.settings.icon != blank and block.settings.icon_position == 'bottom' %}
+              {{ block.settings.icon }}
+            {% endif %}
+            <div class="button-bar button_align--{{block.settings.button_align}}">
+              {% if block.settings.button_primary_label != blank %}
+                <a {% if block.settings.link_primary != blank %}href="{{ block.settings.link_primary }}"{% endif %} class="button outline--{{block.settings.outline_1}} {{ block.settings.button_colors_1 }}">
+                  {{ block.settings.button_primary_label }}
+                </a>
+              {% endif %}
+              
+              {% if block.settings.button_second_label != blank %}
+                {% if block.settings.second_popup %}
+                <a data-fancybox href="javascript:;" class="button {{ block.settings.button_colors_2 }} outline--{{block.settings.outline_2}} modal-btn" data-src="{{block.settings.link_second}}">
+                  <span class="medium-down--hide">{{ block.settings.button_second_label }}</span>
+                  <span class="hide medium-down--show">{{block.settings.button_second_mobile_label}}</span>
+                </a>
+                {% else %}
+                <a {% if block.settings.link_second != blank %}href="{{ block.settings.link_second }}"{% endif %} class="button outline--{{block.settings.outline_2}} {{ block.settings.button_colors_2 }}">
+                  <span class="medium-down--hide">{{ block.settings.button_second_label }}</span>
+                  <span class="hide medium-down--show">{{block.settings.button_second_mobile_label}}</span>
                 </a>
                 {% endif %}
-                
-                {% if block.settings.text != blank %}
-                  <div class="description">{{ block.settings.text }}</div>
+              {% endif %}
+
+              {% if block.settings.button_third_label != blank %}
+                {% if block.settings.third_popup %}
+                <a data-fancybox href="javascript:;" class="button {{ block.settings.button_colors_3 }} outline--{{block.settings.outline_3}} modal-btn  medium-down--hide" data-src="{{block.settings.link_third}}">
+                  <span class="medium-down--hide">{{ block.settings.button_third_label }}</span>
+                  <span class="hide medium-down--show">{{block.settings.button_third_mobile_label}}</span>
+                </a>
+                {% else %}
+                <a {% if block.settings.link_third != blank %}href="{{ block.settings.link_third }}"{% endif %} class="button outline--{{block.settings.outline_3}} {{ block.settings.button_colors_3 }}">
+                  <span class="medium-down--hide">{{ block.settings.button_third_label }}</span>
+                  <span class="hide medium-down--show">{{block.settings.button_third_mobile_label}}</span>
+                </a>
                 {% endif %}
-                {% if block.settings.icon != blank and block.settings.icon_position == 'bottom' %}
-                  {{ block.settings.icon }}
-                {% endif %}
-                {% if block.settings.button_primary_label != blank %}
-                  <a {% if block.settings.link_primary != blank %}href="{{ block.settings.link_primary }}"{% endif %} class="button blue">
-                    <span class="medium-down--hide">{{ block.settings.button_primary_label }}</span>
-                    <span class="medium-down--show hide">{{block.settings.button_primary_mobile_label}}</span>
-                  </a>
-                {% endif %}
-                {% if block.settings.button_second_label != blank %}
-                  {% if block.settings.second_popup %}
-                  <a data-fancybox href="javascript:;" class="button blue modal-btn" data-src="{{block.settings.link_second}}">
-                    <span class="medium-down--hide">{{ block.settings.button_second_label }}</span>
-                    <span class="hide medium-down--show">{{block.settings.button_second_mobile_label}}</span>
-                  </a>
-                  {% else %}
-                  <a {% if block.settings.link_second != blank %}href="{{ block.settings.link_second }}"{% endif %} class="button pink">
-                    <span class="medium-down--hide">{{ block.settings.button_second_label }}</span>
-                    <span class="hide medium-down--show">{{block.settings.button_second_mobile_label}}</span>
-                  </a>
-                  {% endif %}
-                {% endif %}
-                {% if block.settings.button_third_label != blank %}
-                  {% if block.settings.third_popup %}
-                  <a data-fancybox href="javascript:;" class="button blue modal-btn  medium-down--hide" data-src="{{block.settings.link_third}}">
-                    <span class="medium-down--hide">{{ block.settings.button_third_label }}</span>
-                    <span class="hide medium-down--show">{{block.settings.button_third_mobile_label}}</span>
-                  </a>
-                  {% else %}
-                  <a {% if block.settings.link_third != blank %}href="{{ block.settings.link_third }}"{% endif %} class="button pink">
-                    <span class="medium-down--hide">{{ block.settings.button_third_label }}</span>
-                    <span class="hide medium-down--show">{{block.settings.button_third_mobile_label}}</span>
-                  </a>
-                  {% endif %}
-                {% endif %}
-              </div>
+              {% endif %}
             </div>
+            
           </div>
-          {% endif %}
-        {% endfor %}
-        {% endif %}
-        {% if section.settings.url != blank%}
-          <a href="{{section.settings.url}}" class="button blue center caputalize light">view all</a>
+        </div>
+        {% if right_image != blank and object.settings.left_image_status %}
+        <div class="featured-link--half medium-down--hide left_image image-with-text__image-column is-align-center image-with-text__column medium-down--one-whole image-crop--{{ block.settings.image_crop }}">
+          <div class="featured-link--wrap">
+            <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} title="{{ block.settings.title }}">
+              {% if right_image != blank %}
+                {% include 'image-element',
+                  image: right_image,
+                  alt: right_image.alt,
+                  stretch_width: true
+                %}
+              {% endif %}
+            </a>
+          </div>
+        </div>
         {% endif %}
         
+      </div>
       {% endif %}
+    {% endfor %}
+    {% if status %}
+      <div class="section featured-collection-slider container collection-blocks">
+        {% for block in section.blocks %}
+          {% if block.type == 'collection' %}
+            <div class="one-fifth column carousel-cell is-align-center">
+              {% assign collection = collections[block.settings.collection] %}
+              <div class="collection-content">
+                <a href="{{collection.url}}">
+                  <div class="image">
+                    {%- capture srcset -%}
+                      {{ block.settings.image | img_url: '300x'}} 800w,
+                      {{ block.settings.image | img_url: '300x'}} 600w,
+                      {{ block.settings.image | img_url: '300x'}} 200w,
+                      {{ block.settings.image | img_url: '200x'}} 100w
+                    {%- endcapture -%}
+                    <div class="lazyload" data-bgset="{{ block.settings.image | img_url: '400x' }} 400w"
+                        data-sizes="100vw" style="padding-top: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 | plus: 1}}%;background-size: cover;"></div>
+                  </div>
+                  <div class="detail center">
+                    <p>{{block.settings.title}}</p>
+                  </div>
+                </a>
+              </div>
+            </div> 
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if status %}
+    {% for block in blocks %}
+      {% if block.type == 'image' %}
+      <div class="image-with-text-container section-{{ forloop.index }} featured_collections {% if object.settings.carousel == true %} carousel-cell eleven-twelfths{% endif %} container--{{ block.id }}
+      {% if object.settings.featured_links_per_row == '1' and object.settings.carousel == false %}
+        {% if object.settings.frontpage_image_position == 'row' %}
+        is-flex-{% cycle 'row', 'row-reverse' %}
+        {% else %}
+        is-flex-{% cycle 'row-reverse', 'row' %}
+        {% endif %}
+      {% elsif object.settings.featured_links_per_row == '2' %}
+        one-half column medium-down--one-whole is-flex-{{ object.settings.frontpage_image_position }} has-no-side-gutter
+      {% endif %}" {{ block.shopify_attributes }} >
+
+        <div class="featured-link--half hide medium-down--visible column image-with-text__text-column is-flex is-align-center image-with-text__column medium-down--one-whole">
+          <div class="info text-align--{{ object.settings.frontpage_text_align }}">
+            {% if block.settings.icon != blank and block.settings.icon_position == 'top' %}
+              {{ block.settings.icon }}
+            {% endif %}
+            
+            {% if block.settings.title != blank %}
+            <a {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% endif %} class="collection_title">
+              {{ block.settings.title | escape }}
+            </a>
+            {% endif %}
+            
+            {% if block.settings.text != blank %}
+              <div class="description">{{ block.settings.text }}</div>
+            {% endif %}
+            {% if block.settings.icon != blank and block.settings.icon_position == 'bottom' %}
+              {{ block.settings.icon }}
+            {% endif %}
+            {% if block.settings.button_primary_label != blank %}
+              <a {% if block.settings.link_primary != blank %}href="{{ block.settings.link_primary }}"{% endif %} class="button outline--{{block.settings.outline_1}} {{ block.settings.button_colors_1 }}">
+                <span class="medium-down--hide">{{ block.settings.button_primary_label }}</span>
+                <span class="medium-down--show hide">{{block.settings.button_primary_mobile_label}}</span>
+              </a>
+            {% endif %}
+            {% if block.settings.button_second_label != blank %}
+              {% if block.settings.second_popup %}
+              <a data-fancybox href="javascript:;" class="button {{ block.settings.button_colors_2 }} outline--{{block.settings.outline_2}} modal-btn" data-src="{{block.settings.link_second}}">
+                <span class="medium-down--hide">{{ block.settings.button_second_label }}</span>
+                <span class="hide medium-down--show">{{block.settings.button_second_mobile_label}}</span>
+              </a>
+              {% else %}
+              <a {% if block.settings.link_second != blank %}href="{{ block.settings.link_second }}"{% endif %} class="button outline--{{block.settings.outline_2}} {{ block.settings.button_colors_2 }}">
+                <span class="medium-down--hide">{{ block.settings.button_second_label }}</span>
+                <span class="hide medium-down--show">{{block.settings.button_second_mobile_label}}</span>
+              </a>
+              {% endif %}
+            {% endif %}
+            {% if block.settings.button_third_label != blank %}
+              {% if block.settings.third_popup %}
+              <a data-fancybox href="javascript:;" class="button {{ block.settings.button_colors_3 }} modal-btn outline--{{block.settings.outline_3}}  medium-down--hide" data-src="{{block.settings.link_third}}">
+                <span class="medium-down--hide">{{ block.settings.button_third_label }}</span>
+                <span class="hide medium-down--show">{{block.settings.button_third_mobile_label}}</span>
+              </a>
+              {% else %}
+              <a {% if block.settings.link_third != blank %}href="{{ block.settings.link_third }}"{% endif %} class="button outline--{{block.settings.outline_3}} {{ block.settings.button_colors_3 }}">
+                <span class="medium-down--hide">{{ block.settings.button_third_label }}</span>
+                <span class="hide medium-down--show">{{block.settings.button_third_mobile_label}}</span>
+              </a>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% if section.settings.url != blank%}
+      <a href="{{section.settings.url}}" class="button blue center caputalize light">view all</a>
+    {% endif %}
+    
+  {% endif %}
 </section>
 
 {% style %}
@@ -544,6 +545,29 @@
           ]
         },
         {
+          "type": "header",
+          "content": "Button bar"
+        },
+        {
+          "type": "select",
+          "id": "button_align",
+          "label": "Button align",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Primary Button"
+        },
+        {
           "type": "text",
           "id": "button_primary_label",
           "label": "First Button label",
@@ -559,6 +583,31 @@
           "type": "url",
           "id": "link_primary",
           "label": "First Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_colors_1",
+          "label": "Button Color 1",
+          "options": [
+            {
+              "value": "blue",
+              "label": "Blue"
+            },
+            {
+              "value": "pink",
+              "label": "Pink"
+            }
+          ],
+          "default":"blue"
+        },
+        {
+          "type": "checkbox",
+          "id": "outline_1",
+          "label": "Outline button"
+        },
+        {
+          "type": "header",
+          "content": "Second Button"
         },
         {
           "type": "text",
@@ -581,6 +630,31 @@
           "type": "checkbox",
           "id": "second_popup",
           "label": "Second button is popup button?"
+        },
+        {
+          "type": "select",
+          "id": "button_colors_2",
+          "label": "Button Color 2",
+          "options": [
+            {
+              "value": "blue",
+              "label": "Blue"
+            },
+            {
+              "value": "pink",
+              "label": "Pink"
+            }
+          ],
+          "default":"blue"
+        },
+        {
+          "type": "checkbox",
+          "id": "outline_2",
+          "label": "Outline button"
+        },
+        {
+          "type": "header",
+          "content": "Third Button"
         },
         {
           "type": "text",
@@ -606,18 +680,24 @@
         },
         {
           "type": "select",
-          "id": "button_align",
-          "label": "Button align",
+          "id": "button_colors_3",
+          "label": "Button Color 3",
           "options": [
             {
-              "value": "left",
-              "label": "Left"
+              "value": "blue",
+              "label": "Blue"
             },
             {
-              "value": "center",
-              "label": "Center"
+              "value": "pink",
+              "label": "Pink"
             }
-          ]
+          ],
+          "default":"blue"
+        },
+        {
+          "type": "checkbox",
+          "id": "outline_3",
+          "label": "Outline button"
         },
         {
           "type": "header",
