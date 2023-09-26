@@ -20,7 +20,25 @@
     <meta name="description" content="{% if template contains 'search' %} {{ page_title }} - {{ shop.name }} {% else %}{{ page_description | escape }}{% if current_tags %} {{ 'general.meta.tagged_html' | t: tags: meta_tags | escape }}.{% endif %}{% if current_page != 1 %} {{ 'general.meta.page' | t: page_number: current_page }}.{% endif %}{% endif %}" />
     {% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %}{% endif %}
     <title>
-      {% if template contains "index" %}{{ page_title }}{% else %}{{ page_title }}{% if current_tags %} {{ 'general.meta.tagged_html' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} {{ 'general.meta.page' | t: page_number: current_page }}{% endif %}{% unless page_title contains shop.name %} - {{ shop.name }}{% endunless %}{% endif %}
+      {% if template contains "index" %}
+        {{ page_title }}
+      {% else %}
+        {% if page_title contains "|" %}
+          {% assign new_page_title =  page_title | split: "|" %}
+          {{new_page_title.first}}
+        {% else %}
+          {{ page_title }}
+        {% endif %}
+        
+        {% if current_tags %} 
+          {{ 'general.meta.tagged_html' | t: tags: meta_tags }}
+        {% endif %}
+        {% if current_page != 1 %} 
+          {{ 'general.meta.page' | t: page_number: current_page }}
+        {% endif %}
+        
+        {% comment %} {% unless page_title contains shop.name %} - {{ shop.name }}{% endunless %} {% endcomment %}
+      {% endif %}
     </title>
     {% include 'variable' %}
     <link rel="preconnect dns-prefetch" href="https://fonts.shopifycdn.com" />
@@ -110,7 +128,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       {% include 'qikify-contactform' %}
       
     {% endunless %}
-    
+    <!-- OptanonConsentNoticeStart -->
+
+    <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="65f87097-dae0-4c89-8a53-4cf871b21871" ></script>
+    <script type="text/javascript">
+    function OptanonWrapper() { }
+    </script>
+    <!-- OptanonConsentNoticeEnd -->
 </head>
 
 

@@ -240,10 +240,26 @@
         {% assign tag_string = tag_string | append: tag_string %}
       {% endfor %}
       
+      {% assign is_help_btn = 0 %}
+      {% for tag in product.tags %}
+        {% assign tag_down = tag | downcase %}
+        {% if tag_down contains 'wigs & more' %}
+          {% assign is_help_btn = 1 %}
+        {% endif %}
+      {% endfor %}
+      {% for tag in product.tags %}
+        {% assign tag_down = tag | downcase %}
+        {% if tag_down contains 'wig essentials' %}
+          {% assign is_help_btn = 0 %}
+        {% endif %}
+      {% endfor %}
+
       {% unless template contains 'cart' %}
-        {% if tag_string contains 'wigs' %}
+        {% if is_help_btn == 1 %}
           {% assign cls = 'one-half' %}
           <a data-fancybox href="javascript:;" class="button blue modal-btn {{cls}} medium-down--one-whole" data-src="#quiz-popup">Help me choose</a>
+        {% endif %}
+        {% if tag_string contains 'wigs' %}
         {% endif %}
       {% endunless %}
       

@@ -111,11 +111,11 @@
                       <li>
                         <p>
                           {% assign target = '' %}
-                          {% if linklists[block.settings.menu].title == 'ACS Programs & Services' %}
+                          {% if linklists[block.settings.menu].title == 'ACS Programs & Services'%}
                             {% assign target = 'target="_blank"' %}
                           {% endif %}
                           {% assign link_url = link.url %}
-                          {% if link.title == 'eCatalog' %}
+                          {% if link.title == 'eCatalog'  or link.title == 'Privacy Statement' or link.title == 'Privacy Rights'  %}
                             {% assign target = 'target="_blank"' %}
                           {% endif %}
                           <a {{target}} {% if link.title contains 'American Cancer Society' %}onClick="ga('send', 'event', { eventCategory: 'click', eventAction: 'greetingcard'});"{% endif %} href="{{ link_url }}">{{ link.title }}</a>
